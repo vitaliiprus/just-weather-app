@@ -5,11 +5,12 @@ android-targetSdk = "34"
 
 firebase-crashlytics-gradle = "2.9.9"
 gradle = "8.2.1"
-google-services = "4.4.0"
+googleServices = "4.4.0"
 
 kotlin = "1.9.22"
 compose = "1.5.4"
-compose-material3 = "1.1.2"
+composeKotlinCompiler = "1.5.8"
+composeMaterial3 = "1.1.2"
 
 androidx-core = "1.12.0"
 androidx-appcompat = "1.6.1"
@@ -49,7 +50,7 @@ espresso = "3.5.1"
 [libraries]
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 kotlin_gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-google-services = { module = "com.google.gms:google-services", version.ref = "google-services" }
+google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebase-crashlytics-gradle" }
 kotlin_stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin" }
 
@@ -70,7 +71,7 @@ androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 
 androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
-androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "composeMaterial3" }
 androidx-compose-ui-toolingPreview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }

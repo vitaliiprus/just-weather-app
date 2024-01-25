@@ -8,6 +8,14 @@ android {
 
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composeKotlinCompiler.get()
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
