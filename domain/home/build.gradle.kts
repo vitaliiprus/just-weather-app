@@ -10,6 +10,15 @@ android {
     namespace = "prus.justweatherapp.domain.home"
 
     compileSdk = libs.versions.android.compileSdk.get().toInt()
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {

@@ -3,8 +3,9 @@ package prus.justweatherapp.app.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import prus.justweatherapp.core.presentation.navigation.Graph
-import prus.justweatherapp.feature.home.navigation.homeNavGraph
+import prus.justweatherapp.feature.home.HomeUI
 
 @Composable
 fun RootNavigationGraph(
@@ -15,11 +16,10 @@ fun RootNavigationGraph(
         route = Graph.ROOT,
         startDestination = Graph.HOME,
     ) {
-//        authNavGraph(
-//            navController = navController
-//        )
-        homeNavGraph(
-            navController = navController
-        )
+        composable(
+            route = Graph.HOME
+        ) {
+            HomeUI()
+        }
     }
 }
