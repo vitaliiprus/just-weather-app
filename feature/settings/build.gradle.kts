@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "prus.justweatherapp.feature.home"
+    namespace = "prus.justweatherapp.feature.settings"
 
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
-    defaultConfig {
+    defaultConfig{
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
 
@@ -39,10 +39,6 @@ kapt {
 }
 
 dependencies {
-    implementation(project(":feature:locations"))
-    implementation(project(":feature:weather"))
-    implementation(project(":feature:settings"))
-    implementation(project(":domain:home"))
     implementation(project(":theme"))
     implementation(project(":core"))
 
