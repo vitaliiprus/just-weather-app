@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import prus.justweatherapp.core.presentation.navigation.Graph
 import prus.justweatherapp.feature.locations.LocationsUI
+import prus.justweatherapp.feature.weather.WeatherUI
 
 @Composable
 fun HomeNavGraph(
@@ -20,7 +21,7 @@ fun HomeNavGraph(
             LocationsUI()
         }
         composable(route = HomeScreen.Weather.route) {
-//            Screen2UI {}
+            WeatherUI()
         }
         composable(route = HomeScreen.Settings.route) {
 //            Screen3UI {}
