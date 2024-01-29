@@ -39,6 +39,7 @@ kapt {
 }
 
 dependencies {
+    implementation(project(":domain:locations"))
     implementation(project(":theme"))
     implementation(project(":core"))
 
