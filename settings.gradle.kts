@@ -9,13 +9,18 @@ pluginManagement {
 rootProject.name = "Just Weather App"
 
 include(":app")
-include(":core")
-include(":domain:home")
-include(":data:home")
-include(":theme")
+
 include(":feature:home")
 include(":feature:locations")
 include(":feature:weather")
 include(":feature:settings")
+
+include(":theme")
+
+include(":domain:home")
 include(":domain:locations")
+
+include(":data:home")
 include(":data:locations")
+
+include(":core")
