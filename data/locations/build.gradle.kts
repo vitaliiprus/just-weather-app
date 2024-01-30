@@ -7,6 +7,7 @@ plugins {
 
 android {
     namespace = "prus.justweatherapp.data.locations"
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 }
 
 dependencies {
