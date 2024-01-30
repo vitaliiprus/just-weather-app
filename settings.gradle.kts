@@ -23,4 +23,6 @@ include(":domain:locations")
 include(":data:home")
 include(":data:locations")
 
+include(":local:db")
+
 include(":core")

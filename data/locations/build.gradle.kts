@@ -11,6 +11,7 @@ android {
 
 dependencies {
     implementation(project(":domain:locations"))
+    implementation(project(":local:db"))
     implementation(project(":core"))
 
     implementation(libs.bundles.kotlinx.coroutines)
