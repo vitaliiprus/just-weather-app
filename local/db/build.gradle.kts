@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("kotlin-parcelize")
     kotlin("kapt")
 }
 
@@ -14,4 +15,5 @@ dependencies {
     kapt(libs.room.compiler)
 
     testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.android)
 }
