@@ -19,18 +19,8 @@ class LocationsDaoTest {
     private lateinit var database: AppDatabase
     private lateinit var dao: LocationDao
 
-    private val dbLocations = listOf(
-        LocationEntity(
-            id = "1",
-            locationId = "id_1",
-            city = "City1",
-        ),
-        LocationEntity(
-            id = "2",
-            locationId = "id_2",
-            city = "City2",
-        )
-    )
+    private val locationsCount = 30
+    private val dbLocations = initDbLocations(locationsCount)
 
     @Before
     fun setup() {
@@ -46,6 +36,22 @@ class LocationsDaoTest {
         }
     }
 
+    private fun initDbLocations(count: Int): List<LocationEntity> {
+        val locations = mutableListOf<LocationEntity>()
+        for (i in 1..count) {
+            locations.add(
+                LocationEntity(
+                    id = i + 1,
+                    locationId = "id_$i",
+                    city = "City$i",
+                    adminName = "Admin$i",
+                    country = "Country$i",
+                )
+            )
+        }
+        return locations
+    }
+
     @After
     fun teardown() {
         database.close()
@@ -55,6 +61,31 @@ class LocationsDaoTest {
     fun getAllLocations() = runTest {
         val allLocations = dao.getAllLocations()
         assert(allLocations.containsAll(dbLocations))
+    }
+
+    @Test
+    fun getLocationsWithOffset() = runTest {
+        assertDaoLocationsExist(0, 5)
+        assertDaoLocationsExist(5, 10)
+        assertDaoLocationsExist(15, 25)
+        assertDaoLocationsExist(3, 21)
+        assertDaoLocationsExist(0, 30)
+        assertDaoLocationsExist(1, 1)
+
+        assert(dao.getLocations(0, 0).isEmpty())
+    }
+
+    private suspend fun assertDaoLocationsExist(offset: Int, limit: Int) {
+        assert(dao.getLocations(offset, limit).containsAll(dbLocations.subList(offset, limit)))
+    }
+
+    @Test
+    fun getLocationsWithMask() = runTest {
+        assert(dao.getLocationsWithMask("%ity%").size == locationsCount)
+        assert(dao.getLocationsWithMask("%Country%").size == locationsCount)
+        assert(dao.getLocationsWithMask("%Admi%").size == locationsCount)
+        assert(dao.getLocationsWithMask("%30%").size == 1)
+        assert(dao.getLocationsWithMask("%${locationsCount + 1}%").isEmpty())
     }
 
     @Test

@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "locations")
 @Parcelize
 data class LocationEntity(
-    @PrimaryKey @ColumnInfo(name = "id") val id: String,
+    @PrimaryKey @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "location_id") val locationId: String,
     @ColumnInfo(name = "city") val city: String,
     @ColumnInfo(name = "country") val country: String? = "",
@@ -45,7 +45,7 @@ data class LocationEntity(
         fun getMockData(): List<LocationEntity> {
             return listOf(
                 LocationEntity(
-                    id = "1",
+                    id = 1,
                     locationId = "id_1",
                     city = "Helsinki",
                     adminName = "Uusimaa",
@@ -54,7 +54,7 @@ data class LocationEntity(
                     lng = 24.9342
                 ),
                 LocationEntity(
-                    id = "2",
+                    id = 2,
                     locationId = "id_2",
                     city = "Saint Petersburg",
                     adminName = "Sankt-Peterburg",
@@ -63,7 +63,7 @@ data class LocationEntity(
                     lng = 30.3167
                 ),
                 LocationEntity(
-                    id = "3",
+                    id = 3,
                     locationId = "id_3",
                     city = "Phuket",
                     adminName = "Phuket",
