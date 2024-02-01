@@ -6,17 +6,20 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import prus.justweatherapp.local.db.dao.LocationDao
+import prus.justweatherapp.local.db.dao.LocationsDao
+import prus.justweatherapp.local.db.dao.UserLocationsDao
 import prus.justweatherapp.local.db.entity.LocationEntity
+import prus.justweatherapp.local.db.entity.UserLocationEntity
 
 @Database(
-    entities = [LocationEntity::class],
+    entities = [LocationEntity::class, UserLocationEntity::class],
     version = 1,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun locationDao(): LocationDao
+    abstract fun locationsDao(): LocationsDao
+    abstract fun userLocationsDao(): UserLocationsDao
 
     companion object {
 

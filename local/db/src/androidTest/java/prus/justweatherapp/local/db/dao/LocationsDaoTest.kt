@@ -17,7 +17,7 @@ import prus.justweatherapp.local.db.entity.LocationEntity
 @SmallTest
 class LocationsDaoTest {
     private lateinit var database: AppDatabase
-    private lateinit var dao: LocationDao
+    private lateinit var dao: LocationsDao
 
     private val locationsCount = 30
     private val dbLocations = initDbLocations(locationsCount)
@@ -29,7 +29,7 @@ class LocationsDaoTest {
             klass = AppDatabase::class.java
         ).allowMainThreadQueries().build()
 
-        dao = database.locationDao()
+        dao = database.locationsDao()
 
         runBlocking {
             dao.insertAll(dbLocations)
@@ -60,6 +60,7 @@ class LocationsDaoTest {
     @Test
     fun getAllLocations() = runTest {
         val allLocations = dao.getAllLocations()
+
         assert(allLocations.containsAll(dbLocations))
     }
 
@@ -92,6 +93,7 @@ class LocationsDaoTest {
     fun getLocationById() = runTest {
         val location1 = dao.getLocationById("id_1")
         val location2 = dao.getLocationById("id_2")
+
         assert(location1.locationId == "id_1")
         assert(location2.locationId == "id_2")
     }

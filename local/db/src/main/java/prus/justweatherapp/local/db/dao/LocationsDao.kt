@@ -7,7 +7,7 @@ import androidx.room.Query
 import prus.justweatherapp.local.db.entity.LocationEntity
 
 @Dao
-interface LocationDao {
+interface LocationsDao {
 
     @Query("SELECT * FROM locations ORDER BY city")
     suspend fun getAllLocations(): List<LocationEntity>
