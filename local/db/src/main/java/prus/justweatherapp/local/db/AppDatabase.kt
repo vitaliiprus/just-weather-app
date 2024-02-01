@@ -9,7 +9,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import prus.justweatherapp.local.db.dao.LocationDao
 import prus.justweatherapp.local.db.entity.LocationEntity
 
-@Database(entities = [LocationEntity::class], version = 1, exportSchema = false)
+@Database(
+    entities = [LocationEntity::class],
+    version = 1,
+    exportSchema = false
+)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun locationDao(): LocationDao

@@ -8,6 +8,21 @@ plugins {
 android {
     namespace = "prus.justweatherapp.local.db"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
+
+    defaultConfig {
+        minSdk = libs.versions.android.minSdk.get().toInt()
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
@@ -16,4 +31,6 @@ dependencies {
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.android)
+    androidTestImplementation(libs.test.runner)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }

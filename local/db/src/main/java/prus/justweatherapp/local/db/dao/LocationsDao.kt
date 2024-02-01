@@ -12,7 +12,7 @@ interface LocationDao {
     @Query("SELECT * FROM locations ORDER BY city")
     suspend fun getAllLocations(): List<LocationEntity>
 
-    @Query("SELECT * FROM locations WHERE id = :locationId")
+    @Query("SELECT * FROM locations WHERE location_id = :locationId")
     suspend fun getLocationById(locationId: String): LocationEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
