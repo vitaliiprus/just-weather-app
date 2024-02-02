@@ -108,4 +108,40 @@ class UserLocationsDaoTest {
         dao.addUserLocation(userLocation2)
         assert(dao.getUserLocationsCount() == 2)
     }
+
+    @Test
+    fun getUserLocationById() = runTest {
+        val location = locationsDao.getLocationById("id_1")
+
+        val userLocation = UserLocationEntity(
+            id = 1,
+            locationId = location.locationId,
+            displayName = "",
+            orderIndex = 0
+        )
+
+        dao.addUserLocation(userLocation)
+
+        val userLocationFromDb = dao.getUserLocationById(userLocation.locationId)
+        assert(userLocation == userLocationFromDb)
+    }
+
+    @Test
+    fun deleteUserLocation() = runTest {
+        val location = locationsDao.getLocationById("id_1")
+
+        val userLocation = UserLocationEntity(
+            id = 1,
+            locationId = location.locationId,
+            displayName = "",
+            orderIndex = 0
+        )
+
+        assert(dao.getUserLocationsCount() == 0)
+        dao.addUserLocation(userLocation)
+        assert(dao.getUserLocationsCount() == 1)
+        val userLocationFromDb = dao.getUserLocationById(userLocation.locationId)
+        dao.deleteUserLocation(userLocationFromDb)
+        assert(dao.getUserLocationsCount() == 0)
+    }
 }
