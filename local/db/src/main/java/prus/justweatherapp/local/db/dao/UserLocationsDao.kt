@@ -1,6 +1,7 @@
 package prus.justweatherapp.local.db.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -18,4 +19,10 @@ interface UserLocationsDao {
 
     @Query("SELECT * FROM user_locations JOIN locations ON locations.location_id = user_locations.location_id")
     suspend fun getUserLocations(): List<UserLocationDbModel>
+
+    @Query("SELECT * FROM user_locations WHERE location_id = :locationId LIMIT 1")
+    suspend fun getUserLocationById(locationId: String): UserLocationEntity
+
+    @Delete
+    suspend fun deleteUserLocation(userLocation: UserLocationEntity)
 }
