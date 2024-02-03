@@ -22,8 +22,8 @@ data class UserLocationDbModel(
     val orderIndex: Int,
 
     @ColumnInfo("lng")
-    val lng: Float,
+    val lng: Double,
 
     @ColumnInfo("lat")
-    val lat: Float,
+    val lat: Double,
 )
