@@ -21,7 +21,7 @@ interface UserLocationsDao {
     suspend fun getUserLocations(): List<UserLocationDbModel>
 
     @Query("SELECT * FROM user_locations WHERE location_id = :locationId LIMIT 1")
-    suspend fun getUserLocationById(locationId: String): UserLocationEntity
+    suspend fun getUserLocationById(locationId: String): UserLocationEntity?
 
     @Delete
     suspend fun deleteUserLocation(userLocation: UserLocationEntity)

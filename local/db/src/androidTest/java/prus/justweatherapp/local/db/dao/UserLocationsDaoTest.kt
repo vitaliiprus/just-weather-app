@@ -63,13 +63,11 @@ class UserLocationsDaoTest {
     @Test
     fun addUserLocation() = runTest {
         val userLocation1 = UserLocationEntity(
-            id = 1,
             locationId = "id_1",
             displayName = "",
             orderIndex = 0
         )
         val userLocation2 = UserLocationEntity(
-            id = 2,
             locationId = "id_2",
             displayName = "",
             orderIndex = 1
@@ -89,14 +87,12 @@ class UserLocationsDaoTest {
         val location2 = locationsDao.getLocationById("id_2")
 
         val userLocation1 = UserLocationEntity(
-            id = 1,
             locationId = location1.locationId,
             displayName = "",
             orderIndex = 0
         )
 
         val userLocation2 = UserLocationEntity(
-            id = 2,
             locationId = location2.locationId,
             displayName = "",
             orderIndex = 1
@@ -114,7 +110,6 @@ class UserLocationsDaoTest {
         val location = locationsDao.getLocationById("id_1")
 
         val userLocation = UserLocationEntity(
-            id = 1,
             locationId = location.locationId,
             displayName = "",
             orderIndex = 0
@@ -131,7 +126,6 @@ class UserLocationsDaoTest {
         val location = locationsDao.getLocationById("id_1")
 
         val userLocation = UserLocationEntity(
-            id = 1,
             locationId = location.locationId,
             displayName = "",
             orderIndex = 0
@@ -140,8 +134,9 @@ class UserLocationsDaoTest {
         assert(dao.getUserLocationsCount() == 0)
         dao.addUserLocation(userLocation)
         assert(dao.getUserLocationsCount() == 1)
-        val userLocationFromDb = dao.getUserLocationById(userLocation.locationId)
-        dao.deleteUserLocation(userLocationFromDb)
+        dao.getUserLocationById(userLocation.locationId)?.let {
+            dao.deleteUserLocation(it)
+        }
         assert(dao.getUserLocationsCount() == 0)
     }
 }
