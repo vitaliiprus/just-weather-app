@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-parcelize")
+    id("dagger.hilt.android.plugin")
     kotlin("kapt")
 }
 
@@ -28,6 +29,9 @@ android {
 dependencies {
     implementation(libs.bundles.room)
     kapt(libs.room.compiler)
+
+    implementation(libs.dagger.hilt.android)
+    annotationProcessor(libs.dagger.hilt.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.android)
