@@ -8,5 +8,5 @@ interface LocationsRepository {
 
     suspend fun getLocationsWithMask(mask: String): List<Location>
 
-    suspend fun getLocationById(locationId: String): Location
+    suspend fun getLocationById(locationId: String): Location?
 }

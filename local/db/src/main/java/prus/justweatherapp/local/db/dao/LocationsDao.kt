@@ -19,7 +19,7 @@ interface LocationsDao {
     suspend fun getLocationsWithMask(mask: String = ""): List<LocationEntity>
 
     @Query("SELECT * FROM locations WHERE location_id = :locationId")
-    suspend fun getLocationById(locationId: String): LocationEntity
+    suspend fun getLocationById(locationId: String): LocationEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(locationEntities: List<LocationEntity>)

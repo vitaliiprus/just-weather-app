@@ -8,6 +8,19 @@ plugins {
 android {
     namespace = "prus.justweatherapp.data.locations"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
+
+    defaultConfig {
+        minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
@@ -22,6 +35,5 @@ dependencies {
     kapt(libs.dagger.hilt.compiler)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.junit.android)
-    androidTestImplementation(libs.espresso)
+    testImplementation(libs.kotlinx.coroutines.test)
 }

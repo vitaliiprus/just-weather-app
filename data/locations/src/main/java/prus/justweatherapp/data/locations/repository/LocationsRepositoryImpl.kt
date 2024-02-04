@@ -19,7 +19,7 @@ class LocationsRepositoryImpl @Inject constructor(
         return locationsDao.getLocationsWithMask(mask).mapToDomainModels()
     }
 
-    override suspend fun getLocationById(locationId: String): Location {
-        return locationsDao.getLocationById(locationId).mapToDomainModel()
+    override suspend fun getLocationById(locationId: String): Location? {
+        return locationsDao.getLocationById(locationId)?.mapToDomainModel()
     }
 }

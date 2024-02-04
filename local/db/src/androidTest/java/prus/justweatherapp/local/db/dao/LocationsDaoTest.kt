@@ -94,7 +94,7 @@ class LocationsDaoTest {
         val location1 = dao.getLocationById("id_1")
         val location2 = dao.getLocationById("id_2")
 
-        assert(location1.locationId == "id_1")
-        assert(location2.locationId == "id_2")
+        assert(location1?.locationId == "id_1")
+        assert(location2?.locationId == "id_2")
     }
 }
