@@ -87,13 +87,13 @@ class UserLocationsDaoTest {
         val location2 = locationsDao.getLocationById("id_2")
 
         val userLocation1 = UserLocationEntity(
-            locationId = location1.locationId,
+            locationId = location1!!.locationId,
             displayName = "",
             orderIndex = 0
         )
 
         val userLocation2 = UserLocationEntity(
-            locationId = location2.locationId,
+            locationId = location2!!.locationId,
             displayName = "",
             orderIndex = 1
         )
@@ -110,7 +110,7 @@ class UserLocationsDaoTest {
         val location = locationsDao.getLocationById("id_1")
 
         val userLocation = UserLocationEntity(
-            locationId = location.locationId,
+            locationId = location!!.locationId,
             displayName = "",
             orderIndex = 0
         )
@@ -126,7 +126,7 @@ class UserLocationsDaoTest {
         val location = locationsDao.getLocationById("id_1")
 
         val userLocation = UserLocationEntity(
-            locationId = location.locationId,
+            locationId = location!!.locationId,
             displayName = "",
             orderIndex = 0
         )
