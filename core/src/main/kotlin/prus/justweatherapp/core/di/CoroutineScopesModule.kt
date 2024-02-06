@@ -1,0 +1,29 @@
+package prus.justweatherapp.core.di
+
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import prus.justweatherapp.core.dispatchers.Dispatcher
+import prus.justweatherapp.core.dispatchers.Dispatchers
+import javax.inject.Qualifier
+import javax.inject.Singleton
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class ApplicationScope
+
+@Module
+@InstallIn(SingletonComponent::class)
+class CoroutineScopesModule {
+
+    @Provides
+    @Singleton
+    @ApplicationScope
+    fun provideCoroutineScope(
+        @Dispatcher(Dispatchers.Default) dispatcher: CoroutineDispatcher
+    ): CoroutineScope = CoroutineScope(SupervisorJob() + dispatcher)
+}
