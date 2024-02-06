@@ -1,5 +1,7 @@
 package prus.justweatherapp.data.locations.testdoubles
 
+import androidx.paging.PagingSource
+import androidx.paging.testing.asPagingSourceFactory
 import prus.justweatherapp.local.db.dao.LocationsDao
 import prus.justweatherapp.local.db.entity.LocationEntity
 
@@ -30,22 +32,17 @@ class TestLocationsDao : LocationsDao {
         return locations
     }
 
-    override suspend fun getLocations(offset: Int, limit: Int): List<LocationEntity> {
-        if (offset + limit > locations.size - 1)
-            return listOf()
-        return locations.subList(offset, offset + limit)
-    }
-
-    override suspend fun getLocationsWithMask(mask: String): List<LocationEntity> {
+    override fun getLocations(query: String): PagingSource<Int, LocationEntity> {
         val result = mutableListOf<LocationEntity>()
         locations.forEach { location ->
-            val isLocationSatisfyMask = location.city.contains(mask, true) ||
-                    (location.adminName ?: "").contains(mask, true) ||
-                    (location.country ?: "").contains(mask, true)
+            val isLocationSatisfyMask = location.city.contains(query, true) ||
+                    (location.adminName ?: "").contains(query, true) ||
+                    (location.country ?: "").contains(query, true)
             if (isLocationSatisfyMask)
                 result.add(location)
         }
-        return result
+
+        return result.asPagingSourceFactory().invoke()
     }
 
     override suspend fun getLocationById(locationId: String): LocationEntity? {
