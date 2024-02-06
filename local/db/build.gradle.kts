@@ -33,8 +33,11 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     annotationProcessor(libs.dagger.hilt.compiler)
 
+    implementation(libs.androidx.paging.common)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.android)
     androidTestImplementation(libs.test.runner)
     androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.androidx.paging.testing)
 }

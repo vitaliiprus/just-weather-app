@@ -1,5 +1,8 @@
 package prus.justweatherapp.local.db.dao
 
+import androidx.paging.PagingConfig
+import androidx.paging.PagingSource
+import androidx.paging.testing.TestPager
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -65,28 +68,16 @@ class LocationsDaoTest {
     }
 
     @Test
-    fun getLocationsWithOffset() = runTest {
-        assertDaoLocationsExist(0, 5)
-        assertDaoLocationsExist(5, 10)
-        assertDaoLocationsExist(15, 25)
-        assertDaoLocationsExist(3, 21)
-        assertDaoLocationsExist(0, 30)
-        assertDaoLocationsExist(1, 1)
+    fun getLocations() = runTest {
+        val take = 5
 
-        assert(dao.getLocations(0, 0).isEmpty())
-    }
+        val pager = TestPager(
+            config = PagingConfig(take),
+            pagingSource = dao.getLocations()
+        )
+        val daoLocations = pager.refresh() as PagingSource.LoadResult.Page
 
-    private suspend fun assertDaoLocationsExist(offset: Int, limit: Int) {
-        assert(dao.getLocations(offset, limit).containsAll(dbLocations.subList(offset, limit)))
-    }
-
-    @Test
-    fun getLocationsWithMask() = runTest {
-        assert(dao.getLocationsWithMask("%ity%").size == locationsCount)
-        assert(dao.getLocationsWithMask("%Country%").size == locationsCount)
-        assert(dao.getLocationsWithMask("%Admi%").size == locationsCount)
-        assert(dao.getLocationsWithMask("%30%").size == 1)
-        assert(dao.getLocationsWithMask("%${locationsCount + 1}%").isEmpty())
+        assert(daoLocations.data.containsAll(dbLocations.subList(0, take)))
     }
 
     @Test

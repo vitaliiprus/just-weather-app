@@ -1,5 +1,6 @@
 package prus.justweatherapp.local.db.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -12,11 +13,8 @@ interface LocationsDao {
     @Query("SELECT * FROM locations ORDER BY city")
     suspend fun getAllLocations(): List<LocationEntity>
 
-    @Query("SELECT * FROM locations ORDER BY id LIMIT :limit OFFSET :offset")
-    suspend fun getLocations(offset: Int, limit: Int): List<LocationEntity>
-
-    @Query("SELECT * FROM locations WHERE city LIKE :mask OR admin_name LIKE :mask OR country LIKE :mask")
-    suspend fun getLocationsWithMask(mask: String = ""): List<LocationEntity>
+    @Query("SELECT * FROM locations WHERE city LIKE :query OR admin_name LIKE :query OR country LIKE :query")
+    fun getLocations(query: String = "%"): PagingSource<Int, LocationEntity>
 
     @Query("SELECT * FROM locations WHERE location_id = :locationId")
     suspend fun getLocationById(locationId: String): LocationEntity?
