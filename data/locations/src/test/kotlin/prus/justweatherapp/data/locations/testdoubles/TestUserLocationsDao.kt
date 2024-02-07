@@ -1,5 +1,7 @@
 package prus.justweatherapp.data.locations.testdoubles
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import prus.justweatherapp.local.db.dao.UserLocationsDao
 import prus.justweatherapp.local.db.entity.LocationEntity
 import prus.justweatherapp.local.db.entity.UserLocationEntity
@@ -51,7 +53,7 @@ class TestUserLocationsDao : UserLocationsDao {
         return userLocations.size
     }
 
-    override suspend fun getUserLocations(): List<UserLocationDbModel> {
+    override fun getUserLocations(): Flow<List<UserLocationDbModel>> = flow {
         val result = mutableListOf<UserLocationDbModel>()
         userLocations.forEachIndexed { index, userLocation ->
             val location = locations[index]
@@ -68,7 +70,7 @@ class TestUserLocationsDao : UserLocationsDao {
                 )
             )
         }
-        return result
+        emit(result)
     }
 
     override suspend fun getUserLocationById(locationId: String): UserLocationEntity? {

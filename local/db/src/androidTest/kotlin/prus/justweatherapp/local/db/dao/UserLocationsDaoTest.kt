@@ -4,6 +4,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -76,7 +77,7 @@ class UserLocationsDaoTest {
         dao.addUserLocation(userLocation1)
         dao.addUserLocation(userLocation2)
 
-        val userLocations = dao.getUserLocations()
+        val userLocations = dao.getUserLocations().first()
 
         assert(userLocations.size == 2)
     }
