@@ -1,5 +1,7 @@
 package prus.justweatherapp.data.locations.repository
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import prus.justweatherapp.data.locations.mapper.mapToDomainModels
 import prus.justweatherapp.data.locations.mapper.toDbEntity
 import prus.justweatherapp.domain.locations.model.Location
@@ -15,8 +17,8 @@ class UserLocationsRepositoryImpl @Inject constructor(
         userLocationsDao.addUserLocation(location.toDbEntity())
     }
 
-    override suspend fun getUserLocations(): List<Location> {
-        return userLocationsDao.getUserLocations().mapToDomainModels()
+    override suspend fun getUserLocations(): Flow<List<Location>> {
+        return userLocationsDao.getUserLocations().map { it.mapToDomainModels() }
     }
 
     override suspend fun deleteUserLocation(location: Location) {

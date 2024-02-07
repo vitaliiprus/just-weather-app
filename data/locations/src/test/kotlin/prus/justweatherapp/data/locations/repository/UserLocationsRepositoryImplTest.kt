@@ -1,6 +1,7 @@
 package prus.justweatherapp.data.locations.repository
 
 import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -39,8 +40,8 @@ class UserLocationsRepositoryImplTest {
 
     @Test
     fun userLocationsRepositoryImpl_getUserLocations() = runTest {
-        val daoLocations = userLocationsDao.getUserLocations().mapToDomainModels()
-        val repositoryLocations = repository.getUserLocations()
+        val daoLocations = userLocationsDao.getUserLocations().first().mapToDomainModels()
+        val repositoryLocations = repository.getUserLocations().first()
 
         assertTrue(locationsFromDaoAndRepositoryAreSame(daoLocations, repositoryLocations))
     }
@@ -48,7 +49,7 @@ class UserLocationsRepositoryImplTest {
     @Test
     fun userLocationsRepositoryImpl_deleteUserLocation() = runTest {
         val countBefore = userLocationsDao.getUserLocationsCount()
-        val userLocation = repository.getUserLocations().last()
+        val userLocation = repository.getUserLocations().first().last()
         repository.deleteUserLocation(userLocation)
         val countAfter = userLocationsDao.getUserLocationsCount()
 
