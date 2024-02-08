@@ -1,4 +1,4 @@
-package prus.justweatherapp.data.locations.di
+package prus.justweatherapp.app.di.data
 
 import dagger.Binds
 import dagger.Module

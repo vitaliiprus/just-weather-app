@@ -1,4 +1,4 @@
-package prus.justweatherapp.local.db.di
+package prus.justweatherapp.app.di.local
 
 import android.content.Context
 import dagger.Module
@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import prus.justweatherapp.local.db.AppDatabase
 import prus.justweatherapp.local.db.dao.LocationsDao
+import prus.justweatherapp.local.db.dao.UserLocationsDao
 import javax.inject.Singleton
 
 @Module
@@ -22,7 +23,13 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideLocationDao(appDatabase: AppDatabase): LocationsDao {
+    fun provideLocationsDao(appDatabase: AppDatabase): LocationsDao {
         return appDatabase.locationsDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserLocationsDao(appDatabase: AppDatabase): UserLocationsDao {
+        return appDatabase.userLocationsDao()
     }
 }
