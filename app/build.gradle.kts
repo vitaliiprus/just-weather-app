@@ -78,14 +78,15 @@ android {
 
 dependencies {
     implementation(project(":feature:home"))
+
+    implementation(project(":domain:locations"))
+    implementation(project(":data:locations"))
+    implementation(project(":local:db"))
+
     implementation(project(":theme"))
     implementation(project(":core"))
 
     implementation(libs.androidx.core)
-    implementation(libs.androidx.activity)
-//    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.google.material)
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.dagger.hilt.android)

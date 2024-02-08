@@ -1,8 +1,7 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("dagger.hilt.android.plugin")
-    kotlin("kapt")
+    id("kotlin-kapt")
 }
 
 android {
@@ -31,8 +30,7 @@ dependencies {
     implementation(libs.bundles.kotlinx.coroutines)
     implementation(libs.timber)
 
-    implementation(libs.dagger.hilt.android)
-    kapt(libs.dagger.hilt.compiler)
+    implementation(libs.javax.inject)
 
     implementation(libs.androidx.paging.common)
 

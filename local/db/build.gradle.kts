@@ -2,8 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-parcelize")
-    id("dagger.hilt.android.plugin")
-    kotlin("kapt")
+    id("kotlin-kapt")
 }
 
 android {
@@ -27,11 +26,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.bundles.room)
+    api(libs.bundles.room)
     kapt(libs.room.compiler)
-
-    implementation(libs.dagger.hilt.android)
-    annotationProcessor(libs.dagger.hilt.compiler)
 
     implementation(libs.androidx.paging.common)
 

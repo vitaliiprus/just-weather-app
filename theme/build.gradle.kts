@@ -1,6 +1,6 @@
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id("kotlin-android")
 }
 
 android {
@@ -8,7 +8,7 @@ android {
 
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
-    defaultConfig{
+    defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
 
@@ -31,8 +31,6 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.androidx.appcompat)
     api(libs.bundles.androidx.compose)
     implementation(libs.google.material)
 }

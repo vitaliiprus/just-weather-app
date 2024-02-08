@@ -2,7 +2,6 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
-    id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
 }
 
@@ -47,11 +46,7 @@ dependencies {
     implementation(project(":core"))
 
     implementation(libs.androidx.core)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.google.material)
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.bundles.androidx.compose)
     implementation(libs.androidx.hilt.navigation.compose)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
