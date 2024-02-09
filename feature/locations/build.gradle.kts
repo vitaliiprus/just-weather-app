@@ -43,11 +43,15 @@ dependencies {
     implementation(project(":core"))
 
     implementation(libs.androidx.core)
+    implementation(libs.bundles.androidx.lifecycle)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
 
+    implementation(libs.bundles.androidx.paging)
+
     debugImplementation(libs.androidx.compose.ui.tooling)
+
 
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
