@@ -17,7 +17,7 @@ class UserLocationsRepositoryImpl @Inject constructor(
         userLocationsDao.addUserLocation(location.toDbEntity())
     }
 
-    override suspend fun getUserLocations(): Flow<List<Location>> {
+    override fun getUserLocations(): Flow<List<Location>> {
         return userLocationsDao.getUserLocations().map { it.mapToDomainModels() }
     }
 

@@ -7,7 +7,7 @@ interface UserLocationsRepository {
 
     suspend fun addUserLocation(location: Location)
 
-    suspend fun getUserLocations(): Flow<List<Location>>
+    fun getUserLocations(): Flow<List<Location>>
 
     suspend fun deleteUserLocation(location: Location)
 }
