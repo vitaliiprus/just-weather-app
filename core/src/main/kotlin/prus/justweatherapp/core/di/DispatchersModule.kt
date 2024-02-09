@@ -6,21 +6,20 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import prus.justweatherapp.core.dispatchers.Dispatcher
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DispatchersModule {
 
     @Provides
-    @Dispatcher(prus.justweatherapp.core.dispatchers.Dispatchers.Default)
+    @Dispatcher(prus.justweatherapp.core.di.Dispatchers.Default)
     fun provideDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @Provides
-    @Dispatcher(prus.justweatherapp.core.dispatchers.Dispatchers.IO)
+    @Dispatcher(prus.justweatherapp.core.di.Dispatchers.IO)
     fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
     @Provides
-    @Dispatcher(prus.justweatherapp.core.dispatchers.Dispatchers.Main)
+    @Dispatcher(prus.justweatherapp.core.di.Dispatchers.Main)
     fun provideMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 }

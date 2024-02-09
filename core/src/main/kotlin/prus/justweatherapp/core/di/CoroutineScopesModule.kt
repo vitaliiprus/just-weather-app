@@ -7,8 +7,6 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import prus.justweatherapp.core.dispatchers.Dispatcher
-import prus.justweatherapp.core.dispatchers.Dispatchers
 import javax.inject.Qualifier
 import javax.inject.Singleton
 

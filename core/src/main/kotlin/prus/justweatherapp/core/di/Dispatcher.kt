@@ -1,4 +1,4 @@
-package prus.justweatherapp.core.dispatchers
+package prus.justweatherapp.core.di
 
 import javax.inject.Qualifier
 
