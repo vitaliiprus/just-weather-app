@@ -25,4 +25,5 @@ include(":data:locations")
 
 include(":local:db")
 
-include(":core")
+include(":core:ui")
+include(":core:common")

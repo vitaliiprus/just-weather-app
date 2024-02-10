@@ -43,7 +43,8 @@ dependencies {
     implementation(project(":feature:settings"))
     implementation(project(":domain:home"))
     implementation(project(":theme"))
-    implementation(project(":core"))
+    implementation(project(":core:common"))
+    implementation(project(":core:ui"))
 
     implementation(libs.androidx.core)
     implementation(libs.bundles.androidx.compose)

@@ -1,16 +1,23 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("kotlin-kapt")
 }
 
 android {
-    namespace = "prus.justweatherapp.data.home"
+    namespace = "prus.justweatherapp.core.ui"
 
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composeKotlinCompiler.get()
     }
 
     compileOptions {
@@ -24,14 +31,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain:home"))
-    implementation(project(":core:common"))
+    implementation(project(":theme"))
 
-    implementation(libs.bundles.kotlinx.coroutines)
-    implementation(libs.timber)
-
-    implementation(libs.javax.inject)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.junit.android)
+    implementation(libs.androidx.compose.material3)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 }

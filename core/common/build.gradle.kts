@@ -2,10 +2,11 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
-    namespace = "prus.justweatherapp.data.home"
+    namespace = "prus.justweatherapp.core.common"
 
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
@@ -24,13 +25,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain:home"))
-    implementation(project(":core:common"))
-
     implementation(libs.bundles.kotlinx.coroutines)
     implementation(libs.timber)
 
-    implementation(libs.javax.inject)
+    implementation(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.android)

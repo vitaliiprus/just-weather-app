@@ -84,7 +84,7 @@ dependencies {
     implementation(project(":local:db"))
 
     implementation(project(":theme"))
-    implementation(project(":core"))
+    implementation(project(":core:common"))
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.navigation.compose)
