@@ -13,6 +13,8 @@ import prus.justweatherapp.feature.home.navigation.HomeBottomNavigation
 import prus.justweatherapp.feature.home.navigation.HomeNavGraph
 import prus.justweatherapp.feature.home.navigation.HomeScreen
 
+const val HOME_ROUTE = "home_route"
+
 @Composable
 fun HomeUI(
     navController: NavHostController = rememberNavController(),

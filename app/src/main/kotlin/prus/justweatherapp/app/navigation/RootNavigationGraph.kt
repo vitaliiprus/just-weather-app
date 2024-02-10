@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import prus.justweatherapp.core.presentation.navigation.Graph
+import prus.justweatherapp.feature.home.HOME_ROUTE
 import prus.justweatherapp.feature.home.HomeUI
 
 @Composable
@@ -13,11 +13,10 @@ fun RootNavigationGraph(
 ) {
     NavHost(
         navController = navController,
-        route = Graph.ROOT,
-        startDestination = Graph.HOME,
+        startDestination = HOME_ROUTE,
     ) {
         composable(
-            route = Graph.HOME
+            route = HOME_ROUTE
         ) {
             HomeUI()
         }
