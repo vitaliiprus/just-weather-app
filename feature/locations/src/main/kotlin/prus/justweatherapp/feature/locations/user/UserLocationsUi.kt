@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import prus.justweatherapp.core.presentation.ui.components.MessageScreen
+import prus.justweatherapp.core.ui.components.MessageScreen
 import prus.justweatherapp.feature.locations.R
 import prus.justweatherapp.theme.AppTheme
 

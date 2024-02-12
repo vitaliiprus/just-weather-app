@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetLocationsUseCase @Inject constructor(
     private val locationsRepository: LocationsRepository
 ) {
-    suspend operator fun invoke(
+    operator fun invoke(
         query: String
     ): Flow<PagingData<Location>> {
         return locationsRepository.getLocations(query)

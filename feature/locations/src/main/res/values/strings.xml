@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_location">Add a location</string>
+    <string name="use_search_bar_hint">Use the search bar to find and then add the location you need.</string>
+    <string name="nothing_found">Nothing found</string>
+    <string name="nothing_found_hint">Please try again with some different keywords.</string>
+    <string name="find_locations">Find locations</string>
+</resources>

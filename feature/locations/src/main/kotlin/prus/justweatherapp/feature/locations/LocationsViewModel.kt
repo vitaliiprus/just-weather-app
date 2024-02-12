@@ -13,7 +13,14 @@ class LocationsViewModel @Inject constructor(
 
     var state by mutableStateOf(
         LocationsState(
-            screenState = ScreenState.Success
+            currentScreen = CurrentLocationsScreen.UserLocations
         )
     )
+
+    fun onSearchFocused() {
+        state = state.copy(currentScreen = CurrentLocationsScreen.SearchLocations)
+    }
+    fun onSearchCancelClicked() {
+        state = state.copy(currentScreen = CurrentLocationsScreen.UserLocations)
+    }
 }

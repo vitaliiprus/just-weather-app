@@ -5,7 +5,7 @@ import prus.justweatherapp.local.db.entity.LocationEntity
 
 internal fun LocationEntity.mapToDomainModel() =
     Location(
-        id = this.locationId,
+        id = this.id.toString(),
         city = this.city,
         adminName = this.adminName,
         country = this.country,

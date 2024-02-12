@@ -14,9 +14,10 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import prus.justweatherapp.core.presentation.ui.components.MessageScreen
+import prus.justweatherapp.core.ui.components.MessageScreen
 import prus.justweatherapp.feature.locations.R
 import prus.justweatherapp.theme.AppTheme
 
@@ -53,18 +54,25 @@ internal fun SearchLocationsListUi(
 
             is SearchLocationScreenState.Success -> {
                 val locations = state.locations.collectAsLazyPagingItems()
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(
-                        count = locations.itemCount,
-                        key = locations.itemKey { it.id }
-                    ) { index ->
-                        locations[index]?.let { location ->
-                            SearchLocationListItem(location)
+                when (locations.loadState.refresh) {
+                    is LoadState.Error -> {}
+                    LoadState.Loading -> {}
+                    is LoadState.NotLoading -> {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            items(
+                                count = locations.itemCount,
+                                key = locations.itemKey { it.id }
+                            ) { index ->
+                                locations[index]?.let { location ->
+                                    SearchLocationListItem(location)
+                                }
+                            }
                         }
                     }
                 }
+
             }
         }
     }

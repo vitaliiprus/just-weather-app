@@ -16,11 +16,15 @@ class LocationsRepositoryImpl @Inject constructor(
     private val locationsDao: LocationsDao
 ) : LocationsRepository {
 
-    override suspend fun getLocations(query: String): Flow<PagingData<Location>> {
+    override fun getLocations(query: String): Flow<PagingData<Location>> {
         return Pager(
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = { locationsDao.getLocations("%$query%") }
-        ).flow.map { pagingData -> pagingData.map { it.mapToDomainModel() } }
+        ).flow.map { pagingData ->
+            pagingData.map {
+                it.mapToDomainModel()
+            }
+        }
     }
 
     override suspend fun getLocationById(locationId: String): Location? {
