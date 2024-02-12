@@ -3,6 +3,7 @@ package prus.justweatherapp.app
 import android.app.Application
 import android.content.res.Resources
 import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
 
 @HiltAndroidApp
 class JustWeatherApplication : Application() {
@@ -19,6 +20,10 @@ class JustWeatherApplication : Application() {
         super.onCreate()
 
         INSTANCE = this
+
+        if (Timber.treeCount == 0 && BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 
 }
