@@ -6,10 +6,15 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import prus.justweatherapp.local.db.dao.LocationsDao
 import prus.justweatherapp.local.db.dao.UserLocationsDao
 import prus.justweatherapp.local.db.entity.LocationEntity
 import prus.justweatherapp.local.db.entity.UserLocationEntity
+import prus.justweatherapp.local.db.worker.SeedDatabaseWorker
+import prus.justweatherapp.local.db.worker.SeedDatabaseWorker.Companion.KEY_FILENAME
 
 @Database(
     entities = [LocationEntity::class, UserLocationEntity::class],
@@ -24,6 +29,7 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
 
         private const val DATABASE_NAME = "just-weather-app-db"
+        private const val LOCATIONS_DATA_FILENAME = "locations.json"
 
         @Volatile
         private var instance: AppDatabase? = null
@@ -40,6 +46,10 @@ abstract class AppDatabase : RoomDatabase() {
                     object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
+                            val request = OneTimeWorkRequestBuilder<SeedDatabaseWorker>()
+                                .setInputData(workDataOf(KEY_FILENAME to LOCATIONS_DATA_FILENAME))
+                                .build()
+                            WorkManager.getInstance(context).enqueue(request)
                         }
                     }
                 )

@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-parcelize")
+    id("kotlinx-serialization")
     id("kotlin-kapt")
 }
 
@@ -30,6 +31,8 @@ dependencies {
     kapt(libs.room.compiler)
 
     implementation(libs.androidx.paging.common)
+    implementation(libs.androidx.work)
+    implementation(libs.kotlinx.serialization)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.android)
