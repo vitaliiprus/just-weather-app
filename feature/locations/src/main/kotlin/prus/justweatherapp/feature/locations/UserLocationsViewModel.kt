@@ -35,7 +35,10 @@ class UserLocationsViewModel @Inject constructor(
                     }
 
                     is Result.Success -> {
-                        UserLocationsScreenState.Success(result.data.mapToUiModels())
+                        if (result.data.isEmpty())
+                            UserLocationsScreenState.Empty
+                        else
+                            UserLocationsScreenState.Success(result.data.mapToUiModels())
                     }
                 }
             }.stateIn(

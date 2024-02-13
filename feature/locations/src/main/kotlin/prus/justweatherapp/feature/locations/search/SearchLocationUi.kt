@@ -45,34 +45,33 @@ internal fun SearchLocationsListUi(
 //                TODO()
             }
 
-            SearchLocationScreenState.Empty -> {
-                MessageScreen(
-                    title = stringResource(id = R.string.nothing_found),
-                    subtitle = stringResource(id = R.string.nothing_found_hint)
-                )
-            }
-
             is SearchLocationScreenState.Success -> {
                 val locations = state.locations.collectAsLazyPagingItems()
                 when (locations.loadState.refresh) {
                     is LoadState.Error -> {}
                     LoadState.Loading -> {}
                     is LoadState.NotLoading -> {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            items(
-                                count = locations.itemCount,
-                                key = locations.itemKey { it.id }
-                            ) { index ->
-                                locations[index]?.let { location ->
-                                    SearchLocationListItem(location)
+                        if (locations.itemCount == 0) {
+                            MessageScreen(
+                                title = stringResource(id = R.string.nothing_found),
+                                subtitle = stringResource(id = R.string.nothing_found_hint)
+                            )
+                        } else {
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                items(
+                                    count = locations.itemCount,
+                                    key = locations.itemKey { it.id }
+                                ) { index ->
+                                    locations[index]?.let { location ->
+                                        SearchLocationListItem(location)
+                                    }
                                 }
                             }
                         }
                     }
                 }
-
             }
         }
     }
@@ -87,7 +86,7 @@ private fun SearchLocationsListUiPreview() {
     AppTheme {
         Surface {
             SearchLocationsListUi(
-                state = SearchLocationScreenState.Empty
+                state = SearchLocationScreenState.Loading
             )
         }
     }

@@ -62,7 +62,7 @@ class SearchLocationViewModel @Inject constructor(
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = SearchLocationScreenState.Empty,
+            initialValue = SearchLocationScreenState.Loading,
         )
 
     fun onSearchQueryChanged(query: String) {
