@@ -2,6 +2,7 @@ package prus.justweatherapp.feature.locations
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -23,7 +24,10 @@ fun LocationsScreen() {
 
     val searchQuery by searchLocationsViewModel.searchQuery.collectAsStateWithLifecycle()
 
-    Column {
+    Column(
+        modifier = Modifier
+            .systemBarsPadding()
+    ) {
 
         FindLocationsSearchBar(
             modifier = Modifier
