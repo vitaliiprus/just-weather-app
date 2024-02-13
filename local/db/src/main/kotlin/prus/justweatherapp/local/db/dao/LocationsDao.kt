@@ -13,7 +13,7 @@ interface LocationsDao {
     @Query("SELECT * FROM locations ORDER BY city")
     suspend fun getAllLocations(): List<LocationEntity>
 
-    @Query("SELECT * FROM locations WHERE city LIKE :query OR admin_name LIKE :query OR country LIKE :query")
+    @Query("SELECT * FROM locations WHERE city LIKE :query OR admin_name LIKE :query OR country LIKE :query ORDER BY city")
     fun getLocations(query: String = "%"): PagingSource<Int, LocationEntity>
 
     @Query("SELECT * FROM locations WHERE location_id = :locationId")
