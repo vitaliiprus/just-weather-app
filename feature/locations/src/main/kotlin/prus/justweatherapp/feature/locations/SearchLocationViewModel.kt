@@ -52,7 +52,9 @@ class SearchLocationViewModel @Inject constructor(
                         }
 
                         is Result.Success -> {
-                            SearchLocationScreenState.Success(MutableStateFlow(result.data))
+                            SearchLocationScreenState.Success(
+                                locations = MutableStateFlow(result.data)
+                            )
                         }
 
                     }

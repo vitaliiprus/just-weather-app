@@ -8,5 +8,7 @@ sealed interface SearchLocationScreenState {
     data object Loading : SearchLocationScreenState
     data class Error(val message: String) : SearchLocationScreenState
     data object Empty : SearchLocationScreenState
-    data class Success(val locations: Flow<PagingData<SearchLocationUiModel>>) : SearchLocationScreenState
+    data class Success(
+        val locations: Flow<PagingData<SearchLocationUiModel>>
+    ) : SearchLocationScreenState
 }
