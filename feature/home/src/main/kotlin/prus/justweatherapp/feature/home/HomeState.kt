@@ -5,7 +5,7 @@ data class HomeState(
 )
 
 sealed interface ScreenState {
-    object Loading : ScreenState
+    data object Loading : ScreenState
     data class Error(val message: String) : ScreenState
     data object Success : ScreenState
 }

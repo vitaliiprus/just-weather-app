@@ -48,7 +48,7 @@ data class LocationEntity(
         return result.toString()
     }
 
-    fun getAdminAndCountry(): String {
+    private fun getAdminAndCountry(): String {
         val result = StringBuilder()
         adminName?.let {
             result.append(it)
@@ -59,39 +59,5 @@ data class LocationEntity(
             result.append(it)
         }
         return result.toString()
-    }
-
-    companion object {
-        fun getMockData(): List<LocationEntity> {
-            return listOf(
-                LocationEntity(
-                    id = 1,
-                    locationId = "id_1",
-                    city = "Helsinki",
-                    adminName = "Uusimaa",
-                    country = "Finland",
-                    lat = 60.1756,
-                    lng = 24.9342
-                ),
-                LocationEntity(
-                    id = 2,
-                    locationId = "id_2",
-                    city = "Saint Petersburg",
-                    adminName = "Sankt-Peterburg",
-                    country = "Russia",
-                    lat = 59.95,
-                    lng = 30.3167
-                ),
-                LocationEntity(
-                    id = 3,
-                    locationId = "id_3",
-                    city = "Phuket",
-                    adminName = "Phuket",
-                    country = "Thailand",
-                    lat = 7.8881,
-                    lng = 98.3975
-                ),
-            )
-        }
     }
 }

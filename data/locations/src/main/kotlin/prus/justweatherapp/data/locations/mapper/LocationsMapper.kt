@@ -12,8 +12,3 @@ internal fun LocationEntity.mapToDomainModel() =
         lng = this.lng,
         lat = this.lat
     )
-
-internal fun List<LocationEntity>.mapToDomainModels() =
-    map {
-        it.mapToDomainModel()
-    }
