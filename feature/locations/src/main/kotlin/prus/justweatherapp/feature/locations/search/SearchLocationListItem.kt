@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import prus.justweatherapp.feature.locations.model.SearchLocationUiModel
 import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.accent
 
 @Composable
 fun SearchLocationListItem(
@@ -32,8 +33,8 @@ fun SearchLocationListItem(
                 onClick(location.id)
             }
             .padding(
-                start = 12.dp,
-                end = 12.dp,
+                start = 16.dp,
+                end = 16.dp,
                 top = 8.dp,
                 bottom = 8.dp
             ),
@@ -96,7 +97,7 @@ fun getAnnotatedPart(name: String, occurrences: List<Pair<Int, Int>>, unselected
             withStyle(style = SpanStyle(unselectedColor)) {
                 append(name.substring(index, it.first))
             }
-            withStyle(style = SpanStyle(MaterialTheme.colorScheme.tertiary)) {
+            withStyle(style = SpanStyle(accent)) {
                 append(name.substring(it.first, it.second + 1))
             }
             index = it.second + 1
