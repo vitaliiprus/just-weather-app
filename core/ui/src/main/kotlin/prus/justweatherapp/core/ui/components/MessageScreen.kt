@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
@@ -46,15 +47,17 @@ fun MessageScreen(
             Text(
                 text = title,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
                 style = MaterialTheme.typography.titleMedium
 
             )
             Spacer(Modifier.height(8.dp))
             Text(
+                modifier = Modifier
+                    .alpha(0.6f),
                 text = subtitle,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.outline,
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
                 style = MaterialTheme.typography.bodySmall
             )
         }

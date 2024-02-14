@@ -20,6 +20,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.accent
 
 @Composable
 fun HomeBottomNavigation(
@@ -37,9 +38,11 @@ fun HomeBottomNavigation(
             NavigationBarItem(
                 selected = selected,
                 colors = NavigationBarItemDefaults.colors().copy(
-                    selectedIconColor = MaterialTheme.colorScheme.tertiary,
+                    selectedIconColor = accent,
                     selectedIndicatorColor = Color.Transparent,
-                    selectedTextColor = MaterialTheme.colorScheme.tertiary
+                    selectedTextColor = accent,
+                    unselectedIconColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                    unselectedTextColor = MaterialTheme.colorScheme.onTertiaryContainer
                 ),
                 onClick = {
                     navController.navigate(screen.route) {
