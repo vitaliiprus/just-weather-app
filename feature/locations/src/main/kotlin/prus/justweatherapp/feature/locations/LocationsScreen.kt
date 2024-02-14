@@ -2,7 +2,6 @@ package prus.justweatherapp.feature.locations
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -22,21 +21,29 @@ fun LocationsScreen() {
     val userLocationsState by userLocationsViewModel.state.collectAsStateWithLifecycle()
     val searchLocationsState by searchLocationsViewModel.state.collectAsStateWithLifecycle()
 
-    val searchQuery by searchLocationsViewModel.searchQuery.collectAsStateWithLifecycle()
-
-    Column(
-        modifier = Modifier
-            .systemBarsPadding()
-    ) {
+    Column {
 
         FindLocationsSearchBar(
             modifier = Modifier
-                .padding(8.dp),
-            searchQuery = searchQuery,
-            onSearchQueryChanged = searchLocationsViewModel::onSearchQueryChanged,
+                .padding(
+                    start = 16.dp,
+                    end = 16.dp,
+                    top = 8.dp,
+                ),
+            state = locationsScreenState.searchBarState,
+            onSearchQueryChanged = {
+                locationsViewModel.onSearchQueryChanged(it)
+                searchLocationsViewModel.onSearchQueryChanged(it)
+            },
             onSearchPressed = searchLocationsViewModel::onSearchPressed,
-            onFocused = locationsViewModel::onSearchFocused,
-            onCancelClicked = locationsViewModel::onSearchCancelClicked,
+            onFocused = {
+                locationsViewModel.onSearchFocused()
+                searchLocationsViewModel.onSearchFocused()
+            },
+            onCancelClicked = {
+                locationsViewModel.onSearchCancelClicked()
+                searchLocationsViewModel.onSearchCancelClicked()
+            },
         )
 
         when (locationsScreenState.currentScreen) {

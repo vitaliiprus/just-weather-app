@@ -72,6 +72,14 @@ class SearchLocationViewModel @Inject constructor(
     fun onSearchPressed() {
 
     }
+
+    fun onSearchFocused() {
+        savedStateHandle[SEARCH_QUERY] = ""
+    }
+
+    fun onSearchCancelClicked() {
+        savedStateHandle[SEARCH_QUERY] = ""
+    }
 }
 
 private const val SEARCH_QUERY = "searchQuery"

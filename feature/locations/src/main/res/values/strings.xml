@@ -5,4 +5,5 @@
     <string name="nothing_found">Nothing found</string>
     <string name="nothing_found_hint">Please try again with some different keywords.</string>
     <string name="find_locations">Find locations</string>
+    <string name="cancel">Cancel</string>
 </resources>

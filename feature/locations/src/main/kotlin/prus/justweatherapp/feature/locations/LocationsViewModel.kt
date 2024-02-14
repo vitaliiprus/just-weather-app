@@ -13,14 +13,38 @@ class LocationsViewModel @Inject constructor(
 
     var state by mutableStateOf(
         LocationsState(
+            searchBarState = SearchBarState(
+                searchQuery = "",
+                cancelButtonState = CancelButtonState.Hidden
+            ),
             currentScreen = CurrentLocationsScreen.UserLocations
         )
     )
 
-    fun onSearchFocused() {
-        state = state.copy(currentScreen = CurrentLocationsScreen.SearchLocations)
+    fun onSearchQueryChanged(query: String) {
+        state = state.copy(
+            searchBarState = state.searchBarState.copy(
+                searchQuery = query,
+            )
+        )
     }
+
+    fun onSearchFocused() {
+        state = state.copy(
+            currentScreen = CurrentLocationsScreen.SearchLocations,
+            searchBarState = state.searchBarState.copy(
+                cancelButtonState = CancelButtonState.Shown
+            )
+        )
+    }
+
     fun onSearchCancelClicked() {
-        state = state.copy(currentScreen = CurrentLocationsScreen.UserLocations)
+        state = state.copy(
+            currentScreen = CurrentLocationsScreen.UserLocations,
+            searchBarState = state.searchBarState.copy(
+                searchQuery = "",
+                cancelButtonState = CancelButtonState.Hidden
+            )
+        )
     }
 }
