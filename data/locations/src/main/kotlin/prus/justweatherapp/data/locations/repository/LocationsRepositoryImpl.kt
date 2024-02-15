@@ -18,7 +18,10 @@ class LocationsRepositoryImpl @Inject constructor(
 
     override fun getLocations(query: String): Flow<PagingData<Location>> {
         return Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(
+                pageSize = 20,
+                prefetchDistance = 100
+            ),
             pagingSourceFactory = { locationsDao.getLocations("%$query%") }
         ).flow.map { pagingData ->
             pagingData.map {

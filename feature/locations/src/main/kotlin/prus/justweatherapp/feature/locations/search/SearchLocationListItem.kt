@@ -35,13 +35,13 @@ fun SearchLocationListItem(
             .padding(
                 start = 16.dp,
                 end = 16.dp,
-                top = 8.dp,
-                bottom = 8.dp
+                top = 12.dp,
+                bottom = 12.dp
             ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = getAnnotatedString(location),
+            text = getAnnotatedString(location)
         )
     }
 }

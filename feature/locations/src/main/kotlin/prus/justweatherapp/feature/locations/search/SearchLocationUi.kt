@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.painter.ColorPainter
@@ -33,8 +32,7 @@ internal fun SearchLocationsListUi(
             .paint(
                 painter = ColorPainter(MaterialTheme.colorScheme.background),
                 contentScale = ContentScale.FillBounds
-            ),
-        contentAlignment = Alignment.Center
+            )
     )
     {
         when (state) {

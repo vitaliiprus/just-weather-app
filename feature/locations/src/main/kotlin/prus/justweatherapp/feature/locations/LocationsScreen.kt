@@ -19,7 +19,7 @@ fun LocationsScreen() {
 
     val locationsScreenState = locationsViewModel.state
     val userLocationsState by userLocationsViewModel.state.collectAsStateWithLifecycle()
-    val searchLocationsState by searchLocationsViewModel.state.collectAsStateWithLifecycle()
+    val searchLocationsState = searchLocationsViewModel.state
 
     Column {
 

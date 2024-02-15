@@ -43,6 +43,7 @@ security-crypto="1.0.0"
 gson = "2.10.1"
 
 timber = "5.0.1"
+leakcanary = "3.0-alpha-1"
 
 junit = "4.13.2"
 junit_android = "1.1.5"
@@ -114,6 +115,8 @@ androidx-paging-compose = { module = "androidx.paging:paging-compose", version.r
 androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "androidx-paging" }
 
 timber = {module = "com.jakewharton.timber:timber", version.ref = "timber"}
+
+leakcanary = {module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary"}
 
 junit = {module = "junit:junit", version.ref = "junit"}
 junit_android = {module = "androidx.test.ext:junit", version.ref = "junit_android"}

@@ -95,6 +95,8 @@ dependencies {
 
     implementation(libs.timber)
 
+    debugImplementation(libs.leakcanary)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.android)
     androidTestImplementation(libs.espresso)
