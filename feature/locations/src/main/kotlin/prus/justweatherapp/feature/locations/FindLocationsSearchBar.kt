@@ -1,9 +1,15 @@
 package prus.justweatherapp.feature.locations
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -58,24 +64,52 @@ internal fun FindLocationsSearchBar(
         onSearchPressed()
     }
 
-    Row(
+    val cancelButtonVisible = state.cancelButtonState == CancelButtonState.Shown
+    val clearButtonVisible = state.searchQuery.isNotEmpty()
+
+    Box(
         modifier = Modifier
             .then(modifier)
             .fillMaxWidth()
             .height(54.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+//        verticalAlignment = Alignment.CenterVertically,
+//        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+
+        AnimatedVisibility(
+            visible = cancelButtonVisible,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.CenterEnd
+            ) {
+                TextButton(
+                    modifier = Modifier,
+                    onClick = {
+                        focusManager.clearFocus(true)
+                        onCancelClicked()
+                    }
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.cancel),
+                        color = accent
+                    )
+                }
+            }
+        }
 
         TextField(
             modifier = Modifier
-                .weight(1f)
-//                .then(
-//                    if (state.cancelButtonState == CancelButtonState.Hidden)
-//                        Modifier.fillMaxSize()
-//                    else
-//                        Modifier
-//                )
+                .animateContentSize()
+                .fillMaxWidth(
+                    if (cancelButtonVisible)
+                        0.75f
+                    else
+                        1f
+                )
                 .focusRequester(focusRequester)
                 .onFocusChanged {
                     if (it.isFocused)
@@ -119,7 +153,13 @@ internal fun FindLocationsSearchBar(
                 )
             },
             trailingIcon = {
-                if (state.searchQuery.isNotEmpty()) {
+                AnimatedVisibility(
+                    visible = clearButtonVisible,
+                    enter = fadeIn(animationSpec = tween(150))
+                            + scaleIn(animationSpec = tween(100)),
+                    exit = fadeOut(animationSpec = tween(150))
+                            + scaleOut(animationSpec = tween(100))
+                ) {
                     Icon(
                         modifier = Modifier
                             .size(28.dp)
@@ -141,21 +181,6 @@ internal fun FindLocationsSearchBar(
             },
             singleLine = true
         )
-
-        if (state.cancelButtonState == CancelButtonState.Shown) {
-            TextButton(
-                modifier = Modifier,
-                onClick = {
-                    focusManager.clearFocus(true)
-                    onCancelClicked()
-                }
-            ) {
-                Text(
-                    text = stringResource(id = R.string.cancel),
-                    color = accent
-                )
-            }
-        }
     }
 }
 
