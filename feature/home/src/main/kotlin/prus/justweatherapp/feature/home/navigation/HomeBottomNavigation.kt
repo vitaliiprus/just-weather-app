@@ -41,8 +41,8 @@ fun HomeBottomNavigation(
                     selectedIconColor = accent,
                     selectedIndicatorColor = Color.Transparent,
                     selectedTextColor = accent,
-                    unselectedIconColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                    unselectedTextColor = MaterialTheme.colorScheme.onTertiaryContainer
+                    unselectedIconColor = MaterialTheme.colorScheme.primary,
+                    unselectedTextColor = MaterialTheme.colorScheme.primary
                 ),
                 onClick = {
                     navController.navigate(screen.route) {
@@ -61,7 +61,8 @@ fun HomeBottomNavigation(
                 },
                 label = {
                     Text(
-                        text = stringResource(screen.textResId)
+                        text = stringResource(screen.textResId),
+                        style = MaterialTheme.typography.labelMedium
                     )
                 }
             )
