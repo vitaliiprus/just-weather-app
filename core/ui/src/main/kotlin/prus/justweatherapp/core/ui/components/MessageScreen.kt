@@ -1,6 +1,7 @@
 package prus.justweatherapp.core.ui.components
 
 import android.content.res.Configuration
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,8 +16,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,7 +30,8 @@ import prus.justweatherapp.theme.AppTheme
 fun MessageScreen(
     modifier: Modifier = Modifier,
     title: String,
-    subtitle: String
+    subtitle: String,
+    imagePainter: Painter? = null
 ) {
     Box(
         modifier = Modifier
@@ -44,21 +49,33 @@ fun MessageScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            if (imagePainter != null) {
+                Image(
+                    modifier = Modifier
+                        .height(80.dp)
+                        .width(80.dp),
+                    painter = imagePainter,
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                    contentDescription = "image"
+                )
+                Spacer(Modifier.height(12.dp))
+            }
             Text(
                 text = title,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                style = MaterialTheme.typography.titleMedium
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold
 
             )
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(12.dp))
             Text(
                 modifier = Modifier
                     .alpha(0.6f),
                 text = subtitle,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                style = MaterialTheme.typography.bodySmall
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }

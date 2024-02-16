@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,7 +55,8 @@ internal fun SearchLocationsListUi(
                         if (locations.itemCount == 0) {
                             MessageScreen(
                                 title = stringResource(id = R.string.nothing_found),
-                                subtitle = stringResource(id = R.string.nothing_found_hint)
+                                subtitle = stringResource(id = R.string.nothing_found_hint),
+                                imagePainter = painterResource(id = R.drawable.ic_close_circle)
                             )
                         } else {
                             LazyColumn(
@@ -80,7 +82,7 @@ internal fun SearchLocationsListUi(
 }
 
 @Preview(
-    name = "Empty search locations",
+    name = "Loading search locations",
     uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
