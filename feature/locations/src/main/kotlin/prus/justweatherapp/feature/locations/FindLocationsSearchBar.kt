@@ -22,7 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -40,12 +39,11 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import prus.justweatherapp.core.ui.components.JwaTextButton
 import prus.justweatherapp.theme.AppTheme
-import prus.justweatherapp.theme.accent
 
 @Composable
 internal fun FindLocationsSearchBar(
@@ -87,19 +85,11 @@ internal fun FindLocationsSearchBar(
                     .fillMaxSize(),
                 contentAlignment = Alignment.CenterEnd
             ) {
-                TextButton(
-                    modifier = Modifier,
-                    onClick = {
-                        focusManager.clearFocus(true)
-                        onCancelClicked()
-                    }
+                JwaTextButton(
+                    text = stringResource(id = R.string.cancel)
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.cancel),
-                        color = accent,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    focusManager.clearFocus(true)
+                    onCancelClicked()
                 }
             }
         }

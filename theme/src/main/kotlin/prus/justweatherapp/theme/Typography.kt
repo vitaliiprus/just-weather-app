@@ -27,8 +27,8 @@ val Typography = Typography(
     ),
     titleMedium = TextStyle(
         fontFamily = fontFamily,
-        fontWeight = FontWeight.Medium,
-        fontSize = 16.sp
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 18.sp
     ),
     bodyLarge = TextStyle(
         fontFamily = fontFamily,
@@ -49,4 +49,10 @@ val Typography = Typography(
         fontFamily = fontFamily,
         fontSize = 12.sp
     )
+)
+
+val textButtonStyle = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.SemiBold,
+    fontSize = 16.sp
 )
