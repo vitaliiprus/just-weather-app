@@ -25,7 +25,8 @@ import prus.justweatherapp.theme.AppTheme
 
 @Composable
 internal fun SearchLocationsListUi(
-    state: SearchLocationScreenState
+    state: SearchLocationScreenState,
+    onLocationClicked: (String) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -69,7 +70,10 @@ internal fun SearchLocationsListUi(
                                     key = locations.itemKey { it.id }
                                 ) { index ->
                                     locations[index]?.let { location ->
-                                        SearchLocationListItem(location)
+                                        SearchLocationListItem(
+                                            location = location,
+                                            onClick = onLocationClicked
+                                        )
                                     }
                                 }
                             }
@@ -90,7 +94,8 @@ private fun SearchLocationsListUiPreview() {
     AppTheme {
         Surface {
             SearchLocationsListUi(
-                state = SearchLocationScreenState.Loading
+                state = SearchLocationScreenState.Loading,
+                onLocationClicked = {}
             )
         }
     }

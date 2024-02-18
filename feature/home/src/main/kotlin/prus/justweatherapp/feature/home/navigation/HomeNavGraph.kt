@@ -6,6 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import prus.justweatherapp.feature.home.HOME_ROUTE
 import prus.justweatherapp.feature.locations.LocationsScreen
+import prus.justweatherapp.feature.locations.add.navigation.addLocationScreen
+import prus.justweatherapp.feature.locations.add.navigation.navigateToAddLocation
 import prus.justweatherapp.feature.settings.SettingsUI
 import prus.justweatherapp.feature.weather.WeatherUI
 
@@ -19,7 +21,9 @@ fun HomeNavGraph(
         startDestination = HomeScreen.Weather.route
     ) {
         composable(route = HomeScreen.MyLocations.route) {
-            LocationsScreen()
+            LocationsScreen(
+                onSearchLocationClicked = navController::navigateToAddLocation
+            )
         }
         composable(route = HomeScreen.Weather.route) {
             WeatherUI()
@@ -27,5 +31,11 @@ fun HomeNavGraph(
         composable(route = HomeScreen.Settings.route) {
             SettingsUI()
         }
+        addLocationScreen(
+            onBackClicked = navController::popBackStack,
+            onLocationAdded = {
+                navController.popBackStack()
+            }
+        )
     }
 }

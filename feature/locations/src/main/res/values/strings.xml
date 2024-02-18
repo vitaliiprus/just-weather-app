@@ -6,4 +6,6 @@
     <string name="nothing_found_hint">Please try again with some different keywords.</string>
     <string name="find_locations">Find locations</string>
     <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="error_cannot_find_location">Cannot find the location</string>
 </resources>

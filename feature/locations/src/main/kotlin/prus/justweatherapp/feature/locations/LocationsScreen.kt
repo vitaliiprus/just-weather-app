@@ -12,7 +12,9 @@ import prus.justweatherapp.feature.locations.search.SearchLocationsListUi
 import prus.justweatherapp.feature.locations.user.UserLocationsUi
 
 @Composable
-fun LocationsScreen() {
+fun LocationsScreen(
+    onSearchLocationClicked:(String)->Unit
+) {
     val locationsViewModel: LocationsViewModel = hiltViewModel()
     val userLocationsViewModel: UserLocationsViewModel = hiltViewModel()
     val searchLocationsViewModel: SearchLocationViewModel = hiltViewModel()
@@ -20,6 +22,8 @@ fun LocationsScreen() {
     val locationsScreenState = locationsViewModel.state
     val userLocationsState by userLocationsViewModel.state.collectAsStateWithLifecycle()
     val searchLocationsState = searchLocationsViewModel.state
+
+    locationsViewModel.observeUserLocations(userLocationsViewModel.state)
 
     Column {
 
@@ -50,7 +54,8 @@ fun LocationsScreen() {
 
             CurrentLocationsScreen.SearchLocations -> {
                 SearchLocationsListUi(
-                    state = searchLocationsState
+                    state = searchLocationsState,
+                    onLocationClicked = onSearchLocationClicked
                 )
             }
 

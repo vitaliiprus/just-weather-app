@@ -14,6 +14,8 @@ class UserLocationsRepositoryImpl @Inject constructor(
 ) : UserLocationsRepository {
 
     override suspend fun addUserLocation(location: Location) {
+        val userLocationsCount = userLocationsDao.getUserLocationsCount()
+        location.orderIndex = userLocationsCount
         userLocationsDao.addUserLocation(location.toDbEntity())
     }
 
