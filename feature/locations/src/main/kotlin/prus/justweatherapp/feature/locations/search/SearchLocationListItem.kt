@@ -16,6 +16,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import prus.justweatherapp.feature.locations.model.SearchLocationUiModel
 import prus.justweatherapp.theme.AppTheme
@@ -107,9 +108,7 @@ fun getAnnotatedPart(name: String, occurrences: List<Pair<Int, Int>>, unselected
         }
     }
 
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
+@PreviewLightDark
 @Composable
 private fun SearchLocationListItemPreview() {
     AppTheme {

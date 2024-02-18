@@ -1,6 +1,5 @@
 package prus.justweatherapp.feature.home.navigation
 
-import android.content.res.Configuration
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -13,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -70,14 +69,7 @@ fun HomeBottomNavigation(
     }
 }
 
-@Preview(
-    name = "LightTheme",
-    uiMode = Configuration.UI_MODE_NIGHT_NO
-)
-@Preview(
-    name = "DarkTheme",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
+@PreviewLightDark
 @Composable
 fun HomeBottomNavigationPreview() {
     AppTheme {
