@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 open class Dimens {
 
     val screenPaddings = ContentPaddings(16.dp, 16.dp)
-    val contentPaddings = ContentPaddings(8.dp, 8.dp)
+    val contentPaddings = ContentPaddings(12.dp, 12.dp)
     val paddings = Paddings()
 
     val topBarHeight = 60.dp
