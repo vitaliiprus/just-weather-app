@@ -9,9 +9,8 @@ import androidx.compose.ui.unit.dp
 
 open class Dimens {
 
-    val screenPaddings = ContentPaddings(16.dp, 16.dp)
-    val contentPaddings = ContentPaddings(12.dp, 12.dp)
-    val paddings = Paddings()
+    val screenPaddings = ContentPaddings(Paddings.large, Paddings.large)
+    val contentPaddings = ContentPaddings(Paddings.large, Paddings.large)
 
     val topBarHeight = 60.dp
 
@@ -30,10 +29,12 @@ open class Dimens {
         )
     }
 
-    class Paddings {
+    open class Paddings {
         val default = 8.dp
         val small = 4.dp
         val large = 16.dp
+
+        companion object : Paddings()
     }
 
     companion object : Dimens()
@@ -56,6 +57,7 @@ fun Modifier.contentPaddings(
 ): Modifier {
     return this.then(padding(start, top, end, bottom))
 }
+
 fun Modifier.startEndPaddings(
     start: Dp = Dimens.contentPaddings.start,
     end: Dp = Dimens.contentPaddings.end,

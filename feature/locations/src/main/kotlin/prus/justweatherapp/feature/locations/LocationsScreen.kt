@@ -61,7 +61,8 @@ fun LocationsScreen(
 
             CurrentLocationsScreen.UserLocations -> {
                 UserLocationsUi(
-                    state = userLocationsState
+                    state = userLocationsState,
+                    onFabClicked = userLocationsViewModel::onEditClicked
                 )
             }
         }
