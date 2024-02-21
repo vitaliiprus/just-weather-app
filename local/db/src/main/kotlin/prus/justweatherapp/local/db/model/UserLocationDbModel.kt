@@ -16,7 +16,7 @@ data class UserLocationDbModel(
     val country: String,
 
     @ColumnInfo("display_name")
-    val displayName: String?,
+    val displayName: String = city,
 
     @ColumnInfo("order_index")
     val orderIndex: Int,

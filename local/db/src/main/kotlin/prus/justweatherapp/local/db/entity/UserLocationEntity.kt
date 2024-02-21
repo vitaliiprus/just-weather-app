@@ -10,6 +10,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class UserLocationEntity(
     @PrimaryKey @ColumnInfo(name = "location_id") val locationId: String,
-    @ColumnInfo(name = "display_name") val displayName: String?,
+    @ColumnInfo(name = "display_name") val displayName: String,
     @ColumnInfo(name = "order_index") val orderIndex: Int,
 ) : Parcelable

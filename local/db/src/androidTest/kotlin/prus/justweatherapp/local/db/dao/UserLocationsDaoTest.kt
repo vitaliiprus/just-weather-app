@@ -65,12 +65,12 @@ class UserLocationsDaoTest {
     fun addUserLocation() = runTest {
         val userLocation1 = UserLocationEntity(
             locationId = "id_1",
-            displayName = "",
+            displayName = "DisplayName1",
             orderIndex = 0
         )
         val userLocation2 = UserLocationEntity(
             locationId = "id_2",
-            displayName = "",
+            displayName = "DisplayName2",
             orderIndex = 1
         )
 
@@ -80,6 +80,31 @@ class UserLocationsDaoTest {
         val userLocations = dao.getUserLocations().first()
 
         assert(userLocations.size == 2)
+    }
+
+    @Test
+    fun updateUserLocationDisplayName() = runTest {
+
+        val userLocation1 = UserLocationEntity(
+            locationId = "id_1",
+            displayName = "DisplayName1",
+            orderIndex = 0
+        )
+        val userLocation2 = UserLocationEntity(
+            locationId = "id_2",
+            displayName = "DisplayName2",
+            orderIndex = 1
+        )
+
+        dao.addUserLocation(userLocation1)
+        dao.addUserLocation(userLocation2)
+
+        dao.updateUserLocationDisplayName("id_2", "new")
+
+        assert(
+            dao.getUserLocationById("id_2")!!.displayName == "new"
+                    && dao.getUserLocationById("id_1")!!.displayName == "DisplayName1"
+        )
     }
 
     @Test

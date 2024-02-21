@@ -15,10 +15,13 @@ interface UserLocationsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addUserLocation(userLocation: UserLocationEntity)
 
+    @Query("UPDATE user_locations SET display_name = :newDisplayName WHERE location_id = :locationId")
+    suspend fun updateUserLocationDisplayName(locationId: String, newDisplayName: String)
+
     @Query("SELECT COUNT() FROM user_locations")
     suspend fun getUserLocationsCount(): Int
 
-    @Query("SELECT * FROM user_locations JOIN locations ON locations.location_id = user_locations.location_id")
+    @Query("SELECT * FROM user_locations JOIN locations ON locations.location_id = user_locations.location_id ORDER BY order_index")
     fun getUserLocations(): Flow<List<UserLocationDbModel>>
 
     @Query("SELECT * FROM user_locations WHERE location_id = :locationId LIMIT 1")
