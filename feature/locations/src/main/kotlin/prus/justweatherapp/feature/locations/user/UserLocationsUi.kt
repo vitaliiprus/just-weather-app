@@ -25,12 +25,13 @@ import prus.justweatherapp.theme.AppTheme
 
 @Composable
 internal fun UserLocationsUi(
-    state: UserLocationsScreenState,
-    onFabClicked: () -> Unit
+    state: UserLocationsState,
+    onFabClicked: () -> Unit,
+    onLocationNameEditClicked:(String) -> Unit
 ) {
     Scaffold(
         floatingActionButton = {
-            if (state is UserLocationsScreenState.Success)
+            if (state is UserLocationsState.Success)
                 FloatingActionButton(
                     onClick = onFabClicked
                 ) {
@@ -61,15 +62,15 @@ internal fun UserLocationsUi(
         )
         {
             when (state) {
-                is UserLocationsScreenState.Error -> {
+                is UserLocationsState.Error -> {
 //                TODO()
                 }
 
-                UserLocationsScreenState.Loading -> {
+                UserLocationsState.Loading -> {
 //                TODO()
                 }
 
-                UserLocationsScreenState.Empty -> {
+                UserLocationsState.Empty -> {
                     MessageScreen(
                         title = stringResource(id = R.string.add_location),
                         subtitle = stringResource(id = R.string.use_search_bar_hint),
@@ -77,7 +78,7 @@ internal fun UserLocationsUi(
                     )
                 }
 
-                is UserLocationsScreenState.Success -> {
+                is UserLocationsState.Success -> {
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize(),
@@ -86,7 +87,8 @@ internal fun UserLocationsUi(
                         items(state.locations) { location ->
                             UserLocationListItem(
                                 location = location,
-                                isEditing = state.isEditing
+                                isEditing = state.isEditing,
+                                onEditClicked = onLocationNameEditClicked
                             )
                         }
                     }
@@ -102,8 +104,9 @@ private fun UserLocationsUiPreview() {
     AppTheme {
         Surface {
             UserLocationsUi(
-                state = UserLocationsScreenState.Empty,
-                onFabClicked = {}
+                state = UserLocationsState.Empty,
+                onFabClicked = {},
+                onLocationNameEditClicked = {}
             )
         }
     }

@@ -61,8 +61,9 @@ fun LocationsScreen(
 
             CurrentLocationsScreen.UserLocations -> {
                 UserLocationsUi(
-                    state = userLocationsState,
-                    onFabClicked = userLocationsViewModel::onEditClicked
+                    state = userLocationsState.locationsState,
+                    onFabClicked = userLocationsViewModel::onEditClicked,
+                    onLocationNameEditClicked = userLocationsViewModel::onLocationNameEditClicked,
                 )
             }
         }

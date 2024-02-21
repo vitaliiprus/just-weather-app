@@ -11,7 +11,9 @@ import prus.justweatherapp.core.common.result.Result
 import prus.justweatherapp.core.common.result.asResult
 import prus.justweatherapp.domain.locations.usecase.GetUserLocationsUseCase
 import prus.justweatherapp.feature.locations.mapper.mapToUiModels
+import prus.justweatherapp.feature.locations.user.EditLocationNameDialogState
 import prus.justweatherapp.feature.locations.user.UserLocationsScreenState
+import prus.justweatherapp.feature.locations.user.UserLocationsState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,7 +23,12 @@ class UserLocationsViewModel @Inject constructor(
     private var isEditingMode = false
 
     private var _state: MutableStateFlow<UserLocationsScreenState> =
-        MutableStateFlow(UserLocationsScreenState.Loading)
+        MutableStateFlow(
+            UserLocationsScreenState(
+                locationsState = UserLocationsState.Loading,
+                editLocationNameDialogState = EditLocationNameDialogState.Hide,
+            )
+        )
 
     var state: StateFlow<UserLocationsScreenState> = _state
 
@@ -34,29 +41,35 @@ class UserLocationsViewModel @Inject constructor(
             getUserLocationsUseCase()
                 .asResult()
                 .collect { result ->
-                    _state.update { _ ->
-                        when (result) {
-                            is Result.Error -> {
-                                UserLocationsScreenState.Error(
-                                    result.exception.message ?: result.exception.toString()
-                                )
-                            }
+                    _state.update { state ->
 
-                            Result.Loading -> {
-                                UserLocationsScreenState.Loading
-                            }
+                        return@update state.copy(
+                            locationsState = when (result) {
 
-                            is Result.Success -> {
-                                if (result.data.isEmpty()) {
-                                    UserLocationsScreenState.Empty
-                                } else {
-                                    UserLocationsScreenState.Success(
-                                        locations = result.data.mapToUiModels(),
-                                        isEditing = isEditingMode
+                                is Result.Error -> {
+                                    UserLocationsState.Error(
+                                        result.exception.message ?: result.exception.toString()
                                     )
                                 }
+
+                                Result.Loading -> {
+                                    UserLocationsState.Loading
+                                }
+
+                                is Result.Success -> {
+                                    if (result.data.isEmpty()) {
+                                        UserLocationsState.Empty
+                                    } else {
+                                        UserLocationsState.Success(
+                                            locations = result.data.mapToUiModels(),
+                                            isEditing = isEditingMode
+                                        )
+                                    }
+                                }
+
                             }
-                        }
+                        )
+
                     }
                 }
         }
@@ -65,13 +78,25 @@ class UserLocationsViewModel @Inject constructor(
     fun onEditClicked() {
         isEditingMode = !isEditingMode
         _state.update { state ->
-            if (state is UserLocationsScreenState.Success) {
+            return@update if (state.locationsState is UserLocationsState.Success) {
                 state.copy(
-                    isEditing = isEditingMode
+                    locationsState = state.locationsState.copy(
+                        isEditing = isEditingMode
+                    )
                 )
             } else {
                 state
             }
+        }
+    }
+
+    fun onLocationNameEditClicked(locationId: String) {
+        _state.update { state ->
+            return@update state.copy(
+                editLocationNameDialogState = EditLocationNameDialogState.Show(
+                    locationId = locationId
+                )
+            )
         }
     }
 

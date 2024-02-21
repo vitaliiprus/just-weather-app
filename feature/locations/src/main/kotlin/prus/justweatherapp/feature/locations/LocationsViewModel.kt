@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import prus.justweatherapp.feature.locations.user.UserLocationsScreenState
+import prus.justweatherapp.feature.locations.user.UserLocationsState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,12 +58,12 @@ class LocationsViewModel @Inject constructor(
     fun observeUserLocations(userLocationsState: StateFlow<UserLocationsScreenState>) =
         viewModelScope.launch {
             userLocationsState.collect { state ->
-                if (state is UserLocationsScreenState.Success) {
+                if (state.locationsState is UserLocationsState.Success) {
                     previousUserLocationsCount?.let {
-                        if (state.locations.size > it)
+                        if (state.locationsState.locations.size > it)
                             onSearchCancelClicked()
                     }
-                    previousUserLocationsCount = state.locations.size
+                    previousUserLocationsCount = state.locationsState.locations.size
                 }
             }
         }
