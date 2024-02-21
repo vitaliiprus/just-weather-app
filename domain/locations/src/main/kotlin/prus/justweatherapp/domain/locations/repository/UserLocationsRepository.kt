@@ -7,6 +7,8 @@ interface UserLocationsRepository {
 
     suspend fun addUserLocation(location: Location)
 
+    suspend fun updateUserLocationDisplayName(locationId: String, newDisplayName: String)
+
     fun getUserLocations(): Flow<List<Location>>
 
     suspend fun deleteUserLocation(location: Location)

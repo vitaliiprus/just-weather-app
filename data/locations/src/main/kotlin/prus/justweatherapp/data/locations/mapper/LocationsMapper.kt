@@ -9,6 +9,7 @@ internal fun LocationEntity.mapToDomainModel() =
         city = this.city,
         adminName = this.adminName,
         country = this.country,
+        displayName = this.city,
         lng = this.lng,
         lat = this.lat
     )

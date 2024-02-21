@@ -19,8 +19,14 @@ class UserLocationsRepositoryImpl @Inject constructor(
         userLocationsDao.addUserLocation(location.toDbEntity())
     }
 
+    override suspend fun updateUserLocationDisplayName(locationId: String, newDisplayName: String) {
+        userLocationsDao.updateUserLocationDisplayName(locationId, newDisplayName)
+    }
+
     override fun getUserLocations(): Flow<List<Location>> {
-        return userLocationsDao.getUserLocations().map { it.mapToDomainModels() }
+        return userLocationsDao.getUserLocations().map {
+            it.mapToDomainModels()
+        }
     }
 
     override suspend fun deleteUserLocation(location: Location) {

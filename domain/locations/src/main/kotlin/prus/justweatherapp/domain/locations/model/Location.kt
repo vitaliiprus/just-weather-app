@@ -5,7 +5,7 @@ data class Location(
     val city: String,
     val adminName: String? = null,
     val country: String? = null,
-    val displayName: String? = null,
+    val displayName: String = city,
     var orderIndex: Int? = null,
     val lng: Double,
     val lat: Double,
