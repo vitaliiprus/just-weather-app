@@ -77,7 +77,7 @@ class LocationsDaoTest {
         )
         val daoLocations = pager.refresh() as PagingSource.LoadResult.Page
 
-        assert(daoLocations.data.containsAll(dbLocations.subList(0, take)))
+        assert(daoLocations.data.containsAll(dbLocations.sortedBy { it.city }.subList(0, take)))
     }
 
     @Test
