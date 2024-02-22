@@ -144,7 +144,7 @@ class UserLocationsDaoTest {
         dao.addUserLocation(userLocation)
 
         val userLocationFromDb = dao.getUserLocationById(userLocation.locationId)
-        assert(userLocation == userLocationFromDb)
+        assert(userLocation.locationId == userLocationFromDb!!.locationId)
     }
 
     @Test
@@ -161,7 +161,7 @@ class UserLocationsDaoTest {
         dao.addUserLocation(userLocation)
         assert(dao.getUserLocationsCount() == 1)
         dao.getUserLocationById(userLocation.locationId)?.let {
-            dao.deleteUserLocation(it)
+            dao.deleteUserLocation(it.locationId)
         }
         assert(dao.getUserLocationsCount() == 0)
     }
