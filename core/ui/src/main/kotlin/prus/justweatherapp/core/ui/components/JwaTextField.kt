@@ -24,6 +24,8 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import prus.justweatherapp.core.ui.R
 import prus.justweatherapp.theme.AppTheme
@@ -96,28 +98,23 @@ fun JwaTextField(
 
 @PreviewLightDark
 @Composable
-private fun FindLocationsSearchBarPreview() {
+private fun FindLocationsSearchBarPreview(
+    @PreviewParameter(TextFieldValuePreviewParameterProvider::class) value: String
+) {
     AppTheme {
         Surface {
             JwaTextField(
-                textFieldValue = "Saint Petersburg",
-                placeholderValue = "",
+                textFieldValue = value,
+                placeholderValue = "Find locations",
                 onValueChanged = {}
             )
         }
     }
 }
 
-@PreviewLightDark
-@Composable
-private fun FindLocationsSearchBarEmptyPreview() {
-    AppTheme {
-        Surface {
-            JwaTextField(
-                textFieldValue = "",
-                placeholderValue = "Find locations",
-                onValueChanged = {}
-            )
-        }
-    }
+class TextFieldValuePreviewParameterProvider : PreviewParameterProvider<String> {
+    override val values = sequenceOf(
+        "Saint Petersburg",
+        ""
+    )
 }
