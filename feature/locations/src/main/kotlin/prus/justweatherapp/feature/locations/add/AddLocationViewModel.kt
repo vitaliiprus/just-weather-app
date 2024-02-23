@@ -64,8 +64,8 @@ class AddLocationViewModel @Inject constructor(
 
     fun onAddLocationClicked() {
         viewModelScope.launch {
-            location?.let { it ->
-                addUserLocationUseCase(it)
+            location?.let {
+                addUserLocationUseCase(it.id)
                 _addLocationUiState.update { state ->
                     state.copy(
                         isLocationAdded = true
