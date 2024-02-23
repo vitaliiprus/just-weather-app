@@ -1,5 +1,9 @@
 package prus.justweatherapp.core.ui.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,26 +26,35 @@ fun JwaTextButton(
     color: Color = accent,
     onClick: () -> Unit = {}
 ) {
-
-    TextButton(
+    AnimatedContent(
         modifier = modifier,
-        colors = ButtonColors(
-            containerColor = Color.Transparent,
-            contentColor = color,
-            disabledContainerColor = Color.Transparent,
-            disabledContentColor = color.copy(alpha = 0.5f)
-        ),
-        enabled = enabled,
-        onClick = onClick
+        targetState = enabled,
+        label = "",
+        transitionSpec = {
+            fadeIn().togetherWith(fadeOut())
+        }
     ) {
 
-        Text(
-            text = text,
-            style = textButtonStyle,
-        )
+        TextButton(
+            modifier = Modifier,
+            colors = ButtonColors(
+                containerColor = Color.Transparent,
+                contentColor = color,
+                disabledContainerColor = Color.Transparent,
+                disabledContentColor = color.copy(alpha = 0.5f)
+            ),
+            enabled = it,
+            onClick = onClick
+        ) {
+
+            Text(
+                text = text,
+                style = textButtonStyle,
+            )
+
+        }
 
     }
-
 }
 
 @PreviewLightDark

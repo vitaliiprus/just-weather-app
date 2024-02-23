@@ -1,5 +1,9 @@
 package prus.justweatherapp.core.ui.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
@@ -21,24 +25,34 @@ fun JwaButton(
     enabled: Boolean = true,
     onClick: () -> Unit = {}
 ) {
-
-    Button(
+    AnimatedContent(
         modifier = modifier,
-        shape = MaterialTheme.shapes.small,
-        colors = ButtonColors(
-            containerColor = accent,
-            contentColor = MaterialTheme.colorScheme.surface,
-            disabledContainerColor = accent.copy(alpha = 0.5f),
-            disabledContentColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
-        ),
-        enabled = enabled,
-        onClick = onClick
+        targetState = enabled,
+        label = "",
+        transitionSpec = {
+            fadeIn().togetherWith(fadeOut())
+        }
     ) {
 
-        Text(
-            text = text,
-            style = textButtonStyle,
-        )
+        Button(
+            modifier = Modifier,
+            shape = MaterialTheme.shapes.small,
+            colors = ButtonColors(
+                containerColor = accent,
+                contentColor = MaterialTheme.colorScheme.surface,
+                disabledContainerColor = accent.copy(alpha = 0.5f),
+                disabledContentColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+            ),
+            enabled = it,
+            onClick = onClick
+        ) {
+
+            Text(
+                text = text,
+                style = textButtonStyle,
+            )
+
+        }
 
     }
 }

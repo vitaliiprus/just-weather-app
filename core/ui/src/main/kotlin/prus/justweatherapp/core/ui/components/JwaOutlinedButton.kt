@@ -1,5 +1,9 @@
 package prus.justweatherapp.core.ui.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
@@ -24,31 +28,40 @@ fun JwaOutlinedButton(
     enabled: Boolean = true,
     onClick: () -> Unit = {}
 ) {
-
-    OutlinedButton(
+    AnimatedContent(
         modifier = modifier,
-        shape = MaterialTheme.shapes.small,
-        colors = ButtonColors(
-            containerColor = Color.Transparent,
-            contentColor = accent,
-            disabledContainerColor = Color.Transparent,
-            disabledContentColor = accent.copy(alpha = 0.9f)
-        ),
-        border = BorderStroke(
-            width = 1.dp,
-            color = accent
-        ),
-        enabled = enabled,
-        onClick = onClick
+        targetState = enabled,
+        label = "",
+        transitionSpec = {
+            fadeIn().togetherWith(fadeOut())
+        }
     ) {
 
-        Text(
-            text = text,
-            style = textButtonStyle,
-        )
+        OutlinedButton(
+            modifier = Modifier,
+            shape = MaterialTheme.shapes.small,
+            colors = ButtonColors(
+                containerColor = Color.Transparent,
+                contentColor = accent,
+                disabledContainerColor = Color.Transparent,
+                disabledContentColor = accent.copy(alpha = 0.5f)
+            ),
+            border = BorderStroke(
+                width = 1.dp,
+                color = if (it) accent else accent.copy(0.5f)
+            ),
+            enabled = it,
+            onClick = onClick
+        ) {
+
+            Text(
+                text = text,
+                style = textButtonStyle,
+            )
+
+        }
 
     }
-
 }
 
 @PreviewLightDark
