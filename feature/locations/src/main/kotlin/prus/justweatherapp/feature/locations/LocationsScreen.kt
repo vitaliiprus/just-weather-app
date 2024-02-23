@@ -1,5 +1,6 @@
 package prus.justweatherapp.feature.locations
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -8,9 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import prus.justweatherapp.feature.locations.edit.EditLocationNameDialog
 import prus.justweatherapp.feature.locations.search.SearchLocationsListUi
-import prus.justweatherapp.feature.locations.user.EditLocationNameDialogState
 import prus.justweatherapp.feature.locations.user.UserLocationsUi
 
 @Composable
@@ -52,32 +51,31 @@ fun LocationsScreen(
             },
         )
 
-        when (locationsScreenState.currentScreen) {
+        Crossfade(
+            targetState = locationsScreenState.currentScreen,
+            label = "LocationsScreen Crossfade"
+        ) { state ->
+            when (state) {
 
-            CurrentLocationsScreen.SearchLocations -> {
-                SearchLocationsListUi(
-                    state = searchLocationsState,
-                    onLocationClicked = onSearchLocationClicked
-                )
+                CurrentLocationsScreen.SearchLocations -> {
+                    SearchLocationsListUi(
+                        state = searchLocationsState,
+                        onLocationClicked = onSearchLocationClicked
+                    )
+                }
+
+                CurrentLocationsScreen.UserLocations -> {
+                    UserLocationsUi(
+                        state = userLocationsState,
+                        onFabClicked = userLocationsViewModel::onEditClicked,
+                        onLocationNameEditClicked = userLocationsViewModel::onLocationNameEditClicked,
+                        onEditLocationNameDialogDismiss = userLocationsViewModel::onEditLocationNameDialogDismiss
+                    )
+                }
             }
 
-            CurrentLocationsScreen.UserLocations -> {
-                UserLocationsUi(
-                    state = userLocationsState.locationsState,
-                    onFabClicked = userLocationsViewModel::onEditClicked,
-                    onLocationNameEditClicked = userLocationsViewModel::onLocationNameEditClicked,
-                )
-            }
         }
 
-        userLocationsState.editLocationNameDialogState.let { dialogState ->
-            if (dialogState is EditLocationNameDialogState.Show)
-                EditLocationNameDialog(
-                    locationId = dialogState.locationId,
-                    onDismissRequest = userLocationsViewModel::onEditLocationNameDialogDismiss
-                )
-        }
     }
-
 }
 

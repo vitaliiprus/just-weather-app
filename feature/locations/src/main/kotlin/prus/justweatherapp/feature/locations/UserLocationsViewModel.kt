@@ -20,13 +20,13 @@ import javax.inject.Inject
 class UserLocationsViewModel @Inject constructor(
     val getUserLocationsUseCase: GetUserLocationsUseCase
 ) : ViewModel() {
-    private var isEditingMode = false
 
     private var _state: MutableStateFlow<UserLocationsScreenState> =
         MutableStateFlow(
             UserLocationsScreenState(
                 locationsState = UserLocationsState.Loading,
                 editLocationNameDialogState = EditLocationNameDialogState.Hide,
+                isEditing = false
             )
         )
 
@@ -42,8 +42,7 @@ class UserLocationsViewModel @Inject constructor(
                 .asResult()
                 .collect { result ->
                     _state.update { state ->
-
-                        return@update state.copy(
+                        state.copy(
                             locationsState = when (result) {
 
                                 is Result.Error -> {
@@ -61,47 +60,39 @@ class UserLocationsViewModel @Inject constructor(
                                         UserLocationsState.Empty
                                     } else {
                                         UserLocationsState.Success(
-                                            locations = result.data.mapToUiModels(),
-                                            isEditing = isEditingMode
+                                            locations = result.data.mapToUiModels()
                                         )
                                     }
                                 }
 
                             }
                         )
-
                     }
                 }
         }
     }
 
     fun onEditClicked() {
-        isEditingMode = !isEditingMode
         _state.update { state ->
-            return@update if (state.locationsState is UserLocationsState.Success) {
-                state.copy(
-                    locationsState = state.locationsState.copy(
-                        isEditing = isEditingMode
-                    )
-                )
-            } else {
-                state
-            }
+            state.copy(
+                isEditing = !state.isEditing
+            )
         }
     }
 
     fun onLocationNameEditClicked(locationId: String) {
         _state.update { state ->
-            return@update state.copy(
+            state.copy(
                 editLocationNameDialogState = EditLocationNameDialogState.Show(
                     locationId = locationId
                 )
             )
         }
     }
+
     fun onEditLocationNameDialogDismiss() {
         _state.update { state ->
-            return@update state.copy(
+            state.copy(
                 editLocationNameDialogState = EditLocationNameDialogState.Hide
             )
         }

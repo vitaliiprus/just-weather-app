@@ -1,12 +1,14 @@
 package prus.justweatherapp.feature.locations.user
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -59,14 +61,18 @@ fun UserLocationListItem(
 
             Card(
                 modifier = modifier
-                    .weight(1f),
+                    .weight(1f)
+                    .height(100.dp),
                 colors = CardDefaults.cardColors().copy(
                     containerColor = MaterialTheme.colorScheme.onTertiary
-                )
+                ),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 4.dp
+                ),
             ) {
                 Row(
                     Modifier
-                        .fillMaxWidth()
+                        .fillMaxSize()
                         .contentPaddings(),
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically

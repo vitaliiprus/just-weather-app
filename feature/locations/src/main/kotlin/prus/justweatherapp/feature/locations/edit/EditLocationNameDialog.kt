@@ -88,7 +88,7 @@ internal fun EditLocationNameDialog(
                     .dialogPaddings()
                     .border(
                         width = 1.dp,
-                        color = MaterialTheme.colorScheme.onTertiary,
+                        color = MaterialTheme.colorScheme.onTertiary.copy(alpha = 0.5f),
                         shape = MaterialTheme.shapes.large
                     )
                     .background(
