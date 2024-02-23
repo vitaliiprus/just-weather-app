@@ -9,4 +9,6 @@ data class Location(
     var orderIndex: Int? = null,
     val lng: Double,
     val lat: Double,
-)
+) {
+    fun isDisplayNameChanged(): Boolean = this.displayName != this.city
+}

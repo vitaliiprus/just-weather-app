@@ -11,6 +11,7 @@ open class Dimens {
 
     val screenPaddings = ContentPaddings(Paddings.large, Paddings.large)
     val contentPaddings = ContentPaddings(Paddings.large, Paddings.large)
+    val dialogPaddings = ContentPaddings(Paddings.large, Paddings.large)
 
     val topBarHeight = 60.dp
 
@@ -33,6 +34,7 @@ open class Dimens {
         val default = 8.dp
         val small = 4.dp
         val large = 16.dp
+        val extraLarge = 24.dp
 
         companion object : Paddings()
     }
@@ -45,6 +47,14 @@ fun Modifier.screenContentPaddings(
     end: Dp = Dimens.screenPaddings.end,
     top: Dp = Dimens.screenPaddings.top,
     bottom: Dp = Dimens.screenPaddings.bottom,
+): Modifier {
+    return this.then(padding(start, top, end, bottom))
+}
+fun Modifier.dialogPaddings(
+    start: Dp = Dimens.dialogPaddings.start,
+    end: Dp = Dimens.dialogPaddings.end,
+    top: Dp = Dimens.dialogPaddings.top,
+    bottom: Dp = Dimens.dialogPaddings.bottom,
 ): Modifier {
     return this.then(padding(start, top, end, bottom))
 }

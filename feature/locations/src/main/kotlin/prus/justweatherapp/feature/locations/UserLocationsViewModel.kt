@@ -99,5 +99,12 @@ class UserLocationsViewModel @Inject constructor(
             )
         }
     }
+    fun onEditLocationNameDialogDismiss() {
+        _state.update { state ->
+            return@update state.copy(
+                editLocationNameDialogState = EditLocationNameDialogState.Hide
+            )
+        }
+    }
 
 }

@@ -50,7 +50,7 @@ class UserLocationsRepositoryImplTest {
     fun userLocationsRepositoryImpl_deleteUserLocation() = runTest {
         val countBefore = userLocationsDao.getUserLocationsCount()
         val userLocation = repository.getUserLocations().first().last()
-        repository.deleteUserLocation(userLocation)
+        repository.deleteUserLocation(userLocation.id)
         val countAfter = userLocationsDao.getUserLocationsCount()
 
         assertTrue(countBefore - countAfter == 1)

@@ -11,5 +11,7 @@ interface UserLocationsRepository {
 
     fun getUserLocations(): Flow<List<Location>>
 
-    suspend fun deleteUserLocation(location: Location)
+    suspend fun getUserLocationById(locationId: String): Location?
+
+    suspend fun deleteUserLocation(locationId: String)
 }

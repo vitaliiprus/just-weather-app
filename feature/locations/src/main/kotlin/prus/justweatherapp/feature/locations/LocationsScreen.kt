@@ -8,12 +8,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import prus.justweatherapp.feature.locations.edit.EditLocationNameDialog
 import prus.justweatherapp.feature.locations.search.SearchLocationsListUi
+import prus.justweatherapp.feature.locations.user.EditLocationNameDialogState
 import prus.justweatherapp.feature.locations.user.UserLocationsUi
 
 @Composable
 fun LocationsScreen(
-    onSearchLocationClicked:(String)->Unit
+    onSearchLocationClicked: (String) -> Unit
 ) {
     val locationsViewModel: LocationsViewModel = hiltViewModel()
     val userLocationsViewModel: UserLocationsViewModel = hiltViewModel()
@@ -67,6 +69,15 @@ fun LocationsScreen(
                 )
             }
         }
+
+        userLocationsState.editLocationNameDialogState.let { dialogState ->
+            if (dialogState is EditLocationNameDialogState.Show)
+                EditLocationNameDialog(
+                    locationId = dialogState.locationId,
+                    onDismissRequest = userLocationsViewModel::onEditLocationNameDialogDismiss
+                )
+        }
     }
+
 }
 

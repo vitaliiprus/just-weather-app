@@ -57,6 +57,6 @@ val Typography = Typography(
 
 val textButtonStyle = TextStyle(
     fontFamily = fontFamily,
-    fontWeight = FontWeight.SemiBold,
+    fontWeight = FontWeight.Medium,
     fontSize = 16.sp
 )

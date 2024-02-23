@@ -9,4 +9,8 @@
     <string name="add">Add</string>
     <string name="error_cannot_find_location">Cannot find the location</string>
     <string name="edit_locations">Edit locations</string>
+    <string name="restore_original_name">Restore original name</string>
+    <string name="enter_location_name">Enter location name</string>
+    <string name="rename_location">Rename the location</string>
+    <string name="rename">Rename</string>
 </resources>

@@ -49,6 +49,17 @@ class TestUserLocationsDao : UserLocationsDao {
         userLocations.add(userLocation)
     }
 
+    override suspend fun updateUserLocationDisplayName(locationId: String, newDisplayName: String) {
+        userLocations.find { it.locationId == locationId }?.let { userLocation ->
+            val newUserLocation = userLocation.copy(
+                displayName = newDisplayName
+            )
+            val index = userLocations.indexOf(userLocation)
+            userLocations.remove(userLocation)
+            userLocations.add(index, newUserLocation)
+        }
+    }
+
     override suspend fun getUserLocationsCount(): Int {
         return userLocations.size
     }
@@ -73,15 +84,25 @@ class TestUserLocationsDao : UserLocationsDao {
         emit(result)
     }
 
-    override suspend fun getUserLocationById(locationId: String): UserLocationEntity? {
-        userLocations.forEach { location ->
-            if (location.locationId == locationId)
-                return location
+    override suspend fun getUserLocationById(locationId: String): UserLocationDbModel? {
+        locations.find { it.locationId == locationId }?.let { location ->
+            userLocations.find { it.locationId == locationId }?.let { userLocation ->
+                return UserLocationDbModel(
+                    userLocation.locationId,
+                    location.city,
+                    location.adminName ?: "",
+                    location.country ?: "",
+                    userLocation.displayName ?: "",
+                    userLocation.orderIndex,
+                    location.lng,
+                    location.lat
+                )
+            }
         }
         return null
     }
 
-    override suspend fun deleteUserLocation(userLocation: UserLocationEntity) {
-        userLocations.remove(userLocation)
+    override suspend fun deleteUserLocation(locationId: String) {
+        userLocations.remove(userLocations.find { it.locationId == locationId })
     }
 }
