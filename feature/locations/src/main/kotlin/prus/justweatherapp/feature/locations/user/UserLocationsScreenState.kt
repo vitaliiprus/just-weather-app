@@ -1,10 +1,12 @@
 package prus.justweatherapp.feature.locations.user
 
+import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.feature.locations.model.LocationUiModel
 
 data class UserLocationsScreenState(
     val locationsState: UserLocationsState,
     val editLocationNameDialogState: EditLocationNameDialogState,
+    val locationDeletedMessageState: LocationDeletedMessageState,
     val isEditing: Boolean
 )
 
@@ -22,4 +24,17 @@ sealed interface EditLocationNameDialogState {
     data class Show(
         val locationId: String
     ) : EditLocationNameDialogState
+}
+
+sealed interface LocationDeletedMessageState {
+    data object Hide : LocationDeletedMessageState
+
+    data class ShowError(
+        val message: UiText.StringResource,
+    ) : LocationDeletedMessageState
+
+    data class ShowUndo(
+        val locationId: String,
+        val locationName: String,
+    ) : LocationDeletedMessageState
 }

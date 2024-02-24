@@ -1,7 +1,6 @@
 package prus.justweatherapp.feature.locations.user
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +14,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -24,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -43,7 +45,8 @@ fun UserLocationListItem(
     modifier: Modifier = Modifier,
     location: LocationUiModel,
     isEditing: Boolean = false,
-    onEditClicked: (String) -> Unit = {}
+    onEditClicked: (String) -> Unit = {},
+    onDeleteClicked: (String) -> Unit = {}
 ) {
     AnimatedContent(
         targetState = isEditing,
@@ -53,11 +56,43 @@ fun UserLocationListItem(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = Dimens.screenPaddings.start,
-                    vertical = Dimens.screenPaddings.start / 2
+                    start = if (isEditMode) 0.dp else Dimens.screenPaddings.start,
+                    end = if (isEditMode) 0.dp else Dimens.screenPaddings.start,
+                    top = Dimens.screenPaddings.start / 2,
+                    bottom = Dimens.screenPaddings.start / 2
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
+
+            if (isEditMode) {
+                Card(
+                    modifier = Modifier
+                        .size(50.dp),
+                    shape = RoundedCornerShape(25.dp),
+                    colors = CardColors(
+                        containerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                        contentColor = MaterialTheme.colorScheme.error,
+                        disabledContentColor = MaterialTheme.colorScheme.error.copy(alpha = 0.5f),
+                    )
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable {
+                                onDeleteClicked(location.id)
+
+                            }
+                            .padding(12.dp),
+                        contentScale = ContentScale.Crop,
+                        painter = painterResource(id = R.drawable.ic_minus_fill),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.error),
+                        contentDescription = "delete location"
+                    )
+
+                }
+            }
+
 
             Card(
                 modifier = modifier
@@ -155,19 +190,27 @@ fun UserLocationListItem(
 
                     if (isEditMode) {
 
-                        Image(
+                        Card(
                             modifier = Modifier
-                                .size(50.dp)
-                                .clickable {
-                                    onEditClicked(location.id)
-                                }
-                                .padding(16.dp),
-                            contentScale = ContentScale.Crop,
-                            painter = painterResource(id = R.drawable.ic_edit_fill),
-                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onTertiaryContainer),
-                            contentDescription = location.weatherConditions.asString()
-                        )
-
+                                .size(50.dp),
+                            shape = RoundedCornerShape(25.dp),
+                            colors = CardDefaults.cardColors().copy(
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                            )
+                        ) {
+                            Image(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clickable {
+                                        onEditClicked(location.id)
+                                    }
+                                    .padding(16.dp),
+                                contentScale = ContentScale.Crop,
+                                painter = painterResource(id = R.drawable.ic_edit_fill),
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onTertiaryContainer),
+                                contentDescription = location.weatherConditions.asString()
+                            )
+                        }
                     }
                 }
             }
@@ -176,9 +219,8 @@ fun UserLocationListItem(
 
                 Image(
                     modifier = Modifier
-                        .size(50.dp)
-                        .padding(10.dp)
-                        .offset(8.dp),
+                        .size(60.dp)
+                        .padding(16.dp),
                     contentScale = ContentScale.Crop,
                     painter = painterResource(id = R.drawable.ic_menu),
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onTertiaryContainer),

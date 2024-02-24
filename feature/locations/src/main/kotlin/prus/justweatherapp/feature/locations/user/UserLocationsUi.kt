@@ -17,15 +17,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -38,15 +45,20 @@ import prus.justweatherapp.core.ui.components.MessageScreen
 import prus.justweatherapp.feature.locations.R
 import prus.justweatherapp.feature.locations.edit.EditLocationNameDialog
 import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.accent
 
 @Composable
 internal fun UserLocationsUi(
     state: UserLocationsScreenState,
     onFabClicked: () -> Unit,
     onLocationNameEditClicked: (String) -> Unit,
+    onLocationDeleteClicked: (String) -> Unit,
+    onLocationUndoDeleteClicked: (String) -> Unit,
+    onLocationDeletedMessageDismiss: () -> Unit,
     onEditLocationNameDialogDismiss: () -> Unit
 ) {
     val userLocationsLazyListState = rememberLazyListState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         floatingActionButton = {
@@ -76,8 +88,39 @@ internal fun UserLocationsUi(
                 }
 
             }
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState) { data ->
+                Snackbar(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    actionColor = accent,
+                    snackbarData = data
+                )
+            }
         }
     ) { paddings ->
+
+        when (state.locationDeletedMessageState) {
+            LocationDeletedMessageState.Hide -> {}
+            is LocationDeletedMessageState.ShowError -> {
+                MessageSnackbar(
+                    message = state.locationDeletedMessageState.message.asString(),
+                    snackbarHostState = snackbarHostState,
+                    onDismissed = onLocationDeletedMessageDismiss
+                )
+            }
+
+            is LocationDeletedMessageState.ShowUndo -> {
+                UndoDeleteSnackbar(
+                    locationId = state.locationDeletedMessageState.locationId,
+                    locationName = state.locationDeletedMessageState.locationName,
+                    snackbarHostState = snackbarHostState,
+                    onUndoClicked = onLocationUndoDeleteClicked,
+                    onDismissed = onLocationDeletedMessageDismiss
+                )
+            }
+        }
 
         Column(
             modifier = Modifier
@@ -96,6 +139,10 @@ internal fun UserLocationsUi(
             ) { locationsState ->
                 when (locationsState) {
                     is UserLocationsState.Error -> {
+                        MessageSnackbar(
+                            message = locationsState.message,
+                            snackbarHostState = snackbarHostState
+                        )
                     }
 
                     UserLocationsState.Loading -> {
@@ -128,11 +175,15 @@ internal fun UserLocationsUi(
                                 bottom = 100.dp
                             )
                         ) {
-                            items(locationsState.locations) { location ->
+                            itemsIndexed(
+                                locationsState.locations,
+                                key = { _, item -> item.id }
+                            ) { _, location ->
                                 UserLocationListItem(
                                     location = location,
                                     isEditing = state.isEditing,
-                                    onEditClicked = onLocationNameEditClicked
+                                    onEditClicked = onLocationNameEditClicked,
+                                    onDeleteClicked = onLocationDeleteClicked,
                                 )
                             }
                         }
@@ -165,6 +216,46 @@ internal fun UserLocationsUi(
     }
 }
 
+
+@Composable
+private fun UndoDeleteSnackbar(
+    locationId: String,
+    locationName: String,
+    snackbarHostState: SnackbarHostState,
+    onUndoClicked: (String) -> Unit,
+    onDismissed: () -> Unit,
+) {
+    val message = stringResource(R.string.template_location_deleted, locationName)
+    val action = stringResource(R.string.undo)
+
+    LaunchedEffect(locationId) {
+        when (snackbarHostState.showSnackbar(
+            message = message,
+            actionLabel = action,
+            duration = SnackbarDuration.Long
+        )) {
+            SnackbarResult.Dismissed -> onDismissed()
+            SnackbarResult.ActionPerformed -> onUndoClicked(locationId)
+        }
+    }
+}
+
+@Composable
+private fun MessageSnackbar(
+    message: String,
+    snackbarHostState: SnackbarHostState,
+    onDismissed: () -> Unit = {},
+) {
+    LaunchedEffect(message) {
+        when (snackbarHostState.showSnackbar(
+            message = message
+        )) {
+            SnackbarResult.Dismissed -> onDismissed()
+            else -> {}
+        }
+    }
+}
+
 @PreviewLightDark
 @Composable
 private fun UserLocationsUiPreview() {
@@ -174,10 +265,14 @@ private fun UserLocationsUiPreview() {
                 state = UserLocationsScreenState(
                     locationsState = UserLocationsState.Loading,
                     editLocationNameDialogState = EditLocationNameDialogState.Hide,
+                    locationDeletedMessageState = LocationDeletedMessageState.Hide,
                     isEditing = false
                 ),
                 onFabClicked = {},
                 onLocationNameEditClicked = {},
+                onLocationDeleteClicked = {},
+                onLocationUndoDeleteClicked = {},
+                onLocationDeletedMessageDismiss = {},
                 onEditLocationNameDialogDismiss = {},
             )
         }

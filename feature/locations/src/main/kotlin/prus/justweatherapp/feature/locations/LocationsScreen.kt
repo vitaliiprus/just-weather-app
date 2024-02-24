@@ -69,7 +69,10 @@ fun LocationsScreen(
                         state = userLocationsState,
                         onFabClicked = userLocationsViewModel::onEditClicked,
                         onLocationNameEditClicked = userLocationsViewModel::onLocationNameEditClicked,
-                        onEditLocationNameDialogDismiss = userLocationsViewModel::onEditLocationNameDialogDismiss
+                        onLocationDeleteClicked = userLocationsViewModel::onLocationDeleteClicked,
+                        onEditLocationNameDialogDismiss = userLocationsViewModel::onEditLocationNameDialogDismiss,
+                        onLocationUndoDeleteClicked = userLocationsViewModel::onLocationUndoDeleteClicked,
+                        onLocationDeletedMessageDismiss = userLocationsViewModel::onLocationDeletedMessageDismiss
                     )
                 }
             }

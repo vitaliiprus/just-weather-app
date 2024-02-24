@@ -13,4 +13,8 @@
     <string name="enter_location_name">Enter location name</string>
     <string name="rename_location">Rename the location</string>
     <string name="rename">Rename</string>
+    <string name="cannot_delete_location">Cannot delete the location</string>
+    <string name="cannot_find_location">Cannot find the location</string>
+    <string name="template_location_deleted">%s has been deleted</string>
+    <string name="undo">Undo</string>
 </resources>
