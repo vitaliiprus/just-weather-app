@@ -20,8 +20,17 @@ class UserLocationsRepositoryImpl @Inject constructor(
         userLocationsDao.addUserLocation(location.toDbEntity())
     }
 
-    override suspend fun updateUserLocationDisplayName(locationId: String, newDisplayName: String) {
+    override suspend fun updateUserLocationDisplayName(
+        locationId: String,
+        newDisplayName: String
+    ) {
         userLocationsDao.updateUserLocationDisplayName(locationId, newDisplayName)
+    }
+
+    override suspend fun updateUserLocationsOrderIndices(
+        locationsIdsOrderIndices: List<Pair<String, Int>>
+    ) {
+        userLocationsDao.updateUserLocationsOrderIndices(locationsIdsOrderIndices)
     }
 
     override fun getUserLocations(): Flow<List<Location>> {

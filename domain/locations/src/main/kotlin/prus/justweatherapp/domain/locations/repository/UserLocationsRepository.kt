@@ -9,6 +9,8 @@ interface UserLocationsRepository {
 
     suspend fun updateUserLocationDisplayName(locationId: String, newDisplayName: String)
 
+    suspend fun updateUserLocationsOrderIndices(locationsIdsOrderIndices: List<Pair<String, Int>>)
+
     fun getUserLocations(): Flow<List<Location>>
 
     suspend fun getUserLocationById(locationId: String): Location?

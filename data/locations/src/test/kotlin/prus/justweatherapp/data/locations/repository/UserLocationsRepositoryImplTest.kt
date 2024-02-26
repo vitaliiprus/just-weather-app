@@ -39,6 +39,40 @@ class UserLocationsRepositoryImplTest {
     }
 
     @Test
+    fun userLocationsRepositoryImpl_updateUserLocationDisplayName() = runTest {
+        repository.getUserLocations().first().getOrNull(0)?.let { location ->
+            repository.updateUserLocationDisplayName(location.id, "new")
+            assertTrue(userLocationsDao.getUserLocationById(location.id)?.displayName == "new")
+        } ?: assert(false)
+    }
+
+    @Test
+    fun userLocationsRepositoryImpl_updateUserLocationsOrderIndices() = runTest {
+        val locations = repository.getUserLocations().first()
+        val location1 = locations[0]
+        val location2 = locations[1]
+        val oldOrderIndex1 = location1.orderIndex
+        val oldOrderIndex2 = location2.orderIndex
+
+        if (oldOrderIndex1 == null || oldOrderIndex2 == null) {
+            assert(false)
+        }
+
+        repository.updateUserLocationsOrderIndices(
+            listOf(
+                Pair(location1.id, oldOrderIndex2!!),
+                Pair(location2.id, oldOrderIndex1!!),
+            )
+        )
+
+        val updatedLocations = repository.getUserLocations().first()
+        assertTrue(
+            updatedLocations[0].orderIndex == oldOrderIndex2
+                    && updatedLocations[1].orderIndex == oldOrderIndex1
+        )
+    }
+
+    @Test
     fun userLocationsRepositoryImpl_getUserLocations() = runTest {
         val daoLocations = userLocationsDao.getUserLocations().first().mapToDomainModels()
         val repositoryLocations = repository.getUserLocations().first()

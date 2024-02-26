@@ -60,6 +60,12 @@ class TestUserLocationsDao : UserLocationsDao {
         }
     }
 
+    override fun updateUserLocationOrderIndex(locationId: String, orderIndex: Int) {
+        userLocations.find { it.locationId == locationId }?.let { userLocation ->
+            userLocation.orderIndex = orderIndex
+        }
+    }
+
     override suspend fun getUserLocationsCount(): Int {
         return userLocations.size
     }
