@@ -12,6 +12,7 @@ import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.domain.locations.usecase.AddUserLocationUseCase
 import prus.justweatherapp.domain.locations.usecase.DeleteUserLocationUseCase
 import prus.justweatherapp.domain.locations.usecase.GetUserLocationsUseCase
+import prus.justweatherapp.domain.locations.usecase.UpdateUserLocationOrderIndexUseCase
 import prus.justweatherapp.feature.locations.mapper.mapToUiModels
 import prus.justweatherapp.feature.locations.user.EditLocationNameDialogState
 import prus.justweatherapp.feature.locations.user.LocationDeletedMessageState
@@ -24,6 +25,7 @@ class UserLocationsViewModel @Inject constructor(
     val getUserLocationsUseCase: GetUserLocationsUseCase,
     val deleteUserLocationUseCase: DeleteUserLocationUseCase,
     val addUserLocationUseCase: AddUserLocationUseCase,
+    val updateUserLocationOrderIndexUseCase: UpdateUserLocationOrderIndexUseCase,
 ) : ViewModel() {
 
     private var _state: MutableStateFlow<UserLocationsScreenState> =
@@ -142,4 +144,17 @@ class UserLocationsViewModel @Inject constructor(
         }
     }
 
+    fun onDragFinish(fromIndex: Int, toIndex: Int) {
+        viewModelScope.launch {
+            state.value.locationsState.let { locationsState ->
+                if (locationsState is UserLocationsState.Success) {
+                    locationsState.locations.getOrNull(fromIndex)?.let { fromLocation ->
+                        locationsState.locations.getOrNull(toIndex)?.let { toLocation ->
+                            updateUserLocationOrderIndexUseCase(fromLocation.id, toLocation.id)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

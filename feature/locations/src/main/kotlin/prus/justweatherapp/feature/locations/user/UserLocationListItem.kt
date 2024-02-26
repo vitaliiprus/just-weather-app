@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import prus.justweatherapp.core.ui.UiText
+import prus.justweatherapp.core.ui.dragdrop.dragDropStateChangeHandler
 import prus.justweatherapp.feature.locations.R
 import prus.justweatherapp.feature.locations.model.LocationUiModel
 import prus.justweatherapp.theme.AppTheme
@@ -46,7 +47,8 @@ fun UserLocationListItem(
     location: LocationUiModel,
     isEditing: Boolean = false,
     onEditClicked: (String) -> Unit = {},
-    onDeleteClicked: (String) -> Unit = {}
+    onDeleteClicked: (String) -> Unit = {},
+    onDragDropStateChanged: (Boolean) -> Unit = {},
 ) {
     AnimatedContent(
         targetState = isEditing,
@@ -220,7 +222,8 @@ fun UserLocationListItem(
                 Image(
                     modifier = Modifier
                         .size(60.dp)
-                        .padding(16.dp),
+                        .padding(16.dp)
+                        .dragDropStateChangeHandler(onDragDropStateChanged),
                     contentScale = ContentScale.Crop,
                     painter = painterResource(id = R.drawable.ic_menu),
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onTertiaryContainer),

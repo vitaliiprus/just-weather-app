@@ -68,3 +68,15 @@ fun Modifier.dragDropStateChangeHandler(
         }
     }
 }
+
+fun <T> List<T>.swap(index1: Int, index2: Int): List<T> {
+    if (index1 == index2 || index1 < 0 || index2 < 0 || index1 >= size || index2 >= size) {
+        return this
+    }
+
+    val result = toMutableList()
+    val temp = result[index1]
+    result[index1] = result[index2]
+    result[index2] = temp
+    return result
+}

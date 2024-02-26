@@ -2,13 +2,12 @@ package prus.justweatherapp.feature.locations.mapper
 
 import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.domain.locations.model.Location
-import prus.justweatherapp.feature.locations.R
 import prus.justweatherapp.feature.locations.model.LocationUiModel
 
 fun Location.mapToUiModel(): LocationUiModel =
     LocationUiModel(
         id = this.id,
-        name = this.displayName ?: this.city,
+        name = this.displayName,
         //TODO: stub for now
         time = "12:05",
         weatherConditions = UiText.DynamicString("Partially cloudy"),

@@ -16,20 +16,22 @@ import kotlinx.coroutines.Job
 @Composable
 fun rememberDragDropListState(
     lazyListState: LazyListState = rememberLazyListState(),
-    onMove: (Int, Int) -> Unit
+    onDragFinish: (Int, Int) -> Unit
 ): ItemListDragAndDropState {
-    return remember { ItemListDragAndDropState(lazyListState, onMove) }
+    return remember { ItemListDragAndDropState(lazyListState, onDragFinish) }
 }
 
 class ItemListDragAndDropState(
     private val lazyListState: LazyListState,
-    private val onMove: (Int, Int) -> Unit,
+    private val onDragFinish: (Int, Int) -> Unit,
 ) {
     private var draggedDistance by mutableFloatStateOf(0f)
     private var initiallyDraggedElement by mutableStateOf<LazyListItemInfo?>(null)
     private var currentIndexOfDraggedItem by mutableIntStateOf(-1)
     private var overscrollJob by mutableStateOf<Job?>(null)
     var dragDropEnabled by mutableStateOf(true)
+
+    var onSwap: (Int, Int) -> Unit = { _, _ -> }
 
     private val currentElement: LazyListItemInfo?
         get() = currentIndexOfDraggedItem.let {
@@ -56,6 +58,9 @@ class ItemListDragAndDropState(
     }
 
     fun onDragInterrupted() {
+        initiallyDraggedElement?.index?.let { fromIndex ->
+            onDragFinish.invoke(fromIndex, currentIndexOfDraggedItem)
+        }
         draggedDistance = 0f
         currentIndexOfDraggedItem = -1
         initiallyDraggedElement = null
@@ -93,7 +98,7 @@ class ItemListDragAndDropState(
 
             if (targetItem != null) {
                 currentIndexOfDraggedItem.let { current ->
-                    onMove.invoke(current, targetItem.index)
+                    onSwap.invoke(current, targetItem.index)
                     currentIndexOfDraggedItem = targetItem.index
                 }
             }

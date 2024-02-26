@@ -1,5 +1,9 @@
 package prus.justweatherapp.core.ui.dragdrop
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,20 +21,25 @@ import kotlinx.coroutines.Job
 fun <T> DragDropLazyColumn(
     modifier: Modifier = Modifier,
     items: List<T>,
-    dragDropListState:ItemListDragAndDropState,
+    dragDropListState: ItemListDragAndDropState,
     contentPadding: PaddingValues = PaddingValues(),
     itemComposable: @Composable ((T) -> Unit),
 ) {
+    val itemsState = remember { mutableStateOf(items) }
     val coroutineScope = rememberCoroutineScope()
     val overscrollJob = remember { mutableStateOf<Job?>(null) }
 
+    dragDropListState.onSwap =
+        { fromIndex, toIndex ->
+            itemsState.value = itemsState.value.swap(fromIndex, toIndex)
+        }
 
     LazyColumn(
         modifier = modifier.dragGestureHandler(coroutineScope, dragDropListState, overscrollJob),
         state = dragDropListState.getLazyListState(),
         contentPadding = contentPadding
     ) {
-        itemsIndexed(items) { index, item ->
+        itemsIndexed(itemsState.value) { index, item ->
             val displacementOffset =
                 if (index == dragDropListState.getCurrentIndexOfDraggedListItem()) {
                     dragDropListState.elementDisplacement.takeIf { it != 0f }

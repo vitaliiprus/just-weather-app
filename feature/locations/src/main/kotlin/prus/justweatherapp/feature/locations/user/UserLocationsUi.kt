@@ -16,9 +16,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -42,6 +39,8 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import prus.justweatherapp.core.ui.components.MessageScreen
+import prus.justweatherapp.core.ui.dragdrop.DragDropLazyColumn
+import prus.justweatherapp.core.ui.dragdrop.rememberDragDropListState
 import prus.justweatherapp.feature.locations.R
 import prus.justweatherapp.feature.locations.edit.EditLocationNameDialog
 import prus.justweatherapp.theme.AppTheme
@@ -55,10 +54,14 @@ internal fun UserLocationsUi(
     onLocationDeleteClicked: (String) -> Unit,
     onLocationUndoDeleteClicked: (String) -> Unit,
     onLocationDeletedMessageDismiss: () -> Unit,
-    onEditLocationNameDialogDismiss: () -> Unit
+    onEditLocationNameDialogDismiss: () -> Unit,
+    onDragFinish: (Int, Int) -> Unit
 ) {
-    val userLocationsLazyListState = rememberLazyListState()
     val snackbarHostState = remember { SnackbarHostState() }
+
+    val dragDropListState = rememberDragDropListState(
+        onDragFinish = onDragFinish
+    ).also { it.dragDropEnabled = false }
 
     Scaffold(
         floatingActionButton = {
@@ -164,28 +167,28 @@ internal fun UserLocationsUi(
                     }
 
                     is UserLocationsState.Success -> {
-                        LazyColumn(
+
+                        DragDropLazyColumn(
                             modifier = Modifier
                                 .fillMaxSize(),
-                            state = userLocationsLazyListState,
+                            items = locationsState.locations,
+                            dragDropListState = dragDropListState,
                             contentPadding = PaddingValues(
                                 start = 0.dp,
                                 end = 0.dp,
                                 top = 8.dp,
                                 bottom = 100.dp
                             )
-                        ) {
-                            itemsIndexed(
-                                locationsState.locations,
-                                key = { _, item -> item.id }
-                            ) { _, location ->
-                                UserLocationListItem(
-                                    location = location,
-                                    isEditing = state.isEditing,
-                                    onEditClicked = onLocationNameEditClicked,
-                                    onDeleteClicked = onLocationDeleteClicked,
-                                )
-                            }
+                        ) { location ->
+                            UserLocationListItem(
+                                location = location,
+                                isEditing = state.isEditing,
+                                onEditClicked = onLocationNameEditClicked,
+                                onDeleteClicked = onLocationDeleteClicked,
+                                onDragDropStateChanged = {
+                                    dragDropListState.dragDropEnabled = it
+                                },
+                            )
                         }
                     }
                 }
@@ -274,6 +277,7 @@ private fun UserLocationsUiPreview() {
                 onLocationUndoDeleteClicked = {},
                 onLocationDeletedMessageDismiss = {},
                 onEditLocationNameDialogDismiss = {},
+                onDragFinish = { _, _ -> },
             )
         }
     }

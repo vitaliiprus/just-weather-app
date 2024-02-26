@@ -72,7 +72,8 @@ fun LocationsScreen(
                         onLocationDeleteClicked = userLocationsViewModel::onLocationDeleteClicked,
                         onEditLocationNameDialogDismiss = userLocationsViewModel::onEditLocationNameDialogDismiss,
                         onLocationUndoDeleteClicked = userLocationsViewModel::onLocationUndoDeleteClicked,
-                        onLocationDeletedMessageDismiss = userLocationsViewModel::onLocationDeletedMessageDismiss
+                        onLocationDeletedMessageDismiss = userLocationsViewModel::onLocationDeletedMessageDismiss,
+                        onDragFinish = userLocationsViewModel::onDragFinish,
                     )
                 }
             }
