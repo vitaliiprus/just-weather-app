@@ -108,6 +108,49 @@ class UserLocationsDaoTest {
     }
 
     @Test
+    fun updateUserLocationOrderIndex() = runTest {
+        val userLocation1 = UserLocationEntity(
+            locationId = "id_1",
+            displayName = "DisplayName1",
+            orderIndex = 0
+        )
+        dao.addUserLocation(userLocation1)
+        dao.updateUserLocationOrderIndex("id_1", 1)
+
+        assert(dao.getUserLocationById("id_1")!!.orderIndex == 1)
+    }
+
+    @Test
+    fun updateUserLocationsOrderIndices() = runTest {
+        val userLocation1 = UserLocationEntity(
+            locationId = "id_1",
+            displayName = "DisplayName1",
+            orderIndex = 0
+        )
+
+        val userLocation2 = UserLocationEntity(
+            locationId = "id_2",
+            displayName = "DisplayName2",
+            orderIndex = 1
+        )
+
+        dao.addUserLocation(userLocation1)
+        dao.addUserLocation(userLocation2)
+
+        dao.updateUserLocationsOrderIndices(
+            listOf(
+                Pair(userLocation1.locationId, userLocation2.orderIndex),
+                Pair(userLocation2.locationId, userLocation1.orderIndex),
+            )
+        )
+
+        assert(
+            dao.getUserLocationById("id_1")!!.orderIndex == 1
+                    && dao.getUserLocationById("id_2")!!.orderIndex == 0
+        )
+    }
+
+    @Test
     fun getUserLocationsCount() = runTest {
         val location1 = locationsDao.getLocationById("id_1")
         val location2 = locationsDao.getLocationById("id_2")
