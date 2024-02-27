@@ -1,7 +1,6 @@
 package prus.justweatherapp.app
 
 import android.app.Application
-import android.content.res.Resources
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -10,10 +9,6 @@ class JustWeatherApplication : Application() {
 
     companion object {
         lateinit var INSTANCE: JustWeatherApplication
-
-        fun getRes(): Resources {
-            return INSTANCE.resources
-        }
     }
 
     override fun onCreate() {

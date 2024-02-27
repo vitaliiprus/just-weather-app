@@ -40,7 +40,6 @@ fun LocationsScreen(
                 locationsViewModel.onSearchQueryChanged(it)
                 searchLocationsViewModel.onSearchQueryChanged(it)
             },
-            onSearchPressed = searchLocationsViewModel::onSearchPressed,
             onFocused = {
                 locationsViewModel.onSearchFocused()
                 searchLocationsViewModel.onSearchFocused()

@@ -39,7 +39,6 @@ internal fun FindLocationsSearchBar(
     modifier: Modifier = Modifier,
     state: SearchBarState,
     onSearchQueryChanged: (String) -> Unit,
-    onSearchPressed: () -> Unit,
     onFocused: () -> Unit = {},
     onCancelClicked: () -> Unit = {}
 ) {
@@ -49,7 +48,6 @@ internal fun FindLocationsSearchBar(
     val onSearchExplicitlyTriggered = {
         keyboardController?.hide()
         focusRequester.freeFocus()
-        onSearchPressed()
     }
 
     val cancelButtonVisible = state.cancelButtonState == CancelButtonState.Shown
@@ -135,8 +133,7 @@ private fun FindLocationsSearchBarEmptyPreview() {
                     searchQuery = "",
                     cancelButtonState = CancelButtonState.Hidden
                 ),
-                onSearchQueryChanged = {},
-                onSearchPressed = {}
+                onSearchQueryChanged = {}
             )
         }
     }
@@ -152,8 +149,7 @@ private fun FindLocationsSearchBarTextPreview() {
                     searchQuery = "123",
                     cancelButtonState = CancelButtonState.Shown
                 ),
-                onSearchQueryChanged = {},
-                onSearchPressed = {}
+                onSearchQueryChanged = {}
             )
         }
     }

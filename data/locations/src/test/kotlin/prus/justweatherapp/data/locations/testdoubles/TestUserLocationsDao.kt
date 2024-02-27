@@ -80,7 +80,7 @@ class TestUserLocationsDao : UserLocationsDao {
                     location.city,
                     location.adminName ?: "",
                     location.country ?: "",
-                    userLocation.displayName ?: "",
+                    userLocation.displayName,
                     userLocation.orderIndex,
                     location.lng,
                     location.lat
@@ -98,7 +98,7 @@ class TestUserLocationsDao : UserLocationsDao {
                     location.city,
                     location.adminName ?: "",
                     location.country ?: "",
-                    userLocation.displayName ?: "",
+                    userLocation.displayName,
                     userLocation.orderIndex,
                     location.lng,
                     location.lat

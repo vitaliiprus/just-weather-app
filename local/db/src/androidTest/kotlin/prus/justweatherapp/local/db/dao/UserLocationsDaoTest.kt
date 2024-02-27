@@ -22,8 +22,7 @@ class UserLocationsDaoTest {
     private lateinit var dao: UserLocationsDao
     private lateinit var locationsDao: LocationsDao
 
-    private val locationsCount = 2
-    private val dbLocations = initDbLocations(locationsCount)
+    private val dbLocations = initDbLocations()
 
     @Before
     fun setup() {
@@ -40,9 +39,9 @@ class UserLocationsDaoTest {
         }
     }
 
-    private fun initDbLocations(count: Int): List<LocationEntity> {
+    private fun initDbLocations(): List<LocationEntity> {
         val locations = mutableListOf<LocationEntity>()
-        for (i in 1..count) {
+        for (i in 1..2) {
             locations.add(
                 LocationEntity(
                     id = i + 1,
