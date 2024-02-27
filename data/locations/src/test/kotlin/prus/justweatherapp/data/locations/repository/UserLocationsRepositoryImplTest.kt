@@ -8,6 +8,7 @@ import org.junit.Test
 import prus.justweatherapp.data.locations.mapper.mapToDomainModels
 import prus.justweatherapp.data.locations.testdoubles.TestUserLocationsDao
 import prus.justweatherapp.domain.locations.model.Location
+import kotlin.random.Random
 
 class UserLocationsRepositoryImplTest {
 
@@ -88,6 +89,20 @@ class UserLocationsRepositoryImplTest {
         val countAfter = userLocationsDao.getUserLocationsCount()
 
         assertTrue(countBefore - countAfter == 1)
+    }
+
+    @Test
+    fun userLocationsRepositoryImpl_rearrangeOrderIndices() = runTest {
+        val count = userLocationsDao.getUserLocationsCount()
+        for (i in 0..<count) {
+            val userLocations = repository.getUserLocations().first()
+            val userLocation = userLocations[Random.nextInt(0, userLocations.size)]
+            repository.deleteUserLocation(userLocation.id)
+
+            repository.getUserLocations().first().forEachIndexed { index, location ->
+                assertTrue(location.orderIndex == index)
+            }
+        }
     }
 
     private fun locationsFromDaoAndRepositoryAreSame(

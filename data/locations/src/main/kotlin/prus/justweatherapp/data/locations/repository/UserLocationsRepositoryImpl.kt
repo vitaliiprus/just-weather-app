@@ -1,6 +1,7 @@
 package prus.justweatherapp.data.locations.repository
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import prus.justweatherapp.data.locations.mapper.mapToDomainModel
 import prus.justweatherapp.data.locations.mapper.mapToDomainModels
@@ -45,5 +46,16 @@ class UserLocationsRepositoryImpl @Inject constructor(
 
     override suspend fun deleteUserLocation(locationId: String) {
         userLocationsDao.deleteUserLocation(locationId)
+        rearrangeOrderIndices()
+    }
+
+    private suspend fun rearrangeOrderIndices() {
+        val locations = userLocationsDao.getUserLocations().first().mapToDomainModels()
+        locations.forEachIndexed { index, location ->
+            location.orderIndex = index
+        }
+        userLocationsDao.updateUserLocationsOrderIndices(
+            locations.map { it.id to it.orderIndex!! }
+        )
     }
 }
