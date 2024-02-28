@@ -27,6 +27,7 @@ android {
 dependencies {
     implementation(libs.bundles.kotlinx.coroutines)
     implementation(libs.timber)
+    api(libs.kotlinx.datetime)
 
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)

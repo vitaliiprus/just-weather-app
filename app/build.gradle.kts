@@ -83,6 +83,7 @@ dependencies {
     implementation(project(":domain:locations"))
     implementation(project(":data:locations"))
     implementation(project(":local:db"))
+    implementation(project(":remote"))
 
     implementation(project(":theme"))
     implementation(project(":core:common"))

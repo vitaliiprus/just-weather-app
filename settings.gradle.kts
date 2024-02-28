@@ -24,6 +24,7 @@ include(":data:home")
 include(":data:locations")
 
 include(":local:db")
+include(":remote")
 
 include(":core:ui")
 include(":core:common")
