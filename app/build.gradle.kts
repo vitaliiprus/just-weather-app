@@ -81,7 +81,11 @@ dependencies {
     implementation(project(":feature:home"))
 
     implementation(project(":domain:locations"))
+    implementation(project(":domain:weather"))
+
     implementation(project(":data:locations"))
+    implementation(project(":data:weather"))
+
     implementation(project(":local:db"))
     implementation(project(":remote"))
 

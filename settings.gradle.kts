@@ -19,9 +19,11 @@ include(":theme")
 
 include(":domain:home")
 include(":domain:locations")
+include(":domain:weather")
 
 include(":data:home")
 include(":data:locations")
+include(":data:weather")
 
 include(":local:db")
 include(":remote")
