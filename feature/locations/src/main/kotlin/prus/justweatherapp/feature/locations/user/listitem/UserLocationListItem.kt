@@ -1,4 +1,4 @@
-package prus.justweatherapp.feature.locations.user
+package prus.justweatherapp.feature.locations.user.listitem
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.Image
@@ -22,6 +22,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -31,11 +33,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.core.ui.dragdrop.dragDropStateChangeHandler
+import prus.justweatherapp.core.ui.preview.parameterprovider.BooleanPreviewParameterProvider
 import prus.justweatherapp.feature.locations.R
+import prus.justweatherapp.feature.locations.model.CurrentWeatherUiModel
 import prus.justweatherapp.feature.locations.model.LocationUiModel
 import prus.justweatherapp.theme.AppTheme
 import prus.justweatherapp.theme.Dimens
@@ -49,9 +56,37 @@ fun UserLocationListItem(
     onEditClicked: (String) -> Unit = {},
     onDeleteClicked: (String) -> Unit = {},
     onDragDropStateChanged: (Boolean) -> Unit = {},
+    viewModel: UserLocationListItemViewModel = hiltViewModel(key = location.id),
+) {
+    LaunchedEffect(location) {
+        viewModel.setLocation(location)
+    }
+    LaunchedEffect(isEditing) {
+        viewModel.setIsEditing(isEditing)
+    }
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    UserLocationListItem(
+        modifier = modifier,
+        state = state,
+        onEditClicked = onEditClicked,
+        onDeleteClicked = onDeleteClicked,
+        onDragDropStateChanged = onDragDropStateChanged
+    )
+}
+
+
+@Composable
+private fun UserLocationListItem(
+    modifier: Modifier = Modifier,
+    state: UserLocationListItemUiState,
+    onEditClicked: (String) -> Unit = {},
+    onDeleteClicked: (String) -> Unit = {},
+    onDragDropStateChanged: (Boolean) -> Unit = {},
 ) {
     AnimatedContent(
-        targetState = isEditing,
+        targetState = state.isEditing,
         label = ""
     ) { isEditMode ->
         Row(
@@ -65,6 +100,12 @@ fun UserLocationListItem(
                 ),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            val location: LocationUiModel? =
+                if (state.locationState is LocationState.Success) state.locationState.location
+                else null
+            val weather: CurrentWeatherUiModel? =
+                if (state.weatherState is WeatherState.Success) state.weatherState.weather
+                else null
 
             if (isEditMode) {
                 Card(
@@ -82,8 +123,9 @@ fun UserLocationListItem(
                         modifier = Modifier
                             .fillMaxSize()
                             .clickable {
-                                onDeleteClicked(location.id)
-
+                                location?.let {
+                                    onDeleteClicked(it.id)
+                                }
                             }
                             .padding(12.dp),
                         contentScale = ContentScale.Crop,
@@ -94,7 +136,6 @@ fun UserLocationListItem(
 
                 }
             }
-
 
             Card(
                 modifier = modifier
@@ -120,32 +161,43 @@ fun UserLocationListItem(
                             .weight(1f)
                     ) {
 
-                        Text(
-                            modifier = Modifier
-                                .alpha(0.5f),
-                            text = location.time,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer,
-                            style = MaterialTheme.typography.labelSmall
-                        )
-
-                        Text(
-                            text = location.name,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontSize = 20.sp,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
+                        if (weather != null) {
+                            Text(
+                                modifier = Modifier
+                                    .alpha(0.5f),
+                                text = weather.time,
+                                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        } else {
+                            //shimmer
+                        }
+                        if (location != null) {
+                            Text(
+                                text = location.name,
+                                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontSize = 20.sp,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        } else {
+                            //shimmer
+                        }
 
                         if (!isEditMode) {
 
                             Spacer(modifier = Modifier.height(4.dp))
 
-                            Text(
-                                text = location.weatherConditions.asString(),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                                style = MaterialTheme.typography.bodySmall
-                            )
+                            if (weather != null) {
+                                Text(
+                                    text = weather.weatherConditions.asString(),
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            } else {
+                                //shimmer
+                            }
                         }
 
                     }
@@ -153,41 +205,45 @@ fun UserLocationListItem(
                     Spacer(modifier = Modifier.width(16.dp))
 
                     if (!isEditMode) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
+                        if (weather != null) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
 
-                            Text(
+                                Text(
+                                    modifier = Modifier
+                                        .offset(
+                                            y = 2.dp
+                                        ),
+                                    text = weather.currentTemp,
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontSize = 34.sp,
+                                )
+
+                                Text(
+                                    modifier = Modifier
+                                        .offset(
+                                            y = (-2).dp
+                                        ),
+                                    text = weather.minMaxTemp,
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    style = MaterialTheme.typography.bodySmall,
+                                )
+
+                            }
+
+                            Spacer(modifier = Modifier.width(16.dp))
+
+                            Image(
                                 modifier = Modifier
-                                    .offset(
-                                        y = 2.dp
-                                    ),
-                                text = location.currentTemp,
-                                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                                style = MaterialTheme.typography.bodyLarge,
-                                fontSize = 34.sp,
+                                    .size(50.dp),
+                                painter = painterResource(id = weather.conditionImageResId),
+                                contentDescription = weather.weatherConditions.asString()
                             )
-
-                            Text(
-                                modifier = Modifier
-                                    .offset(
-                                        y = (-2).dp
-                                    ),
-                                text = location.minMaxTemp,
-                                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                                style = MaterialTheme.typography.bodySmall,
-                            )
-
+                        } else {
+                            //shimmer
                         }
-
-                        Spacer(modifier = Modifier.width(16.dp))
-
-                        Image(
-                            modifier = Modifier
-                                .size(50.dp),
-                            painter = painterResource(id = location.conditionImageResId),
-                            contentDescription = location.weatherConditions.asString()
-                        )
                     }
 
                     if (isEditMode) {
@@ -204,13 +260,15 @@ fun UserLocationListItem(
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .clickable {
-                                        onEditClicked(location.id)
+                                        location?.let {
+                                            onEditClicked(it.id)
+                                        }
                                     }
                                     .padding(16.dp),
                                 contentScale = ContentScale.Crop,
                                 painter = painterResource(id = R.drawable.ic_edit_fill),
                                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onTertiaryContainer),
-                                contentDescription = location.weatherConditions.asString()
+                                contentDescription = "edit"
                             )
                         }
                     }
@@ -227,7 +285,7 @@ fun UserLocationListItem(
                     contentScale = ContentScale.Crop,
                     painter = painterResource(id = R.drawable.ic_menu),
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onTertiaryContainer),
-                    contentDescription = location.weatherConditions.asString()
+                    contentDescription = "change order"
                 )
 
             }
@@ -237,41 +295,30 @@ fun UserLocationListItem(
 
 @PreviewLightDark
 @Composable
-private fun UserLocationListItemPreview() {
+private fun UserLocationListItemPreview(
+    @PreviewParameter(BooleanPreviewParameterProvider::class) isEditing: Boolean
+) {
     AppTheme {
         Surface {
             UserLocationListItem(
-                location = LocationUiModel(
-                    id = "1",
-                    name = "Saint Petersburg",
-                    time = "12:05",
-                    weatherConditions = UiText.DynamicString("Partially cloudy"),
-                    currentTemp = "-2º",
-                    minMaxTemp = "↓-10º  ↑4º",
-                    conditionImageResId = prus.justweatherapp.core.ui.R.drawable.mostlysunny
-                ),
-                isEditing = false
-            )
-        }
-    }
-}
-
-@PreviewLightDark
-@Composable
-private fun UserLocationListItemEditingPreview() {
-    AppTheme {
-        Surface {
-            UserLocationListItem(
-                location = LocationUiModel(
-                    id = "1",
-                    name = "Saint Petersburg",
-                    time = "12:05",
-                    weatherConditions = UiText.DynamicString("Partially cloudy"),
-                    currentTemp = "-2º",
-                    minMaxTemp = "↓-10º  ↑4º",
-                    conditionImageResId = prus.justweatherapp.core.ui.R.drawable.mostlysunny
-                ),
-                isEditing = true
+                state = UserLocationListItemUiState(
+                    locationState = LocationState.Success(
+                        location = LocationUiModel(
+                            id = "1",
+                            name = "Saint Petersburg",
+                        )
+                    ),
+                    weatherState = WeatherState.Success(
+                        weather = CurrentWeatherUiModel(
+                            time = "12:05",
+                            weatherConditions = UiText.DynamicString("Partially cloudy"),
+                            currentTemp = "-2º",
+                            minMaxTemp = "↓-10º  ↑4º",
+                            conditionImageResId = prus.justweatherapp.core.ui.R.drawable.mostlysunny
+                        )
+                    ),
+                    isEditing = isEditing
+                )
             )
         }
     }

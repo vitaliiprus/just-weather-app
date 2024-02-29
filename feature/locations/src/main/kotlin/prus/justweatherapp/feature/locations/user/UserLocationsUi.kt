@@ -43,6 +43,7 @@ import prus.justweatherapp.core.ui.dragdrop.DragDropLazyColumn
 import prus.justweatherapp.core.ui.dragdrop.rememberDragDropListState
 import prus.justweatherapp.feature.locations.R
 import prus.justweatherapp.feature.locations.edit.EditLocationNameDialog
+import prus.justweatherapp.feature.locations.user.listitem.UserLocationListItem
 import prus.justweatherapp.theme.AppTheme
 import prus.justweatherapp.theme.accent
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="clear">Clear</string>
+    <string name="mostly_sunny">Mostly sunny</string>
+    <string name="mostly_cloudy">Mostly cloudy</string>
+    <string name="cloudy">Cloudy</string>
+    <string name="chance_of_rain">Chance of rain</string>
+    <string name="chance_of_sleet">Chance of sleet</string>
+    <string name="rain">Rain</string>
+    <string name="sleet">Sleet</string>
+    <string name="snow">Snow</string>
+    <string name="fog">Fog</string>
+    <string name="thunderstorm">Thunderstorm</string>
+</resources>

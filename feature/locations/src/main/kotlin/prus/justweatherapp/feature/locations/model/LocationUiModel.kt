@@ -1,13 +1,6 @@
 package prus.justweatherapp.feature.locations.model
 
-import prus.justweatherapp.core.ui.UiText
-
 data class LocationUiModel(
     val id: String,
-    val name: String,
-    val time: String,
-    val weatherConditions: UiText,
-    val currentTemp: String,
-    val minMaxTemp: String,
-    val conditionImageResId: Int
+    val name: String
 )
