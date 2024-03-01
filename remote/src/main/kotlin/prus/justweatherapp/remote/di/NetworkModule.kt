@@ -7,8 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.Call
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import prus.justweatherapp.remote.BuildConfig
+import prus.justweatherapp.remote.interceptor.getHttpLoggingInterceptor
 import prus.justweatherapp.remote.openweather.OpenWeatherApiClient
 import javax.inject.Singleton
 
@@ -25,14 +24,7 @@ internal object NetworkModule {
     @Provides
     @Singleton
     fun providesOkHttpCallFactory(): Call.Factory = OkHttpClient.Builder()
-        .addInterceptor(
-            HttpLoggingInterceptor()
-                .apply {
-                    if (BuildConfig.DEBUG) {
-                        setLevel(HttpLoggingInterceptor.Level.BODY)
-                    }
-                },
-        )
+        .addInterceptor(getHttpLoggingInterceptor())
         .build()
 
 
