@@ -7,7 +7,6 @@ import prus.justweatherapp.feature.locations.model.LocationUiModel
 data class UserLocationListItemUiState(
     val locationState: LocationState,
     val weatherState: WeatherState,
-    val isEditing: Boolean = false,
 )
 
 sealed interface LocationState {

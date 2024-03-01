@@ -23,7 +23,6 @@ class UserLocationListItemViewModel @Inject constructor(
             UserLocationListItemUiState(
                 locationState = LocationState.Loading,
                 weatherState = WeatherState.Loading,
-                isEditing = false
             )
         )
 
@@ -51,14 +50,6 @@ class UserLocationListItemViewModel @Inject constructor(
                         }
                     }
                 }
-        }
-    }
-
-    fun setIsEditing(isEditing: Boolean) {
-        _state.update { state ->
-            state.copy(
-                isEditing = isEditing
-            )
         }
     }
 }

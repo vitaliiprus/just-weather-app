@@ -41,6 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.core.ui.dragdrop.dragDropStateChangeHandler
 import prus.justweatherapp.core.ui.preview.parameterprovider.BooleanPreviewParameterProvider
+import prus.justweatherapp.core.ui.shimmer.ShimmerRectangle
 import prus.justweatherapp.feature.locations.R
 import prus.justweatherapp.feature.locations.model.CurrentWeatherUiModel
 import prus.justweatherapp.feature.locations.model.LocationUiModel
@@ -61,15 +62,14 @@ fun UserLocationListItem(
     LaunchedEffect(location) {
         viewModel.setLocation(location)
     }
-    LaunchedEffect(isEditing) {
-        viewModel.setIsEditing(isEditing)
-    }
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     UserLocationListItem(
         modifier = modifier,
         state = state,
+        locationName = location.name,
+        isEditing = isEditing,
         onEditClicked = onEditClicked,
         onDeleteClicked = onDeleteClicked,
         onDragDropStateChanged = onDragDropStateChanged
@@ -81,12 +81,14 @@ fun UserLocationListItem(
 private fun UserLocationListItem(
     modifier: Modifier = Modifier,
     state: UserLocationListItemUiState,
+    locationName: String?,
+    isEditing: Boolean,
     onEditClicked: (String) -> Unit = {},
     onDeleteClicked: (String) -> Unit = {},
     onDragDropStateChanged: (Boolean) -> Unit = {},
 ) {
     AnimatedContent(
-        targetState = state.isEditing,
+        targetState = isEditing,
         label = ""
     ) { isEditMode ->
         Row(
@@ -161,20 +163,26 @@ private fun UserLocationListItem(
                             .weight(1f)
                     ) {
 
-                        if (weather != null) {
-                            Text(
-                                modifier = Modifier
-                                    .alpha(0.5f),
-                                text = weather.time,
-                                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                                style = MaterialTheme.typography.labelSmall
-                            )
-                        } else {
-                            //shimmer
+                        if (!isEditMode) {
+                            if (weather != null) {
+                                Text(
+                                    modifier = Modifier
+                                        .alpha(0.5f),
+                                    text = weather.time,
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            } else {
+                                ShimmerRectangle(
+                                    modifier = Modifier
+                                        .width(50.dp)
+                                        .height(12.dp)
+                                )
+                            }
                         }
-                        if (location != null) {
+                        if (locationName != null) {
                             Text(
-                                text = location.name,
+                                text = locationName,
                                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                                 style = MaterialTheme.typography.titleMedium,
                                 fontSize = 20.sp,
@@ -182,7 +190,12 @@ private fun UserLocationListItem(
                                 overflow = TextOverflow.Ellipsis
                             )
                         } else {
-                            //shimmer
+                            Spacer(modifier = Modifier.height(8.dp))
+                            ShimmerRectangle(
+                                modifier = Modifier
+                                    .width(140.dp)
+                                    .height(16.dp)
+                            )
                         }
 
                         if (!isEditMode) {
@@ -196,7 +209,12 @@ private fun UserLocationListItem(
                                     style = MaterialTheme.typography.bodySmall
                                 )
                             } else {
-                                //shimmer
+                                Spacer(modifier = Modifier.height(4.dp))
+                                ShimmerRectangle(
+                                    modifier = Modifier
+                                        .width(80.dp)
+                                        .height(12.dp)
+                                )
                             }
                         }
 
@@ -205,11 +223,11 @@ private fun UserLocationListItem(
                     Spacer(modifier = Modifier.width(16.dp))
 
                     if (!isEditMode) {
-                        if (weather != null) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
 
+                            if (weather != null) {
                                 Text(
                                     modifier = Modifier
                                         .offset(
@@ -230,11 +248,25 @@ private fun UserLocationListItem(
                                     color = MaterialTheme.colorScheme.onTertiaryContainer,
                                     style = MaterialTheme.typography.bodySmall,
                                 )
-
+                            } else {
+                                ShimmerRectangle(
+                                    modifier = Modifier
+                                        .width(50.dp)
+                                        .height(40.dp)
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                ShimmerRectangle(
+                                    modifier = Modifier
+                                        .width(60.dp)
+                                        .height(16.dp)
+                                )
                             }
 
-                            Spacer(modifier = Modifier.width(16.dp))
+                        }
 
+                        Spacer(modifier = Modifier.width(16.dp))
+
+                        if (weather != null) {
                             Image(
                                 modifier = Modifier
                                     .size(50.dp),
@@ -242,7 +274,11 @@ private fun UserLocationListItem(
                                 contentDescription = weather.weatherConditions.asString()
                             )
                         } else {
-                            //shimmer
+                            ShimmerRectangle(
+                                modifier = Modifier
+                                    .width(60.dp)
+                                    .height(60.dp)
+                            )
                         }
                     }
 
@@ -317,8 +353,28 @@ private fun UserLocationListItemPreview(
                             conditionImageResId = prus.justweatherapp.core.ui.R.drawable.mostlysunny
                         )
                     ),
-                    isEditing = isEditing
-                )
+                ),
+                locationName = "Saint Petersburg",
+                isEditing = isEditing
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun UserLocationListItemLoadingPreview(
+    @PreviewParameter(BooleanPreviewParameterProvider::class) isEditing: Boolean
+) {
+    AppTheme {
+        Surface {
+            UserLocationListItem(
+                state = UserLocationListItemUiState(
+                    locationState = LocationState.Loading,
+                    weatherState = WeatherState.Loading,
+                ),
+                locationName = null,
+                isEditing = isEditing
             )
         }
     }
