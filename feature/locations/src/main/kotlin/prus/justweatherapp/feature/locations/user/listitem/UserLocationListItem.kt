@@ -105,6 +105,9 @@ private fun UserLocationListItem(
             val location: LocationUiModel? =
                 if (state.locationState is LocationState.Success) state.locationState.location
                 else null
+            val time: UiText? =
+                if (state.timeState is TimeState.Success) state.timeState.time
+                else null
             val weather: CurrentWeatherUiModel? =
                 if (state.weatherState is WeatherState.Success) state.weatherState.weather
                 else null
@@ -164,11 +167,11 @@ private fun UserLocationListItem(
                     ) {
 
                         if (!isEditMode) {
-                            if (weather != null) {
+                            if (time != null) {
                                 Text(
                                     modifier = Modifier
                                         .alpha(0.5f),
-                                    text = weather.time,
+                                    text = time.asString(),
                                     color = MaterialTheme.colorScheme.onTertiaryContainer,
                                     style = MaterialTheme.typography.labelSmall
                                 )
@@ -346,13 +349,15 @@ private fun UserLocationListItemPreview(
                     ),
                     weatherState = WeatherState.Success(
                         weather = CurrentWeatherUiModel(
-                            time = "12:05",
                             weatherConditions = UiText.DynamicString("Partially cloudy"),
                             currentTemp = "-2º",
                             minMaxTemp = "↓-10º  ↑4º",
                             conditionImageResId = prus.justweatherapp.core.ui.R.drawable.mostlysunny
                         )
                     ),
+                    timeState = TimeState.Success(
+                        time = UiText.DynamicString("12:05")
+                    )
                 ),
                 locationName = "Saint Petersburg",
                 isEditing = isEditing
@@ -372,6 +377,7 @@ private fun UserLocationListItemLoadingPreview(
                 state = UserLocationListItemUiState(
                     locationState = LocationState.Loading,
                     weatherState = WeatherState.Loading,
+                    timeState = TimeState.Loading,
                 ),
                 locationName = null,
                 isEditing = isEditing

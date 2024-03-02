@@ -8,7 +8,7 @@ import prus.justweatherapp.remote.model.WeatherDTO
 internal fun WeatherDTO.mapToDomainModel(locationId: String) =
     CurrentWeather(
         locationId = locationId,
-        time = this.dateTime,
+        timezoneOffset = this.timezoneOffset,
         currentTemp = this.main.temp,
         minTemp = this.main.tempMin,
         maxTemp = this.main.tempMax,
