@@ -51,9 +51,10 @@ android {
                 isDebuggable = true
             }
             getByName("release") {
-                isShrinkResources = false
                 isMinifyEnabled = true
-                proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+                isShrinkResources = true
+                isDebuggable = false
+                proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             }
         }
 
@@ -73,6 +74,11 @@ android {
 
         kotlinOptions {
             jvmTarget = "17"
+        }
+    }
+    buildTypes {
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 }
