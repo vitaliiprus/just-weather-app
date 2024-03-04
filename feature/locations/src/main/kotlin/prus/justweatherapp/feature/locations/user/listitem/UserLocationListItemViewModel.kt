@@ -68,11 +68,9 @@ class UserLocationListItemViewModel @AssistedInject constructor(
                 .asResult()
                 .collect { result ->
                     result.getOrNull()?.let { weather ->
-                        _state.update { state ->
-                            state.copy(
-                                weatherState = WeatherState.Success(weather.mapToUiModel())
-                            )
-                        }
+                        _state.value = state.value.copy(
+                            weatherState = WeatherState.Success(weather.mapToUiModel())
+                        )
                         onNewTimeZoneOffset(weather.timezoneOffset)
                     }
                 }
@@ -99,15 +97,13 @@ class UserLocationListItemViewModel @AssistedInject constructor(
 
     private fun updateTime() {
         timezoneOffset?.let { timezoneOffset ->
-            _state.update { state ->
-                state.copy(
-                    timeState = TimeState.Success(
-                        time = UiText.DynamicString(
-                            getLocationCurrentTime(timezoneOffset).formatTime()
-                        )
+            _state.value = state.value.copy(
+                timeState = TimeState.Success(
+                    time = UiText.DynamicString(
+                        getLocationCurrentTime(timezoneOffset).formatTime()
                     )
                 )
-            }
+            )
         }
     }
 

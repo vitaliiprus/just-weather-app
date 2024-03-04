@@ -48,7 +48,7 @@ internal fun EditLocationNameDialog(
         viewModel.setLocationId(locationId)
     }
 
-    val state by viewModel.editLocationNameUiState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     if (state.closeDialog) {
         onDismissRequest()

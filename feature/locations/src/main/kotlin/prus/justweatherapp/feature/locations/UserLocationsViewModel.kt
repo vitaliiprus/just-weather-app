@@ -3,9 +3,9 @@ package prus.justweatherapp.feature.locations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import prus.justweatherapp.core.common.result.asResult
 import prus.justweatherapp.core.ui.UiText
@@ -45,67 +45,58 @@ class UserLocationsViewModel @Inject constructor(
     }
 
     private fun getUserLocations() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getUserLocationsUseCase()
                 .asResult()
                 .collect { result ->
-                    _state.update { state ->
-                        state.copy(
-                            locationsState = result.getOrNull()?.let { data ->
-                                if (data.isEmpty()) {
-                                    UserLocationsState.Empty
-                                } else {
-                                    UserLocationsState.Success(
-                                        locations = data.mapToUiModels()
-                                    )
-                                }
-                            } ?: UserLocationsState.Error(
-                                result.exceptionOrNull()?.message ?: ""
-                            )
+                    _state.value = state.value.copy(
+                        locationsState = result.getOrNull()?.let { data ->
+                            if (data.isEmpty()) {
+                                UserLocationsState.Empty
+                            } else {
+                                UserLocationsState.Success(
+                                    locations = data.mapToUiModels()
+                                )
+                            }
+                        } ?: UserLocationsState.Error(
+                            result.exceptionOrNull()?.message ?: ""
                         )
-                    }
+                    )
                 }
         }
     }
 
     fun onEditClicked() {
-        _state.update { state ->
-            state.copy(
-                isEditing = !state.isEditing
-            )
-        }
+        _state.value = state.value.copy(
+            isEditing = !state.value.isEditing
+        )
     }
 
     fun onLocationNameEditClicked(locationId: String) {
-        _state.update { state ->
-            state.copy(
-                editLocationNameDialogState = EditLocationNameDialogState.Show(
-                    locationId = locationId
-                )
+        _state.value = state.value.copy(
+            editLocationNameDialogState = EditLocationNameDialogState.Show(
+                locationId = locationId
             )
-        }
+        )
     }
 
     fun onLocationDeleteClicked(locationId: String) {
         viewModelScope.launch {
             deleteUserLocationUseCase(locationId).let { result ->
                 val data = result.getOrNull()
-                _state.update { state ->
-                    state.copy(
-                        locationDeletedMessageState =
-                        if (result.isSuccess && data != null) {
-                            LocationDeletedMessageState.ShowUndo(
-                                locationId = data.first,
-                                locationName = data.second
-                            )
-                        } else {
-                            LocationDeletedMessageState.ShowError(
-                                message = UiText.StringResource(R.string.cannot_delete_location)
-                            )
-                        }
-                    )
-                }
-
+                _state.value = state.value.copy(
+                    locationDeletedMessageState =
+                    if (result.isSuccess && data != null) {
+                        LocationDeletedMessageState.ShowUndo(
+                            locationId = data.first,
+                            locationName = data.second
+                        )
+                    } else {
+                        LocationDeletedMessageState.ShowError(
+                            message = UiText.StringResource(R.string.cannot_delete_location)
+                        )
+                    }
+                )
             }
         }
     }
@@ -113,35 +104,28 @@ class UserLocationsViewModel @Inject constructor(
     fun onLocationUndoDeleteClicked(locationId: String) {
         viewModelScope.launch {
             addUserLocationUseCase(locationId).let { result ->
-                _state.update { state ->
-                    state.copy(
-                        locationDeletedMessageState = if (result.isSuccess)
-                            LocationDeletedMessageState.Hide
-                        else
-                            LocationDeletedMessageState.ShowError(
-                                message = UiText.StringResource(R.string.cannot_find_location)
-                            )
-                    )
-                }
-
+                _state.value = state.value.copy(
+                    locationDeletedMessageState = if (result.isSuccess)
+                        LocationDeletedMessageState.Hide
+                    else
+                        LocationDeletedMessageState.ShowError(
+                            message = UiText.StringResource(R.string.cannot_find_location)
+                        )
+                )
             }
         }
     }
 
     fun onLocationDeletedMessageDismiss() {
-        _state.update { state ->
-            state.copy(
-                locationDeletedMessageState = LocationDeletedMessageState.Hide
-            )
-        }
+        _state.value = state.value.copy(
+            locationDeletedMessageState = LocationDeletedMessageState.Hide
+        )
     }
 
     fun onEditLocationNameDialogDismiss() {
-        _state.update { state ->
-            state.copy(
-                editLocationNameDialogState = EditLocationNameDialogState.Hide
-            )
-        }
+        _state.value = state.value.copy(
+            editLocationNameDialogState = EditLocationNameDialogState.Hide
+        )
     }
 
     fun onDragFinish(fromIndex: Int, toIndex: Int) {

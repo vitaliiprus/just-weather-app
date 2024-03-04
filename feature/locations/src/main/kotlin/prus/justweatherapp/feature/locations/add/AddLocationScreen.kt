@@ -32,7 +32,7 @@ internal fun AddLocationRoute(
     modifier: Modifier = Modifier,
     viewModel: AddLocationViewModel = hiltViewModel(),
 ) {
-    val addLocationUiState by viewModel.addLocationUiState.collectAsStateWithLifecycle()
+    val addLocationUiState by viewModel.state.collectAsStateWithLifecycle()
 
     if (addLocationUiState.isLocationAdded) {
         onLocationAdded()

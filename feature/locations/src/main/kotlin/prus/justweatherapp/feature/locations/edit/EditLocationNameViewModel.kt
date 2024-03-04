@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.domain.locations.model.Location
@@ -21,7 +20,7 @@ class EditLocationNameViewModel @Inject constructor(
     private val restoreUserLocationDisplayNameUseCase: RestoreUserLocationDisplayNameUseCase,
 ) : ViewModel() {
 
-    private val _editLocationNameUiState = MutableStateFlow(
+    private val _state = MutableStateFlow(
         initialState()
     )
 
@@ -35,22 +34,22 @@ class EditLocationNameViewModel @Inject constructor(
         )
     }
 
-    val editLocationNameUiState: StateFlow<EditLocationNameUiState> = _editLocationNameUiState
+    val state: StateFlow<EditLocationNameUiState> = _state
 
     private var location: Location? = null
 
     fun setLocationId(locationId: String) {
         viewModelScope.launch {
-            _editLocationNameUiState.update { state ->
-                location = getUserLocationByIdUseCase(locationId = locationId)
-                location?.let {
-                    state.copy(
-                        dialogState = EditLocationNameDialogState.Success,
-                        dialogNameValue = it.displayName,
-                        showRestoreButton = it.isDisplayNameChanged(),
-                        isOkButtonEnabled = true
-                    )
-                } ?: state.copy(
+            location = getUserLocationByIdUseCase(locationId = locationId)
+            location?.let {
+                _state.value = state.value.copy(
+                    dialogState = EditLocationNameDialogState.Success,
+                    dialogNameValue = it.displayName,
+                    showRestoreButton = it.isDisplayNameChanged(),
+                    isOkButtonEnabled = true
+                )
+            } ?: kotlin.run {
+                _state.value = state.value.copy(
                     dialogState = EditLocationNameDialogState.Error(
                         message = UiText.DynamicString("")
                     )
@@ -60,13 +59,11 @@ class EditLocationNameViewModel @Inject constructor(
     }
 
     fun onDisplayNameChanged(value: String) {
-        _editLocationNameUiState.update { state ->
-            state.copy(
-                dialogState = state.dialogState,
-                dialogNameValue = value,
-                isOkButtonEnabled = value.isNotBlank()
-            )
-        }
+        _state.value = state.value.copy(
+            dialogState = state.value.dialogState,
+            dialogNameValue = value,
+            isOkButtonEnabled = value.isNotBlank()
+        )
     }
 
     fun onRestoreOriginalClicked() {
@@ -80,7 +77,7 @@ class EditLocationNameViewModel @Inject constructor(
 
     fun onRenameClicked() {
         viewModelScope.launch {
-            editLocationNameUiState.value.dialogNameValue.trim().let { newDisplayName ->
+            _state.value.dialogNameValue.trim().let { newDisplayName ->
                 if (newDisplayName.isBlank())
                     return@launch
                 location?.let { location ->
@@ -92,16 +89,12 @@ class EditLocationNameViewModel @Inject constructor(
     }
 
     fun closeDialog() {
-        _editLocationNameUiState.update { state ->
-            state.copy(
-                closeDialog = true
-            )
-        }
+        _state.value = state.value.copy(
+            closeDialog = true
+        )
     }
 
     fun onDialogClosed() {
-        _editLocationNameUiState.update { _ ->
-            initialState()
-        }
+        _state.value = initialState()
     }
 }

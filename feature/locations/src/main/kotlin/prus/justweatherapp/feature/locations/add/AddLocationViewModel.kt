@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.domain.locations.model.Location
@@ -29,23 +28,21 @@ class AddLocationViewModel @Inject constructor(
     private val locationId = addLocationArgs.locationId
     private var location: Location? = null
 
-    private val _addLocationUiState = MutableStateFlow(
+    private val _state = MutableStateFlow(
         AddLocationUiState(
             locationDataState = LocationDataState.Loading,
             weatherDataState = WeatherDataState.Loading
         )
     )
-    val addLocationUiState: StateFlow<AddLocationUiState> = _addLocationUiState
+    val state: StateFlow<AddLocationUiState> = _state
 
     init {
         viewModelScope.launch {
-            _addLocationUiState.update { state ->
-                state.copy(
-                    locationDataState = getLocationState(
-                        locationId = locationId
-                    )
+            _state.value = state.value.copy(
+                locationDataState = getLocationState(
+                    locationId = locationId
                 )
-            }
+            )
         }
     }
 
@@ -66,11 +63,9 @@ class AddLocationViewModel @Inject constructor(
         viewModelScope.launch {
             location?.let {
                 addUserLocationUseCase(it.id)
-                _addLocationUiState.update { state ->
-                    state.copy(
-                        isLocationAdded = true
-                    )
-                }
+                _state.value = state.value.copy(
+                    isLocationAdded = true
+                )
             }
         }
     }
