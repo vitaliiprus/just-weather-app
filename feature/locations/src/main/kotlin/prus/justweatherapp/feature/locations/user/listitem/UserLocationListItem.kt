@@ -22,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,12 +56,12 @@ fun UserLocationListItem(
     onEditClicked: (String) -> Unit = {},
     onDeleteClicked: (String) -> Unit = {},
     onDragDropStateChanged: (Boolean) -> Unit = {},
-    viewModel: UserLocationListItemViewModel = hiltViewModel(key = location.id),
+    viewModel: UserLocationListItemViewModel = hiltViewModel<UserLocationListItemViewModel,
+            UserLocationListItemViewModel.UserLocationListItemViewModelFactory>
+        (key = location.id) { factory ->
+        factory.create(location.id)
+    },
 ) {
-    LaunchedEffect(location) {
-        viewModel.setLocation(location)
-    }
-
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     UserLocationListItem(

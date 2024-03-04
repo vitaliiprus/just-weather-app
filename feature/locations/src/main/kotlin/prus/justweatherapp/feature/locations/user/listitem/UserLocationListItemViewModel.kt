@@ -2,10 +2,12 @@ package prus.justweatherapp.feature.locations.user.listitem
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -15,15 +17,21 @@ import prus.justweatherapp.core.common.util.CoroutineTimer
 import prus.justweatherapp.core.common.util.formatTime
 import prus.justweatherapp.core.common.util.getLocationCurrentTime
 import prus.justweatherapp.core.ui.UiText
+import prus.justweatherapp.domain.locations.usecase.GetUserLocationByIdUseCase
 import prus.justweatherapp.domain.weather.usecase.GetLocationWeatherUseCase
 import prus.justweatherapp.feature.locations.mapper.mapToUiModel
-import prus.justweatherapp.feature.locations.model.LocationUiModel
-import javax.inject.Inject
 
-@HiltViewModel
-class UserLocationListItemViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = UserLocationListItemViewModel.UserLocationListItemViewModelFactory::class)
+class UserLocationListItemViewModel @AssistedInject constructor(
+    val getUserLocationByIdUseCase: GetUserLocationByIdUseCase,
     val getLocationWeatherUseCase: GetLocationWeatherUseCase,
+    @Assisted val locationId: String
 ) : ViewModel() {
+
+    @AssistedFactory
+    interface UserLocationListItemViewModelFactory {
+        fun create(locationId: String): UserLocationListItemViewModel
+    }
 
     private var timezoneOffset: Int? = null
     private var timeUpdater: CoroutineTimer? = null
@@ -39,13 +47,19 @@ class UserLocationListItemViewModel @Inject constructor(
 
     var state: StateFlow<UserLocationListItemUiState> = _state
 
-    fun setLocation(location: LocationUiModel) {
-        _state.update { state ->
-            state.copy(
-                locationState = LocationState.Success(location)
-            )
+    init {
+        getLocation(locationId)
+        getLocationWeather(locationId)
+    }
+
+    private fun getLocation(locationId: String) {
+        viewModelScope.launch {
+            getUserLocationByIdUseCase(locationId)?.let { location ->
+                _state.value = state.value.copy(
+                    locationState = LocationState.Success(location.mapToUiModel())
+                )
+            }
         }
-        getLocationWeather(location.id)
     }
 
     private fun getLocationWeather(locationId: String) {
