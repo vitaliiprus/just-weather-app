@@ -1,10 +1,10 @@
-package prus.justweatherapp.feature.home.navigation
+package prus.justweatherapp.app.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import prus.justweatherapp.feature.home.HOME_ROUTE
+import prus.justweatherapp.app.MAIN_ROUTE
 import prus.justweatherapp.feature.locations.LocationsScreen
 import prus.justweatherapp.feature.locations.add.navigation.addLocationScreen
 import prus.justweatherapp.feature.locations.add.navigation.navigateToAddLocation
@@ -12,23 +12,23 @@ import prus.justweatherapp.feature.settings.SettingsUI
 import prus.justweatherapp.feature.weather.WeatherUI
 
 @Composable
-fun HomeNavGraph(
+fun MainNavGraph(
     navController: NavHostController
 ) {
     NavHost(
         navController = navController,
-        route = HOME_ROUTE,
-        startDestination = HomeScreen.Weather.route
+        route = MAIN_ROUTE,
+        startDestination = MainScreen.Weather.route
     ) {
-        composable(route = HomeScreen.MyLocations.route) {
+        composable(route = MainScreen.MyLocations.route) {
             LocationsScreen(
                 onSearchLocationClicked = navController::navigateToAddLocation
             )
         }
-        composable(route = HomeScreen.Weather.route) {
+        composable(route = MainScreen.Weather.route) {
             WeatherUI()
         }
-        composable(route = HomeScreen.Settings.route) {
+        composable(route = MainScreen.Settings.route) {
             SettingsUI()
         }
         addLocationScreen(

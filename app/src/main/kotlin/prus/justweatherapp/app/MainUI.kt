@@ -1,4 +1,4 @@
-package prus.justweatherapp.feature.home
+package prus.justweatherapp.app
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -12,19 +12,16 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import prus.justweatherapp.feature.home.navigation.HomeBottomNavigation
-import prus.justweatherapp.feature.home.navigation.HomeNavGraph
-import prus.justweatherapp.feature.home.navigation.HomeScreen
+import prus.justweatherapp.app.navigation.MainBottomNavigation
+import prus.justweatherapp.app.navigation.MainNavGraph
+import prus.justweatherapp.app.navigation.MainScreen
 
-const val HOME_ROUTE = "home_route"
+const val MAIN_ROUTE = "main_route"
 
 @Composable
-fun HomeUI(
+fun MainUI(
     navController: NavHostController = rememberNavController(),
 ) {
-//    val viewModel: HomeViewModel = hiltViewModel()
-//    val state = viewModel.state.screenState
-
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -37,7 +34,7 @@ fun HomeUI(
             modifier = Modifier
                 .padding(padding)
         ) {
-            HomeNavGraph(
+            MainNavGraph(
                 navController = navController
             )
         }
@@ -46,13 +43,13 @@ fun HomeUI(
 
 @Composable
 fun BottomBar(navController: NavHostController) {
-    val screens = listOf(HomeScreen.MyLocations, HomeScreen.Weather, HomeScreen.Settings)
+    val screens = listOf(MainScreen.MyLocations, MainScreen.Weather, MainScreen.Settings)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
     val bottomBarDestination = screens.any { it.route == currentDestination?.route }
     if (bottomBarDestination) {
-        HomeBottomNavigation(
+        MainBottomNavigation(
             navController = navController,
             items = screens
         )

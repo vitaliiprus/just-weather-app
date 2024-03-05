@@ -1,4 +1,4 @@
-package prus.justweatherapp.feature.home.navigation
+package prus.justweatherapp.app.navigation
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -22,9 +22,9 @@ import prus.justweatherapp.theme.AppTheme
 import prus.justweatherapp.theme.accent
 
 @Composable
-fun HomeBottomNavigation(
+fun MainBottomNavigation(
     navController: NavController,
-    items: List<HomeScreen>,
+    items: List<MainScreen>,
     modifier: Modifier = Modifier
 ) {
     NavigationBar(
@@ -71,11 +71,11 @@ fun HomeBottomNavigation(
 
 @PreviewLightDark
 @Composable
-fun HomeBottomNavigationPreview() {
+fun MainBottomNavigationPreview() {
     AppTheme {
-        HomeBottomNavigation(
+        MainBottomNavigation(
             navController = rememberNavController(),
-            items = listOf(HomeScreen.MyLocations, HomeScreen.Weather, HomeScreen.Settings)
+            items = listOf(MainScreen.MyLocations, MainScreen.Weather, MainScreen.Settings)
         )
     }
 }

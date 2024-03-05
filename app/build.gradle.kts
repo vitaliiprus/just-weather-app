@@ -84,7 +84,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":feature:home"))
+    implementation(project(":feature:locations"))
+    implementation(project(":feature:weather"))
+    implementation(project(":feature:settings"))
 
     implementation(project(":domain:locations"))
     implementation(project(":domain:weather"))

@@ -1,25 +1,25 @@
-package prus.justweatherapp.feature.home.navigation
+package prus.justweatherapp.app.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import prus.justweatherapp.feature.home.R
+import prus.justweatherapp.app.R
 
-sealed class HomeScreen(
+sealed class MainScreen(
     val route: String,
     @StringRes val textResId: Int,
     @DrawableRes val icon: Int
 ) {
-    data object MyLocations : HomeScreen(
+    data object MyLocations : MainScreen(
         route = MY_LOCATIONS,
         textResId = R.string.my_locations,
         icon = R.drawable.icon_location
     )
-    data object Weather : HomeScreen(
+    data object Weather : MainScreen(
         route = WEATHER,
         textResId = R.string.weather,
         icon = R.drawable.icon_weather
     )
-    data object Settings : HomeScreen(
+    data object Settings : MainScreen(
         route = SETTINGS,
         textResId = R.string.settings,
         icon = R.drawable.icon_settings
