@@ -6,7 +6,8 @@ import okhttp3.Call
 import okhttp3.MediaType.Companion.toMediaType
 import prus.justweatherapp.remote.BuildConfig
 import prus.justweatherapp.remote.datasource.WeatherDataSource
-import prus.justweatherapp.remote.model.WeatherDTO
+import prus.justweatherapp.remote.model.CurrentWeatherDTO
+import prus.justweatherapp.remote.model.ForecastWeatherDTO
 import prus.justweatherapp.remote.openweather.api.OpenWeatherApi
 import retrofit2.Retrofit
 
@@ -27,7 +28,11 @@ class OpenWeatherApiClient(
         .build()
         .create(OpenWeatherApi::class.java)
 
-    override suspend fun getWeatherData(lat: Double, lon: Double): WeatherDTO {
+    override suspend fun getCurrentWeatherData(lat: Double, lon: Double): CurrentWeatherDTO {
         return networkApi.getCurrentWeather(lat, lon, apiKey)
+    }
+
+    override suspend fun getForecastWeatherData(lat: Double, lon: Double): ForecastWeatherDTO {
+        return networkApi.getForecastWeather(lat, lon, apiKey)
     }
 }

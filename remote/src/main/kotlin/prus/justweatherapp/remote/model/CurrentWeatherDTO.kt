@@ -5,12 +5,16 @@ import kotlinx.serialization.Serializable
 import prus.justweatherapp.remote.serializer.LocalDateTimeAsLong
 
 @Serializable
-data class WeatherDTO(
+data class CurrentWeatherDTO(
+    @SerialName("cod") val code: Int,
     @SerialName("coord") val coordinates: CoordinatesDTO,
     @SerialName("weather") val weather: List<WeatherConditionsDTO>,
     @SerialName("main") val main: MainWeatherDataDTO,
     @SerialName("visibility") val visibility: Int,
     @SerialName("wind") val wind: WindDTO,
+    @SerialName("rain") val rain: RainDTO?,
+    @SerialName("snow") val snow: SnowDTO?,
+    @SerialName("clouds") val clouds: CloudsDTO?,
     @SerialName("dt") val dateTime: LocalDateTimeAsLong,
     @SerialName("sys") val sunTime: SunTimeDTO,
     @SerialName("timezone") val timezoneOffset: Int,

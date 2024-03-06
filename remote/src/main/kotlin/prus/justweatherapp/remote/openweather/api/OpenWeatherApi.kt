@@ -1,6 +1,7 @@
 package prus.justweatherapp.remote.openweather.api
 
-import prus.justweatherapp.remote.model.WeatherDTO
+import prus.justweatherapp.remote.model.CurrentWeatherDTO
+import prus.justweatherapp.remote.model.ForecastWeatherDTO
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,5 +12,12 @@ interface OpenWeatherApi {
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("appid") apiKey: String,
-    ): WeatherDTO
+    ): CurrentWeatherDTO
+
+    @GET("forecast")
+    suspend fun getForecastWeather(
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
+        @Query("appid") apiKey: String,
+    ): ForecastWeatherDTO
 }
