@@ -5,6 +5,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import androidx.room.PrimaryKey
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -16,29 +17,29 @@ import prus.justweatherapp.local.db.model.Wind
     foreignKeys = [
         ForeignKey(
             entity = LocationEntity::class,
-            parentColumns = ["location_id"],
+            parentColumns = ["id"],
             childColumns = ["location_id"]
         )
     ],
-    indices = [Index("location_id", "dt", unique = true)]
+    indices = [Index("location_id", "date_time", unique = true)]
 )
 
 @Serializable
 data class WeatherEntity(
 
-//    @PrimaryKey(autoGenerate = true)
-//    @ColumnInfo(name = "id")
-//    val id: Int,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo("id")
+    val id: Int,
 
-    @ColumnInfo(name = "location_id") val locationId: String,
-    @SerialName("dt") val dateTime: LocalDateTime,
+    @ColumnInfo("location_id") val locationId: String,
+    @ColumnInfo("date_time") val dateTime: LocalDateTime,
     @Embedded @SerialName("main") val main: MainWeatherData,
-    @SerialName("weather_cond") val weatherConditions: Int,
-    @SerialName("clouds") val clouds: Double? = null,
-    @SerialName("rain") val rain: Double? = null,
-    @SerialName("snow") val snow: Double? = null,
+    @ColumnInfo("weather_cond") val weatherConditions: Int,
+    @ColumnInfo("clouds") val clouds: Double? = null,
+    @ColumnInfo("rain") val rain: Double? = null,
+    @ColumnInfo("snow") val snow: Double? = null,
     @Embedded @SerialName("wind") val wind: Wind,
-    @SerialName("visibility") val visibility: Int,
-    @SerialName("pop") val probOfPrecipitations: Double,
+    @ColumnInfo("visibility") val visibility: Int,
+    @ColumnInfo("pop") val probOfPrecipitations: Double,
 
     )

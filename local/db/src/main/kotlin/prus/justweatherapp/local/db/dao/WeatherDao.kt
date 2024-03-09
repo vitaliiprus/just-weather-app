@@ -15,7 +15,10 @@ import prus.justweatherapp.local.db.entity.WeatherEntity
 @Dao
 interface WeatherDao {
 
-    @Query("SELECT * FROM weather WHERE location_id = :locationId AND dateTime > :dateFrom")
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(weatherEntities: List<WeatherEntity>)
+
+    @Query("SELECT * FROM weather WHERE location_id = :locationId AND date_time > :dateFrom")
     suspend fun getWeatherByLocationId(
         locationId: String,
         dateFrom: LocalDateTime = Clock.System.now()
@@ -23,13 +26,13 @@ interface WeatherDao {
             .toLocalDateTime(TimeZone.currentSystemDefault())
     ): List<WeatherEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(weatherEntities: List<WeatherEntity>)
-
-    @Query("DELETE FROM weather WHERE dateTime < :dateTo")
+    @Query("DELETE FROM weather WHERE date_time < :dateTo")
     suspend fun deleteOutdatedEntities(
         dateTo: LocalDateTime = Clock.System.now()
             .plus(-3, DateTimeUnit.HOUR)
             .toLocalDateTime(TimeZone.currentSystemDefault())
     )
+
+    @Query("SELECT COUNT() FROM weather")
+    suspend fun getWeatherCount(): Int
 }
