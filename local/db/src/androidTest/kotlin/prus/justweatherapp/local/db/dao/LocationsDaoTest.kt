@@ -43,8 +43,7 @@ class LocationsDaoTest {
         for (i in 1..30) {
             locations.add(
                 LocationEntity(
-                    id = i + 1,
-                    locationId = "id_$i",
+                    id = "id_$i",
                     city = "City$i",
                     adminName = "Admin$i",
                     country = "Country$i",
@@ -84,7 +83,7 @@ class LocationsDaoTest {
         val location1 = dao.getLocationById("id_1")
         val location2 = dao.getLocationById("id_2")
 
-        assert(location1?.locationId == "id_1")
-        assert(location2?.locationId == "id_2")
+        assert(location1?.id == "id_1")
+        assert(location2?.id == "id_2")
     }
 }

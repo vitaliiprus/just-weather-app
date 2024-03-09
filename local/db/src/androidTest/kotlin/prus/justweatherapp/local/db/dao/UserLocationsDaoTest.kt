@@ -19,7 +19,7 @@ import prus.justweatherapp.local.db.entity.UserLocationEntity
 @SmallTest
 class UserLocationsDaoTest {
     private lateinit var database: AppDatabase
-    private lateinit var dao: UserLocationsDao
+    private lateinit var userLocationsDao: UserLocationsDao
     private lateinit var locationsDao: LocationsDao
 
     private val dbLocations = initDbLocations()
@@ -31,7 +31,7 @@ class UserLocationsDaoTest {
             klass = AppDatabase::class.java
         ).allowMainThreadQueries().build()
 
-        dao = database.userLocationsDao()
+        userLocationsDao = database.userLocationsDao()
         locationsDao = database.locationsDao()
 
         runBlocking {
@@ -44,8 +44,7 @@ class UserLocationsDaoTest {
         for (i in 1..2) {
             locations.add(
                 LocationEntity(
-                    id = i + 1,
-                    locationId = "id_$i",
+                    id = "id_$i",
                     city = "City$i",
                     adminName = "Admin$i",
                     country = "Country$i",
@@ -73,10 +72,10 @@ class UserLocationsDaoTest {
             orderIndex = 1
         )
 
-        dao.addUserLocation(userLocation1)
-        dao.addUserLocation(userLocation2)
+        userLocationsDao.addUserLocation(userLocation1)
+        userLocationsDao.addUserLocation(userLocation2)
 
-        val userLocations = dao.getUserLocations().first()
+        val userLocations = userLocationsDao.getUserLocations().first()
 
         assert(userLocations.size == 2)
     }
@@ -95,14 +94,14 @@ class UserLocationsDaoTest {
             orderIndex = 1
         )
 
-        dao.addUserLocation(userLocation1)
-        dao.addUserLocation(userLocation2)
+        userLocationsDao.addUserLocation(userLocation1)
+        userLocationsDao.addUserLocation(userLocation2)
 
-        dao.updateUserLocationDisplayName("id_2", "new")
+        userLocationsDao.updateUserLocationDisplayName("id_2", "new")
 
         assert(
-            dao.getUserLocationById("id_2")!!.displayName == "new"
-                    && dao.getUserLocationById("id_1")!!.displayName == "DisplayName1"
+            userLocationsDao.getUserLocationById("id_2")!!.displayName == "new"
+                    && userLocationsDao.getUserLocationById("id_1")!!.displayName == "DisplayName1"
         )
     }
 
@@ -113,10 +112,10 @@ class UserLocationsDaoTest {
             displayName = "DisplayName1",
             orderIndex = 0
         )
-        dao.addUserLocation(userLocation1)
-        dao.updateUserLocationOrderIndex("id_1", 1)
+        userLocationsDao.addUserLocation(userLocation1)
+        userLocationsDao.updateUserLocationOrderIndex("id_1", 1)
 
-        assert(dao.getUserLocationById("id_1")!!.orderIndex == 1)
+        assert(userLocationsDao.getUserLocationById("id_1")!!.orderIndex == 1)
     }
 
     @Test
@@ -133,10 +132,10 @@ class UserLocationsDaoTest {
             orderIndex = 1
         )
 
-        dao.addUserLocation(userLocation1)
-        dao.addUserLocation(userLocation2)
+        userLocationsDao.addUserLocation(userLocation1)
+        userLocationsDao.addUserLocation(userLocation2)
 
-        dao.updateUserLocationsOrderIndices(
+        userLocationsDao.updateUserLocationsOrderIndices(
             listOf(
                 Pair(userLocation1.locationId, userLocation2.orderIndex),
                 Pair(userLocation2.locationId, userLocation1.orderIndex),
@@ -144,8 +143,8 @@ class UserLocationsDaoTest {
         )
 
         assert(
-            dao.getUserLocationById("id_1")!!.orderIndex == 1
-                    && dao.getUserLocationById("id_2")!!.orderIndex == 0
+            userLocationsDao.getUserLocationById("id_1")!!.orderIndex == 1
+                    && userLocationsDao.getUserLocationById("id_2")!!.orderIndex == 0
         )
     }
 
@@ -155,22 +154,22 @@ class UserLocationsDaoTest {
         val location2 = locationsDao.getLocationById("id_2")
 
         val userLocation1 = UserLocationEntity(
-            locationId = location1!!.locationId,
+            locationId = location1!!.id,
             displayName = "",
             orderIndex = 0
         )
 
         val userLocation2 = UserLocationEntity(
-            locationId = location2!!.locationId,
+            locationId = location2!!.id,
             displayName = "",
             orderIndex = 1
         )
 
-        assert(dao.getUserLocationsCount() == 0)
-        dao.addUserLocation(userLocation1)
-        assert(dao.getUserLocationsCount() == 1)
-        dao.addUserLocation(userLocation2)
-        assert(dao.getUserLocationsCount() == 2)
+        assert(userLocationsDao.getUserLocationsCount() == 0)
+        userLocationsDao.addUserLocation(userLocation1)
+        assert(userLocationsDao.getUserLocationsCount() == 1)
+        userLocationsDao.addUserLocation(userLocation2)
+        assert(userLocationsDao.getUserLocationsCount() == 2)
     }
 
     @Test
@@ -178,14 +177,14 @@ class UserLocationsDaoTest {
         val location = locationsDao.getLocationById("id_1")
 
         val userLocation = UserLocationEntity(
-            locationId = location!!.locationId,
+            locationId = location!!.id,
             displayName = "",
             orderIndex = 0
         )
 
-        dao.addUserLocation(userLocation)
+        userLocationsDao.addUserLocation(userLocation)
 
-        val userLocationFromDb = dao.getUserLocationById(userLocation.locationId)
+        val userLocationFromDb = userLocationsDao.getUserLocationById(userLocation.locationId)
         assert(userLocation.locationId == userLocationFromDb!!.locationId)
     }
 
@@ -194,17 +193,17 @@ class UserLocationsDaoTest {
         val location = locationsDao.getLocationById("id_1")
 
         val userLocation = UserLocationEntity(
-            locationId = location!!.locationId,
+            locationId = location!!.id,
             displayName = "",
             orderIndex = 0
         )
 
-        assert(dao.getUserLocationsCount() == 0)
-        dao.addUserLocation(userLocation)
-        assert(dao.getUserLocationsCount() == 1)
-        dao.getUserLocationById(userLocation.locationId)?.let {
-            dao.deleteUserLocation(it.locationId)
+        assert(userLocationsDao.getUserLocationsCount() == 0)
+        userLocationsDao.addUserLocation(userLocation)
+        assert(userLocationsDao.getUserLocationsCount() == 1)
+        userLocationsDao.getUserLocationById(userLocation.locationId)?.let {
+            userLocationsDao.deleteUserLocation(it.locationId)
         }
-        assert(dao.getUserLocationsCount() == 0)
+        assert(userLocationsDao.getUserLocationsCount() == 0)
     }
 }

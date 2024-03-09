@@ -16,7 +16,7 @@ interface LocationsDao {
     @Query("SELECT * FROM locations WHERE city LIKE :query OR admin_name LIKE :query OR country LIKE :query ORDER BY city")
     fun getLocations(query: String = "%"): PagingSource<Int, LocationEntity>
 
-    @Query("SELECT * FROM locations WHERE location_id = :locationId")
+    @Query("SELECT * FROM locations WHERE id = :locationId")
     suspend fun getLocationById(locationId: String): LocationEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

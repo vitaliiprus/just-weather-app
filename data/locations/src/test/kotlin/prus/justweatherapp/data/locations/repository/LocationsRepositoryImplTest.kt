@@ -72,7 +72,7 @@ class LocationsRepositoryImplTest {
             return false
 
         for (i in daoLocations.indices) {
-            if (daoLocations[i].locationId != repositoryLocations[i].id)
+            if (daoLocations[i].id != repositoryLocations[i].id)
                 return false
         }
         return true

@@ -15,10 +15,7 @@ data class LocationEntity(
 
     @PrimaryKey
     @ColumnInfo(name = "id")
-    val id: Int,
-
-    @ColumnInfo(name = "location_id")
-    val locationId: String = id.toString(),
+    val id: String,
 
     @ColumnInfo(name = "city")
     val city: String,

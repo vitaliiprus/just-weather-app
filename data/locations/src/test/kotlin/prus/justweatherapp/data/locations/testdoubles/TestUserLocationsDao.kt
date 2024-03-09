@@ -22,8 +22,7 @@ class TestUserLocationsDao : UserLocationsDao {
         for (i in 1..30) {
             locations.add(
                 LocationEntity(
-                    id = i + 1,
-                    locationId = "id_$i",
+                    id = "id_$i",
                     city = "City$i",
                     adminName = "Admin$i",
                     country = "Country$i",
@@ -91,7 +90,7 @@ class TestUserLocationsDao : UserLocationsDao {
     }
 
     override suspend fun getUserLocationById(locationId: String): UserLocationDbModel? {
-        locations.find { it.locationId == locationId }?.let { location ->
+        locations.find { it.id == locationId }?.let { location ->
             userLocations.find { it.locationId == locationId }?.let { userLocation ->
                 return UserLocationDbModel(
                     userLocation.locationId,

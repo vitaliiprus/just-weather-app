@@ -18,8 +18,7 @@ class TestLocationsDao : LocationsDao {
         for (i in 1..30) {
             locations.add(
                 LocationEntity(
-                    id = i + 1,
-                    locationId = "id_$i",
+                    id = "id_$i",
                     city = "City$i",
                     adminName = "Admin$i",
                     country = "Country$i",
@@ -47,7 +46,7 @@ class TestLocationsDao : LocationsDao {
 
     override suspend fun getLocationById(locationId: String): LocationEntity? {
         locations.forEach { location ->
-            if (location.locationId == locationId)
+            if (location.id == locationId)
                 return location
         }
         return null

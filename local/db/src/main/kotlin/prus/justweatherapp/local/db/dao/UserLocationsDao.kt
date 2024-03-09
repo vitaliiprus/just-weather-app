@@ -31,10 +31,10 @@ interface UserLocationsDao {
     @Query("SELECT COUNT() FROM user_locations")
     suspend fun getUserLocationsCount(): Int
 
-    @Query("SELECT * FROM user_locations JOIN locations ON locations.location_id = user_locations.location_id ORDER BY order_index")
+    @Query("SELECT * FROM user_locations JOIN locations ON locations.id = user_locations.location_id ORDER BY order_index")
     fun getUserLocations(): Flow<List<UserLocationDbModel>>
 
-    @Query("SELECT * FROM user_locations JOIN locations ON locations.location_id = user_locations.location_id WHERE user_locations.location_id = :locationId")
+    @Query("SELECT * FROM user_locations JOIN locations ON locations.id = user_locations.location_id WHERE user_locations.location_id = :locationId")
     suspend fun getUserLocationById(locationId: String): UserLocationDbModel?
 
     @Query("DELETE FROM user_locations WHERE location_id = :locationId")
