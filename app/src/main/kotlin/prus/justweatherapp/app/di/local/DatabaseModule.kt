@@ -9,6 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import prus.justweatherapp.local.db.AppDatabase
 import prus.justweatherapp.local.db.dao.LocationsDao
 import prus.justweatherapp.local.db.dao.UserLocationsDao
+import prus.justweatherapp.local.db.dao.WeatherDao
 import javax.inject.Singleton
 
 @Module
@@ -31,5 +32,11 @@ class DatabaseModule {
     @Provides
     fun provideUserLocationsDao(appDatabase: AppDatabase): UserLocationsDao {
         return appDatabase.userLocationsDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideWeatherDao(appDatabase: AppDatabase): WeatherDao {
+        return appDatabase.weatherDao()
     }
 }

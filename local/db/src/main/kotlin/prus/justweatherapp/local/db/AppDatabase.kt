@@ -11,20 +11,25 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import prus.justweatherapp.local.db.dao.LocationsDao
 import prus.justweatherapp.local.db.dao.UserLocationsDao
+import prus.justweatherapp.local.db.dao.WeatherDao
 import prus.justweatherapp.local.db.entity.LocationEntity
 import prus.justweatherapp.local.db.entity.UserLocationEntity
+import prus.justweatherapp.local.db.entity.WeatherEntity
 import prus.justweatherapp.local.db.worker.SeedDatabaseWorker
 import prus.justweatherapp.local.db.worker.SeedDatabaseWorker.Companion.KEY_FILENAME
 
 @Database(
-    entities = [LocationEntity::class, UserLocationEntity::class],
+    entities = [LocationEntity::class, UserLocationEntity::class, WeatherEntity::class],
     version = 1,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun locationsDao(): LocationsDao
+
     abstract fun userLocationsDao(): UserLocationsDao
+
+    abstract fun weatherDao(): WeatherDao
 
     companion object {
 
