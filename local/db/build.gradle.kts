@@ -33,6 +33,7 @@ dependencies {
     implementation(libs.androidx.paging.common)
     implementation(libs.androidx.work)
     implementation(libs.kotlinx.serialization)
+    implementation(libs.kotlinx.datetime)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.android)
