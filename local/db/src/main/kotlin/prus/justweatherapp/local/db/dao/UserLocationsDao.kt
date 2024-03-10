@@ -7,7 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 import prus.justweatherapp.local.db.entity.UserLocationEntity
-import prus.justweatherapp.local.db.model.UserLocationDbModel
+import prus.justweatherapp.local.db.model.UserLocationDBO
 
 @Dao
 interface UserLocationsDao {
@@ -32,10 +32,10 @@ interface UserLocationsDao {
     suspend fun getUserLocationsCount(): Int
 
     @Query("SELECT * FROM user_locations JOIN locations ON locations.id = user_locations.location_id ORDER BY order_index")
-    fun getUserLocations(): Flow<List<UserLocationDbModel>>
+    fun getUserLocations(): Flow<List<UserLocationDBO>>
 
     @Query("SELECT * FROM user_locations JOIN locations ON locations.id = user_locations.location_id WHERE user_locations.location_id = :locationId")
-    suspend fun getUserLocationById(locationId: String): UserLocationDbModel?
+    suspend fun getUserLocationById(locationId: String): UserLocationDBO?
 
     @Query("DELETE FROM user_locations WHERE location_id = :locationId")
     suspend fun deleteUserLocation(locationId: String)

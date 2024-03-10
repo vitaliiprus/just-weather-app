@@ -2,9 +2,9 @@ package prus.justweatherapp.data.locations.mapper
 
 import prus.justweatherapp.domain.locations.model.Location
 import prus.justweatherapp.local.db.entity.UserLocationEntity
-import prus.justweatherapp.local.db.model.UserLocationDbModel
+import prus.justweatherapp.local.db.model.UserLocationDBO
 
-internal fun UserLocationDbModel.mapToDomainModel() =
+internal fun UserLocationDBO.mapToDomainModel() =
     Location(
         id = this.locationId,
         city = this.city,
@@ -16,7 +16,7 @@ internal fun UserLocationDbModel.mapToDomainModel() =
         lat = this.lat
     )
 
-internal fun List<UserLocationDbModel>.mapToDomainModels() =
+internal fun List<UserLocationDBO>.mapToDomainModels() =
     map {
         it.mapToDomainModel()
     }

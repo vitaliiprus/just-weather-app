@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.flow
 import prus.justweatherapp.local.db.dao.UserLocationsDao
 import prus.justweatherapp.local.db.entity.LocationEntity
 import prus.justweatherapp.local.db.entity.UserLocationEntity
-import prus.justweatherapp.local.db.model.UserLocationDbModel
+import prus.justweatherapp.local.db.model.UserLocationDBO
 
 class TestUserLocationsDao : UserLocationsDao {
 
@@ -69,12 +69,12 @@ class TestUserLocationsDao : UserLocationsDao {
         return userLocations.size
     }
 
-    override fun getUserLocations(): Flow<List<UserLocationDbModel>> = flow {
-        val result = mutableListOf<UserLocationDbModel>()
+    override fun getUserLocations(): Flow<List<UserLocationDBO>> = flow {
+        val result = mutableListOf<UserLocationDBO>()
         userLocations.forEachIndexed { index, userLocation ->
             val location = locations[index]
             result.add(
-                UserLocationDbModel(
+                UserLocationDBO(
                     userLocation.locationId,
                     location.city,
                     location.adminName ?: "",
@@ -89,10 +89,10 @@ class TestUserLocationsDao : UserLocationsDao {
         emit(result)
     }
 
-    override suspend fun getUserLocationById(locationId: String): UserLocationDbModel? {
+    override suspend fun getUserLocationById(locationId: String): UserLocationDBO? {
         locations.find { it.id == locationId }?.let { location ->
             userLocations.find { it.locationId == locationId }?.let { userLocation ->
-                return UserLocationDbModel(
+                return UserLocationDBO(
                     userLocation.locationId,
                     location.city,
                     location.adminName ?: "",

@@ -2,7 +2,7 @@ package prus.justweatherapp.local.db.model
 
 import androidx.room.ColumnInfo
 
-data class UserLocationDbModel(
+data class UserLocationDBO(
     @ColumnInfo("location_id")
     val locationId: String,
 
