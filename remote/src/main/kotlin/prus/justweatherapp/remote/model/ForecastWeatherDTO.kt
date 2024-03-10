@@ -7,4 +7,5 @@ import kotlinx.serialization.Serializable
 data class ForecastWeatherDTO(
     @SerialName("cod") val code: Int,
     @SerialName("list") val list: List<ForecastWeatherDataDTO>,
+    @SerialName("city") val city: CityDTO,
 )

@@ -19,8 +19,8 @@ import org.junit.runner.RunWith
 import prus.justweatherapp.local.db.AppDatabase
 import prus.justweatherapp.local.db.entity.LocationEntity
 import prus.justweatherapp.local.db.entity.WeatherEntity
-import prus.justweatherapp.local.db.model.MainWeatherData
-import prus.justweatherapp.local.db.model.Wind
+import prus.justweatherapp.local.db.model.MainWeatherDataDBO
+import prus.justweatherapp.local.db.model.WindDBO
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -30,7 +30,6 @@ class WeatherDaoTest {
     private lateinit var locationsDao: LocationsDao
 
     private val dbLocations = initDbLocations()
-    private var weatherId = 1
 
     @Before
     fun setup() {
@@ -41,7 +40,6 @@ class WeatherDaoTest {
 
         weatherDao = database.weatherDao()
         locationsDao = database.locationsDao()
-        weatherId = 1
 
         runBlocking {
             locationsDao.insertAll(dbLocations)
@@ -145,19 +143,21 @@ class WeatherDaoTest {
 
     private fun createWeatherEntity(locationId: String, dateTime: LocalDateTime): WeatherEntity {
         return WeatherEntity(
-            id = weatherId,
             locationId = locationId,
             dateTime = dateTime,
             main = createMainWeatherData(),
             weatherConditions = 0,
             wind = createWind(),
             visibility = 10000,
-            probOfPrecipitations = 0.0
-        ).also { weatherId++ }
+            probOfPrecipitations = 0.0,
+            sunrise = dateTime,
+            sunset = dateTime,
+            timezoneOffset = 0
+        )
     }
 
-    private fun createMainWeatherData(): MainWeatherData {
-        return MainWeatherData(
+    private fun createMainWeatherData(): MainWeatherDataDBO {
+        return MainWeatherDataDBO(
             temp = 290.0,
             feelsLike = 290.0,
             tempMin = 290.0,
@@ -167,8 +167,8 @@ class WeatherDaoTest {
         )
     }
 
-    private fun createWind(): Wind {
-        return Wind(
+    private fun createWind(): WindDBO {
+        return WindDBO(
             speed = 10.0,
             gust = 10.0,
             degree = 0.0
