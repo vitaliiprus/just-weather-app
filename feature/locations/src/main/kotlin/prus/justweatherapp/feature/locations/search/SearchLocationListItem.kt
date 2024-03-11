@@ -21,7 +21,7 @@ import prus.justweatherapp.theme.AppTheme
 import prus.justweatherapp.theme.accent
 
 @Composable
-fun SearchLocationListItem(
+internal fun SearchLocationListItem(
     location: SearchLocationUiModel,
     onClick: (locationId: String) -> Unit = {}
 ) {
@@ -46,7 +46,7 @@ fun SearchLocationListItem(
 }
 
 @Composable
-fun getAnnotatedString(
+private fun getAnnotatedString(
     location: SearchLocationUiModel
 ) = buildAnnotatedString {
 
@@ -89,7 +89,7 @@ fun getAnnotatedString(
 }
 
 @Composable
-fun getAnnotatedPart(name: String, occurrences: List<Pair<Int, Int>>, unselectedColor: Color) =
+private fun getAnnotatedPart(name: String, occurrences: List<Pair<Int, Int>>, unselectedColor: Color) =
     buildAnnotatedString {
         var index = 0
         occurrences.forEach {

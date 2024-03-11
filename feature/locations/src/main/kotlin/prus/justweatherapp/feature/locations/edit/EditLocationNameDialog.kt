@@ -65,7 +65,7 @@ internal fun EditLocationNameDialog(
 }
 
 @Composable
-internal fun EditLocationNameDialog(
+private fun EditLocationNameDialog(
     state: EditLocationNameUiState,
     onDisplayNameChanged: (String) -> Unit,
     onRestoreOriginalClicked: () -> Unit,

@@ -47,7 +47,7 @@ internal fun AddLocationRoute(
 }
 
 @Composable
-internal fun AddLocationScreen(
+private fun AddLocationScreen(
     state: AddLocationUiState,
     onBackClicked: () -> Unit,
     onAddLocationClicked: () -> Unit,

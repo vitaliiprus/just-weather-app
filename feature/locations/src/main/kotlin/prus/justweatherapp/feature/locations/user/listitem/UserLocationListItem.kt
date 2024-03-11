@@ -49,7 +49,7 @@ import prus.justweatherapp.theme.Dimens
 import prus.justweatherapp.theme.contentPaddings
 
 @Composable
-fun UserLocationListItem(
+internal fun UserLocationListItem(
     modifier: Modifier = Modifier,
     location: LocationUiModel,
     isEditing: Boolean = false,
