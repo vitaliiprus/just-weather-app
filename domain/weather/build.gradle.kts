@@ -25,6 +25,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:common"))
+
     implementation(libs.bundles.kotlinx.coroutines)
     implementation(libs.timber)
     implementation(libs.kotlinx.datetime)
