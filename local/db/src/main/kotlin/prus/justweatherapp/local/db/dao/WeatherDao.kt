@@ -18,13 +18,13 @@ interface WeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(weatherEntities: List<WeatherEntity>)
 
-    @Query("SELECT * FROM weather WHERE location_id = :locationId AND date_time > :dateFrom")
-    suspend fun getWeatherByLocationId(
+    @Query("SELECT * FROM weather WHERE location_id = :locationId AND date_time > :dateFrom ORDER BY date_time DESC LIMIT 1")
+    suspend fun getCurrentWeatherByLocationId(
         locationId: String,
         dateFrom: LocalDateTime = Clock.System.now()
             .plus(-3, DateTimeUnit.HOUR)
             .toLocalDateTime(TimeZone.currentSystemDefault())
-    ): List<WeatherEntity>
+    ): WeatherEntity?
 
     @Query("DELETE FROM weather WHERE date_time < :dateTo")
     suspend fun deleteOutdatedEntities(

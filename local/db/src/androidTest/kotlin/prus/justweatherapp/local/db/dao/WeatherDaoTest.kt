@@ -11,6 +11,7 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import org.junit.After
 import org.junit.Before
@@ -21,6 +22,7 @@ import prus.justweatherapp.local.db.entity.LocationEntity
 import prus.justweatherapp.local.db.entity.WeatherEntity
 import prus.justweatherapp.local.db.model.MainWeatherDataDBO
 import prus.justweatherapp.local.db.model.WindDBO
+import kotlin.math.abs
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -105,9 +107,16 @@ class WeatherDaoTest {
         )
         weatherDao.insertAll(list)
 
-        val data = weatherDao.getWeatherByLocationId(locationId1)
+        val data = weatherDao.getCurrentWeatherByLocationId(locationId1)
 
-        assert(data.size == 2)
+        assert(
+            data != null && abs(
+                data.dateTime.toInstant(TimeZone.currentSystemDefault())
+                    .toEpochMilliseconds() -
+                        time1.toInstant(TimeZone.currentSystemDefault())
+                            .toEpochMilliseconds()
+            ) < 1000
+        )
     }
 
     @Test
