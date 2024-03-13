@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import prus.justweatherapp.core.common.result.asResult
+import prus.justweatherapp.core.common.result.RequestResult
 import prus.justweatherapp.core.common.util.CoroutineTimer
 import prus.justweatherapp.core.common.util.formatTime
 import prus.justweatherapp.core.common.util.getLocationCurrentTime
@@ -65,13 +65,32 @@ class UserLocationListItemViewModel @AssistedInject constructor(
     private fun getLocationWeather(locationId: String) {
         viewModelScope.launch {
             getLocationWeatherUseCase(locationId)
-                .asResult()
-                .collect { result ->
-                    result.getOrNull()?.let { weather ->
-                        _state.value = state.value.copy(
-                            weatherState = WeatherState.Success(weather.mapToUiModel())
-                        )
-                        onNewTimeZoneOffset(weather.timezoneOffset)
+                .collect { requestResult ->
+                    _state.value = when (requestResult) {
+                        is RequestResult.Success -> {
+                            val data = checkNotNull(requestResult.data)
+                            onNewTimeZoneOffset(data.timezoneOffset)
+                            state.value.copy(
+                                weatherState = WeatherState.Success(
+                                    weather = data.mapToUiModel()
+                                )
+                            )
+                        }
+
+                        is RequestResult.Loading -> {
+                            state.value.copy(
+                                weatherState = WeatherState.Loading
+                            )
+                        }
+
+                        is RequestResult.Error -> {
+                            val message = requestResult.throwable?.message ?: ""
+                            state.value.copy(
+                                weatherState = WeatherState.Error(
+                                    message = UiText.DynamicString(message)
+                                )
+                            )
+                        }
                     }
                 }
         }

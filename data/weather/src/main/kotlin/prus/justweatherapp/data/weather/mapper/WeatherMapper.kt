@@ -63,6 +63,16 @@ internal fun WindDTO.mapToDBO() =
         degree = this.degree,
     )
 
+internal fun CurrentWeatherDTO.mapToCurrentWeatherDomainModel(locationId: String) =
+    CurrentWeather(
+        locationId = locationId,
+        timezoneOffset = this.timezoneOffset,
+        currentTemp = this.main.temp,
+        minTemp = this.main.tempMin,
+        maxTemp = this.main.tempMax,
+        weatherConditions = mapWeatherConditionsIdToDomainModel(this.weather.getOrNull(0)?.id),
+    )
+
 internal fun WeatherEntity.mapToCurrentWeatherDomainModel() =
     CurrentWeather(
         locationId = this.locationId,

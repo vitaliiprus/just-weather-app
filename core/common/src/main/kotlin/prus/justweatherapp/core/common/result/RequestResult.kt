@@ -1,15 +1,38 @@
 package prus.justweatherapp.core.common.result
 
-sealed class RequestResult<T>(internal val data: T? = null) {
-    class Loading<T>(data: T? = null) : RequestResult<T>(data)
+sealed class RequestResult<out T>(val data: T? = null) {
     class Success<T>(data: T) : RequestResult<T>(data)
-    class Error<T>(data: T?) : RequestResult<T>()
+    class Loading<T>(data: T? = null) : RequestResult<T>(data)
+    class Error<T>(data: T? = null, val throwable: Throwable? = null) : RequestResult<T>()
 }
 
-fun <T> Result<T>.toRequestResult(): RequestResult<T> {
+fun <I, O> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
+    return when (this) {
+        is RequestResult.Success -> {
+            RequestResult.Success(
+                data = mapper(checkNotNull(data))
+            )
+        }
+
+        is RequestResult.Loading -> {
+            RequestResult.Loading(
+                data = data?.let(mapper)
+            )
+        }
+
+        is RequestResult.Error -> {
+            RequestResult.Error(
+                data = data?.let(mapper),
+                throwable = throwable
+            )
+        }
+    }
+}
+
+fun <T : Any> Result<T>.toRequestResult(): RequestResult<T> {
     return when {
         isSuccess -> RequestResult.Success(getOrThrow())
-        isFailure -> RequestResult.Error(null)
+        isFailure -> RequestResult.Error(throwable = this.exceptionOrNull())
         else -> error("Impossible error")
     }
 }
