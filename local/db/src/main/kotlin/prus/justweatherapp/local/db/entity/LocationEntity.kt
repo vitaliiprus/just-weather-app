@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import prus.justweatherapp.local.db.serializer.StringAsLong
 
 @Entity(tableName = "locations")
 @Parcelize
@@ -14,8 +15,9 @@ import kotlinx.serialization.Serializable
 data class LocationEntity(
 
     @PrimaryKey
+    @SerialName("id")
     @ColumnInfo(name = "id")
-    val id: String,
+    val id: StringAsLong,
 
     @ColumnInfo(name = "city")
     val city: String,
