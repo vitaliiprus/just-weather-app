@@ -5,7 +5,7 @@ import prus.justweatherapp.remote.model.ForecastWeatherDTO
 
 interface WeatherDataSource {
 
-    suspend fun getCurrentWeatherData(lat: Double, lon: Double): CurrentWeatherDTO
+    suspend fun getCurrentWeatherData(lat: Double, lon: Double): Result<CurrentWeatherDTO>
 
-    suspend fun getForecastWeatherData(lat: Double, lon: Double): ForecastWeatherDTO
+    suspend fun getForecastWeatherData(lat: Double, lon: Double): Result<ForecastWeatherDTO>
 }

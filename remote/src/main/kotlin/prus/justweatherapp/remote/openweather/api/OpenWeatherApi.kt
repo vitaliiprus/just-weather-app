@@ -12,12 +12,12 @@ interface OpenWeatherApi {
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("appid") apiKey: String,
-    ): CurrentWeatherDTO
+    ): Result<CurrentWeatherDTO>
 
     @GET("forecast")
     suspend fun getForecastWeather(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("appid") apiKey: String,
-    ): ForecastWeatherDTO
+    ): Result<ForecastWeatherDTO>
 }

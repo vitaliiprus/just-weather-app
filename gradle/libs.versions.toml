@@ -35,12 +35,13 @@ kotlinx-coroutines = "1.7.3"
 
 retrofit2-runtime = "2.9.0"
 retrofit2-koltinx-serialization = "1.0.0"
+retrofit-result-adapter = "1.0.9"
 okhttp3 = "4.12.0"
 coil = "2.5.0"
 
 room = "2.6.1"
-datastore= "1.0.0"
-security-crypto="1.0.0"
+datastore = "1.0.0"
+security-crypto = "1.0.0"
 gson = "2.10.1"
 
 timber = "5.0.1"
@@ -96,6 +97,7 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 retrofit2-runtime = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit2-runtime" }
 retrofit2-koltinx-serialization = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2-koltinx-serialization" }
 retrofit2-converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit2-runtime" }
+retrofit-result-adapter = { module = "com.github.skydoves:retrofit-adapters-result", version.ref = "retrofit-result-adapter" }
 okhttp3 = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp3" }
 okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp3" }
 
@@ -107,7 +109,7 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
 
 datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
-security-crypto = {module = "androidx.security:security-crypto", version.ref = "security-crypto"}
+security-crypto = { module = "androidx.security:security-crypto", version.ref = "security-crypto" }
 
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-accompanist" }
 
@@ -116,14 +118,14 @@ androidx-paging-common = { module = "androidx.paging:paging-common-ktx", version
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging-compose" }
 androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "androidx-paging" }
 
-timber = {module = "com.jakewharton.timber:timber", version.ref = "timber"}
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
-leakcanary = {module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary"}
+leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 
-junit = {module = "junit:junit", version.ref = "junit"}
-junit_android = {module = "androidx.test.ext:junit", version.ref = "junit_android"}
-test_runner = {module = "androidx.test:runner", version.ref = "test_runner"}
-espresso = {module = "androidx.test.espresso:espresso-core", version.ref = "espresso"}
+junit = { module = "junit:junit", version.ref = "junit" }
+junit_android = { module = "androidx.test.ext:junit", version.ref = "junit_android" }
+test_runner = { module = "androidx.test:runner", version.ref = "test_runner" }
+espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 
 [bundles]
 androidx-compose = [
@@ -138,7 +140,26 @@ androidx-lifecycle = [
     "androidx-lifecycle-runtime-compose",
     "androidx-lifecycle-viewmodel-compose"
 ]
-kotlinx-coroutines = ["kotlinx-coroutines-android", "kotlinx-coroutines-core"]
-retrofit2 = ["retrofit2-runtime", "okhttp3", "okhttp3-logging-interceptor", "retrofit2-koltinx-serialization", "kotlinx-serialization", "retrofit2-converter-scalars"]
-room = ["room-runtime", "room-ktx", "room-paging"]
-androidx-paging = ["androidx-paging-runtime", "androidx-paging-common", "androidx-paging-compose"]
+kotlinx-coroutines = [
+    "kotlinx-coroutines-android",
+    "kotlinx-coroutines-core"
+]
+retrofit2 = [
+    "retrofit2-runtime",
+    "okhttp3",
+    "okhttp3-logging-interceptor",
+    "retrofit2-koltinx-serialization",
+    "kotlinx-serialization",
+    "retrofit2-converter-scalars",
+    "retrofit-result-adapter"
+]
+room = [
+    "room-runtime",
+    "room-ktx",
+    "room-paging"
+]
+androidx-paging = [
+    "androidx-paging-runtime",
+    "androidx-paging-common",
+    "androidx-paging-compose"
+]
