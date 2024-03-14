@@ -1,7 +1,6 @@
 package prus.justweatherapp.data.weather.mapper
 
-import prus.justweatherapp.domain.weather.model.CurrentWeather
-import prus.justweatherapp.domain.weather.model.ForecastWeather
+import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.model.WeatherConditions
 import prus.justweatherapp.domain.weather.model.Wind
 import prus.justweatherapp.local.db.entity.WeatherEntity
@@ -18,7 +17,7 @@ internal fun CurrentWeatherDTO.mapToDBO(locationId: String) =
         locationId = locationId,
         dateTime = this.dateTime,
         main = this.main.mapToDBO(),
-        weatherConditions = this.weather.first().id,
+        weatherConditions = this.weather.getOrNull(0)?.id,
         clouds = this.clouds?.all,
         rain = this.rain?.h1,
         snow = this.snow?.h1,
@@ -26,7 +25,8 @@ internal fun CurrentWeatherDTO.mapToDBO(locationId: String) =
         visibility = this.visibility,
         sunrise = this.sunTime.sunrise,
         sunset = this.sunTime.sunset,
-        timezoneOffset = this.timezoneOffset
+        timezoneOffset = this.timezoneOffset,
+        isForecast = false
     )
 
 internal fun ForecastWeatherDataDTO.mapToDBO(locationId: String, city: CityDTO) =
@@ -43,7 +43,8 @@ internal fun ForecastWeatherDataDTO.mapToDBO(locationId: String, city: CityDTO) 
         probOfPrecipitations = this.probOfPrecipitations,
         sunrise = city.sunrise,
         sunset = city.sunset,
-        timezoneOffset = city.timezoneOffset
+        timezoneOffset = city.timezoneOffset,
+        isForecast = true
     )
 
 internal fun MainWeatherDataDTO.mapToDBO() =
@@ -56,50 +57,33 @@ internal fun MainWeatherDataDTO.mapToDBO() =
         humidity = this.humidity,
     )
 
-internal fun WindDTO.mapToDBO() =
-    WindDBO(
-        speed = this.speed,
-        gust = this.gust,
-        degree = this.degree,
-    )
-
-internal fun CurrentWeatherDTO.mapToCurrentWeatherDomainModel(locationId: String) =
-    CurrentWeather(
-        locationId = locationId,
-        timezoneOffset = this.timezoneOffset,
-        currentTemp = this.main.temp,
-        minTemp = this.main.tempMin,
-        maxTemp = this.main.tempMax,
-        weatherConditions = mapWeatherConditionsIdToDomainModel(this.weather.getOrNull(0)?.id),
-    )
-
-internal fun WeatherEntity.mapToCurrentWeatherDomainModel() =
-    CurrentWeather(
+internal fun WeatherEntity.mapToDomainModel() =
+    Weather(
         locationId = this.locationId,
-        timezoneOffset = this.timezoneOffset,
-        currentTemp = this.main.temp,
-        minTemp = this.main.tempMin,
-        maxTemp = this.main.tempMax,
-        weatherConditions = mapWeatherConditionsIdToDomainModel(this.weatherConditions),
-    )
-
-internal fun WeatherEntity.mapToForecastWeatherDomainModel() =
-    ForecastWeather(
-        locationId = this.locationId,
-        dateTime = this.dateTime,
+        timezoneOffset = this.timezoneOffset, dateTime = this.dateTime,
         temp = this.main.temp,
         feelsLike = this.main.feelsLike,
         tempMin = this.main.tempMin,
         tempMax = this.main.tempMax,
         pressure = this.main.pressure,
         humidity = this.main.humidity,
-        weather = mapWeatherConditionsIdToDomainModel(this.weatherConditions),
+        weatherConditions = mapWeatherConditionsIdToDomainModel(this.weatherConditions),
         clouds = this.clouds,
         rain = this.rain,
         snow = this.snow,
         wind = this.wind.mapToDomainModel(),
         visibility = this.visibility,
         probOfPrecipitations = this.probOfPrecipitations
+    )
+
+internal fun CurrentWeatherDTO.mapToDomainModel(locationId: String) =
+    mapToDBO(locationId).mapToDomainModel()
+
+internal fun WindDTO.mapToDBO() =
+    WindDBO(
+        speed = this.speed,
+        gust = this.gust,
+        degree = this.degree,
     )
 
 internal fun WindDBO.mapToDomainModel() =
@@ -109,7 +93,7 @@ internal fun WindDBO.mapToDomainModel() =
         degree = this.degree,
     )
 
-fun mapWeatherConditionsIdToDomainModel(weatherConditionsId: Int?): WeatherConditions {
+internal fun mapWeatherConditionsIdToDomainModel(weatherConditionsId: Int?): WeatherConditions {
     return when (weatherConditionsId) {
         in (200..299) -> WeatherConditions.Thunderstorm
         in (300..399) -> WeatherConditions.ChanceRain

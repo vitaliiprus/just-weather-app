@@ -2,15 +2,15 @@ package prus.justweatherapp.feature.locations.mapper
 
 import prus.justweatherapp.core.ui.R
 import prus.justweatherapp.core.ui.UiText
-import prus.justweatherapp.domain.weather.model.CurrentWeather
+import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.model.WeatherConditions
 import prus.justweatherapp.feature.locations.model.CurrentWeatherUiModel
 import kotlin.math.roundToInt
 
-fun CurrentWeather.mapToUiModel(): CurrentWeatherUiModel =
+fun Weather.mapToUiModel(): CurrentWeatherUiModel =
     CurrentWeatherUiModel(
-        currentTemp = getCurrentTempString(this.currentTemp),
-        minMaxTemp = getMinMaxTempString(this.minTemp, this.maxTemp),
+        currentTemp = getCurrentTempString(this.temp),
+        minMaxTemp = getMinMaxTempString(this.tempMin, this.tempMax),
         weatherConditions = getWeatherConditionsString(this.weatherConditions),
         conditionImageResId = getWeatherConditionImageResId(this.weatherConditions)
     )
