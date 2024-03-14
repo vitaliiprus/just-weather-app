@@ -84,7 +84,7 @@ class UserLocationListItemViewModel @AssistedInject constructor(
                         }
 
                         is RequestResult.Error -> {
-                            val message = requestResult.throwable?.message ?: ""
+                            val message = requestResult.error?.message ?: ""
                             state.value.copy(
                                 weatherState = WeatherState.Error(
                                     message = UiText.DynamicString(message)
