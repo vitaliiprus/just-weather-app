@@ -26,6 +26,14 @@ interface WeatherDao {
             .toLocalDateTime(TimeZone.currentSystemDefault())
     ): WeatherEntity?
 
+    @Query("SELECT * FROM weather WHERE location_id = :locationId AND date_time > :dateFrom AND is_forecast == 1 ORDER BY date_time ASC LIMIT :limit")
+    suspend fun getForecastWeatherByLocationId(
+        locationId: String,
+        dateFrom: LocalDateTime = Clock.System.now()
+            .toLocalDateTime(TimeZone.currentSystemDefault()),
+        limit: Int
+    ): List<WeatherEntity>
+
     @Query("DELETE FROM weather WHERE date_time < :dateTo")
     suspend fun deleteOutdatedEntities(
         dateTo: LocalDateTime = Clock.System.now()

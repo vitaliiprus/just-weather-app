@@ -39,4 +39,5 @@ data class WeatherEntity(
     @ColumnInfo("sunrise") val sunrise: LocalDateTime,
     @ColumnInfo("sunset") val sunset: LocalDateTime,
     @SerialName("timezone_offset") val timezoneOffset: Int,
+    @ColumnInfo(name = "is_forecast") val isForecast: Boolean = false
 )
