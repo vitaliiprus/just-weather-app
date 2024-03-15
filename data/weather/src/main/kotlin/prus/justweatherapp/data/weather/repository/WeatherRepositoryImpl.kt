@@ -35,7 +35,7 @@ class WeatherRepositoryImpl @Inject constructor(
     private val currentWeatherDataRefreshTimeMinutes = 30
     private val forecastWeatherListMaxSize = 40
 
-    override suspend fun getCurrentWeatherByLocationId(
+    override fun getCurrentWeatherByLocationId(
         locationId: String
     ): Flow<RequestResult<Weather?>> = flow {
         getCurrentWeatherFromDb(locationId)
@@ -104,7 +104,7 @@ class WeatherRepositoryImpl @Inject constructor(
         weatherDao.insertAll(response)
     }
 
-    override suspend fun getForecastWeatherByLocationId(
+    override fun getForecastWeatherByLocationId(
         locationId: String,
     ): Flow<RequestResult<List<Weather>>> = flow {
         val mergeStrategy = ForecastWeatherMergeStrategy<List<Weather>>()

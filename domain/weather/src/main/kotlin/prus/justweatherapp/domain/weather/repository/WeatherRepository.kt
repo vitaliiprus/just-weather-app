@@ -6,7 +6,7 @@ import prus.justweatherapp.domain.weather.model.Weather
 
 interface WeatherRepository {
 
-    suspend fun getCurrentWeatherByLocationId(locationId: String): Flow<RequestResult<Weather?>>
+    fun getCurrentWeatherByLocationId(locationId: String): Flow<RequestResult<Weather?>>
 
-    suspend fun getForecastWeatherByLocationId(locationId: String): Flow<RequestResult<List<Weather>>>
+    fun getForecastWeatherByLocationId(locationId: String): Flow<RequestResult<List<Weather>>>
 }
