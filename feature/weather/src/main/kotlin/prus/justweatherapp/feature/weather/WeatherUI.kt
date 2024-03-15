@@ -1,20 +1,42 @@
 package prus.justweatherapp.feature.weather
 
 import android.widget.Toast
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import prus.justweatherapp.core.ui.components.JwaButton
+import prus.justweatherapp.feature.weather.location.LocationWeatherUI
+import prus.justweatherapp.theme.AppTheme
 
 @Composable
 fun WeatherUI() {
     val viewModel: WeatherViewModel = hiltViewModel()
-    val state = viewModel.state.screenState
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
+    WeatherUI(
+        state = state
+    )
+
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun WeatherUI(
+    state: WeatherUiState
+) {
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -22,21 +44,58 @@ fun WeatherUI() {
     )
     {
         val context = LocalContext.current
+        val pagerState = rememberPagerState(
+            pageCount = { if (state is WeatherUiState.Success) state.locationIds.size else 0 }
+        )
 
         when (state) {
-            is ScreenState.Error -> {
+            is WeatherUiState.Error -> {
                 Toast.makeText(context, state.message, Toast.LENGTH_LONG).show()
             }
 
-            is ScreenState.Loading -> {
-//                ScreenProgress()
+            is WeatherUiState.Loading -> {
+                CircularProgressIndicator()
             }
 
-            ScreenState.Success -> {
-                Text(
-                    text = "Weather"
+            WeatherUiState.Empty -> {
+                JwaButton(
+                    text = stringResource(id = R.string.find_locations)
                 )
             }
+
+            is WeatherUiState.Success -> {
+                HorizontalPager(
+                    state = pagerState
+                ) { pageIndex ->
+                    LocationWeatherUI(
+                        locationId = state.locationIds[pageIndex]
+                    )
+                }
+            }
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun WeatherUILoadingPreview() {
+    AppTheme {
+        Surface {
+            WeatherUI(
+                state = WeatherUiState.Loading
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun WeatherUIEmptyPreview() {
+    AppTheme {
+        Surface {
+            WeatherUI(
+                state = WeatherUiState.Empty
+            )
         }
     }
 }
