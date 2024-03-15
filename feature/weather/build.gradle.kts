@@ -38,11 +38,14 @@ kapt {
 }
 
 dependencies {
+    implementation(project(":domain:weather"))
+    implementation(project(":domain:locations"))
     implementation(project(":theme"))
     implementation(project(":core:common"))
     implementation(project(":core:ui"))
 
     implementation(libs.androidx.core)
+    implementation(libs.bundles.androidx.lifecycle)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)

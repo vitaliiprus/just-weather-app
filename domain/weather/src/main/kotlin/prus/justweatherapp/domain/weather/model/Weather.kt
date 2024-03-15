@@ -10,6 +10,7 @@ data class Weather(
     val feelsLike: Double,
     val tempMin: Double,
     val tempMax: Double,
+    val tempScale: TempScale,
     val pressure: Double,
     val humidity: Double,
     val weatherConditions: WeatherConditions,

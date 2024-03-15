@@ -16,11 +16,11 @@ fun Weather.mapToUiModel(): CurrentWeatherUiModel =
     )
 
 private fun getCurrentTempString(currentTemp: Double): String {
-    return "${(currentTemp - 273.15).roundToInt()}º"
+    return "${currentTemp.roundToInt()}º"
 }
 
 private fun getMinMaxTempString(minTemp: Double, maxTemp: Double): String {
-    return "↓${(minTemp - 273.15).roundToInt()}º ↑${(maxTemp - 273.15).roundToInt()}º"
+    return "↓${minTemp.roundToInt()}º ↑${maxTemp.roundToInt()}º"
 }
 
 private fun getWeatherConditionsString(weatherConditions: WeatherConditions): UiText {

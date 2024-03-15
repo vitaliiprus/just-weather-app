@@ -1,5 +1,6 @@
 package prus.justweatherapp.data.weather.mapper
 
+import prus.justweatherapp.domain.weather.model.TempScale
 import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.model.WeatherConditions
 import prus.justweatherapp.domain.weather.model.Wind
@@ -65,6 +66,7 @@ internal fun WeatherEntity.mapToDomainModel() =
         feelsLike = this.main.feelsLike,
         tempMin = this.main.tempMin,
         tempMax = this.main.tempMax,
+        tempScale = TempScale.KELVIN,
         pressure = this.main.pressure,
         humidity = this.main.humidity,
         weatherConditions = mapWeatherConditionsIdToDomainModel(this.weatherConditions),

@@ -18,13 +18,13 @@ import prus.justweatherapp.core.common.util.formatTime
 import prus.justweatherapp.core.common.util.getLocationCurrentTime
 import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.domain.locations.usecase.GetUserLocationByIdUseCase
-import prus.justweatherapp.domain.weather.usecase.GetLocationWeatherUseCase
+import prus.justweatherapp.domain.weather.usecase.GetLocationCurrentWeatherUseCase
 import prus.justweatherapp.feature.locations.mapper.mapToUiModel
 
 @HiltViewModel(assistedFactory = UserLocationListItemViewModel.UserLocationListItemViewModelFactory::class)
 class UserLocationListItemViewModel @AssistedInject constructor(
     val getUserLocationByIdUseCase: GetUserLocationByIdUseCase,
-    val getLocationWeatherUseCase: GetLocationWeatherUseCase,
+    val getLocationCurrentWeatherUseCase: GetLocationCurrentWeatherUseCase,
     @Assisted val locationId: String
 ) : ViewModel() {
 
@@ -64,7 +64,7 @@ class UserLocationListItemViewModel @AssistedInject constructor(
 
     private fun getLocationWeather(locationId: String) {
         viewModelScope.launch {
-            getLocationWeatherUseCase(locationId)
+            getLocationCurrentWeatherUseCase(locationId)
                 .collect { requestResult ->
                     _state.value = when (requestResult) {
                         is RequestResult.Success -> {
