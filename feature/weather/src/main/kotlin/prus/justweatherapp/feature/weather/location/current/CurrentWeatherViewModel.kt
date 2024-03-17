@@ -19,7 +19,7 @@ import kotlin.math.roundToInt
 @HiltViewModel(assistedFactory = CurrentWeatherViewModel.ViewModelFactory::class)
 class CurrentWeatherViewModel @AssistedInject constructor(
     @Assisted val locationId: String,
-    getCurrentWeatherUiState: GetLocationCurrentWeatherUseCase
+    getCurrentWeatherUseCase: GetLocationCurrentWeatherUseCase
 ) : ViewModel() {
 
     @AssistedFactory
@@ -28,7 +28,7 @@ class CurrentWeatherViewModel @AssistedInject constructor(
     }
 
     val state: StateFlow<CurrentWeatherUiState> =
-        getCurrentWeatherUiState(locationId)
+        getCurrentWeatherUseCase(locationId)
             .map { result ->
                 when (result) {
                     is RequestResult.Error -> CurrentWeatherUiState.Error(result.error?.message)
@@ -46,8 +46,8 @@ class CurrentWeatherViewModel @AssistedInject constructor(
                 initialValue = CurrentWeatherUiState.Loading
             )
 
-    private fun mapToUiModel(data: Weather): WeatherUiModel {
-        return WeatherUiModel(
+    private fun mapToUiModel(data: Weather): CurrentWeatherUiModel {
+        return CurrentWeatherUiModel(
             temp = getTempString(data.temp, true, data.tempScale),
             feelsLike = getTempString(data.feelsLike, false),
             tempMinMax = getTempMinMaxString(data.tempMin, data.tempMax)

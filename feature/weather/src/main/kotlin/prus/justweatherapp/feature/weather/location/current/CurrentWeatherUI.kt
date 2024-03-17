@@ -38,7 +38,7 @@ fun CurrentWeatherUI(
 }
 
 @Composable
-fun CurrentWeatherUI(
+private fun CurrentWeatherUI(
     modifier: Modifier = Modifier,
     state: CurrentWeatherUiState
 ) {
@@ -95,7 +95,7 @@ private fun CurrentWeatherUISuccessPreview(
         Surface {
             CurrentWeatherUI(
                 state = CurrentWeatherUiState.Success(
-                    weather = WeatherUiModel(
+                    weather = CurrentWeatherUiModel(
                         temp = "15ºC",
                         feelsLike = "14ºC",
                         tempMinMax = "↓6º ↑18º"
