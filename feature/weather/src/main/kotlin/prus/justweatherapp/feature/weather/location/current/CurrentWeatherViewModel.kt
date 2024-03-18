@@ -11,9 +11,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import prus.justweatherapp.core.common.result.RequestResult
+import prus.justweatherapp.core.common.util.formatDateTime
+import prus.justweatherapp.core.common.util.formatTime
 import prus.justweatherapp.domain.weather.model.TempScale
 import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.usecase.GetLocationCurrentWeatherUseCase
+import prus.justweatherapp.feature.weather.mapper.getWeatherConditionImageResId
+import prus.justweatherapp.feature.weather.mapper.getWeatherConditionsString
 import kotlin.math.roundToInt
 
 @HiltViewModel(assistedFactory = CurrentWeatherViewModel.ViewModelFactory::class)
@@ -48,9 +52,16 @@ class CurrentWeatherViewModel @AssistedInject constructor(
 
     private fun mapToUiModel(data: Weather): CurrentWeatherUiModel {
         return CurrentWeatherUiModel(
+            dateTime = data.dateTime.formatDateTime(),
             temp = getTempString(data.temp, true, data.tempScale),
             feelsLike = getTempString(data.feelsLike, false),
-            tempMinMax = getTempMinMaxString(data.tempMin, data.tempMax)
+            tempMinMax = getTempMinMaxString(data.tempMin, data.tempMax),
+            weatherConditions = getWeatherConditionsString(data.weatherConditions),
+            conditionImageResId = getWeatherConditionImageResId(data.weatherConditions),
+            //TODO: handle polar day and polar night
+            sunrise = data.sunrise.formatTime(),
+            daylight = data.daylight.formatTime(),
+            sunset = data.sunset.formatTime(),
         )
     }
 

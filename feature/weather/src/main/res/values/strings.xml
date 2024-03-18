@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="find_locations">Find locations</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="daylight">Daylight</string>
+    <string name="sunset">Sunset</string>
 </resources>
