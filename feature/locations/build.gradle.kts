@@ -40,6 +40,7 @@ kapt {
 }
 
 dependencies {
+    implementation(project(":feature:weather"))
     implementation(project(":domain:locations"))
     implementation(project(":domain:weather"))
     implementation(project(":theme"))
