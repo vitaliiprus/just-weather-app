@@ -1,6 +1,7 @@
 package prus.justweatherapp.domain.weather.model
 
 import kotlinx.datetime.LocalDateTime
+import kotlin.time.Duration
 
 data class Weather(
     val locationId: String,
@@ -20,4 +21,7 @@ data class Weather(
     val wind: Wind? = null,
     val visibility: Int? = null,
     val probOfPrecipitations: Double? = null,
+    val sunrise: LocalDateTime,
+    val sunset: LocalDateTime,
+    val daylight: Duration,
 )

@@ -10,9 +10,21 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.time.Duration
 
-fun LocalDateTime.formatTime():String {
+fun LocalDateTime.formatTime(): String {
     val formatter = DateTimeFormatter.ofPattern("HH:mm")
+    return formatter.format(this.toJavaLocalDateTime())
+}
+
+fun Duration.formatTime(): String {
+    this.toComponents { hours, minutes ->
+        return "$hours:$minutes"
+    }
+}
+
+fun LocalDateTime.formatDateTime(): String {
+    val formatter = DateTimeFormatter.ofPattern("EEE, dd LLLL, HH:mm")
     return formatter.format(this.toJavaLocalDateTime())
 }
 
