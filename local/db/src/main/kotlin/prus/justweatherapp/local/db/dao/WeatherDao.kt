@@ -18,7 +18,7 @@ interface WeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(weatherEntities: List<WeatherEntity>)
 
-    @Query("SELECT * FROM weather WHERE location_id = :locationId AND date_time > :dateFrom ORDER BY date_time DESC LIMIT 1")
+    @Query("SELECT * FROM weather WHERE location_id = :locationId AND is_forecast == 0 AND date_time > :dateFrom ORDER BY date_time DESC LIMIT 1")
     suspend fun getCurrentWeatherByLocationId(
         locationId: String,
         dateFrom: LocalDateTime = Clock.System.now()

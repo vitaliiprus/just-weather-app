@@ -1,11 +1,13 @@
 package prus.justweatherapp.data.weather.repository
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
@@ -39,17 +41,16 @@ class WeatherRepositoryImpl @Inject constructor(
         locationId: String
     ): Flow<RequestResult<Weather?>> = flow {
         getCurrentWeatherFromDb(locationId)
-            .collect { dbRequestResult ->
+            .onEach { dbRequestResult ->
                 when (dbRequestResult) {
                     is RequestResult.Error -> {
                         emitAll(getCurrentWeatherFromServer(locationId))
                     }
-
                     else -> {
                         emit(dbRequestResult)
                     }
                 }
-            }
+            }.collect()
     }.onStart { emit(RequestResult.Loading()) }
 
     private fun getCurrentWeatherFromDb(
