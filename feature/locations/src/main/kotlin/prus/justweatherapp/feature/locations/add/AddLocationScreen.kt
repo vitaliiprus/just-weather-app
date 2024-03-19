@@ -21,6 +21,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import prus.justweatherapp.core.ui.components.JwaTextButton
 import prus.justweatherapp.feature.locations.R
+import prus.justweatherapp.feature.locations.model.LocationUiModel
+import prus.justweatherapp.feature.weather.location.LocationWeatherUI
 import prus.justweatherapp.theme.AppTheme
 import prus.justweatherapp.theme.startEndPaddings
 import prus.justweatherapp.theme.topBarSize
@@ -111,6 +113,12 @@ private fun AddLocationScreen(
                 }
             }
         }
+
+        if (state.locationDataState is LocationDataState.Success) {
+            LocationWeatherUI(
+                locationId = state.locationDataState.location.id
+            )
+        }
     }
 }
 
@@ -121,7 +129,12 @@ private fun AddLocationScreenPreview() {
         Surface {
             AddLocationScreen(
                 state = AddLocationUiState(
-                    locationDataState = LocationDataState.Loading,
+                    locationDataState = LocationDataState.Success(
+                        location = LocationUiModel(
+                            id = "",
+                            name = "Saint Petersburg"
+                        )
+                    ),
                     weatherDataState = WeatherDataState.Loading,
                 ),
                 onBackClicked = {},
