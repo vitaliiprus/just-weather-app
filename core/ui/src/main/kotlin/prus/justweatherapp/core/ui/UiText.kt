@@ -30,7 +30,9 @@ sealed class UiText {
         return when (this) {
             is Empty -> ""
             is DynamicString -> value
-            is StringResource -> stringResource(id, *args)
+            is StringResource -> stringResource(id, *args.map {
+                if (it is UiText) it.asString() else it
+            }.toTypedArray())
         }
     }
 }
