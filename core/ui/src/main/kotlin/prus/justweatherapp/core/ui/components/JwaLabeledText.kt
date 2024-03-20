@@ -26,13 +26,13 @@ fun JwaLabeledText(
             text = label,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
-            fontSize = 12.sp
+            fontSize = 14.sp
         )
         Text(
             text = text,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface,
-            fontSize = 14.sp
+            fontSize = 16.sp
         )
     }
 
