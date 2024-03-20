@@ -1,4 +1,4 @@
-package prus.justweatherapp.domain.weather.model
+package prus.justweatherapp.domain.weather.model.scale
 
 enum class TempScale {
     KELVIN,
