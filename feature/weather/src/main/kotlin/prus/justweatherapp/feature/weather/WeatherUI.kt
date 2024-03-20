@@ -45,7 +45,7 @@ private fun WeatherUI(
     {
         val context = LocalContext.current
         val pagerState = rememberPagerState(
-            pageCount = { if (state is WeatherUiState.Success) state.locationIds.size else 0 }
+            pageCount = { if (state is WeatherUiState.Success) state.locationIdsNames.size else 0 }
         )
 
         when (state) {
@@ -68,7 +68,8 @@ private fun WeatherUI(
                     state = pagerState
                 ) { pageIndex ->
                     LocationWeatherUI(
-                        locationId = state.locationIds[pageIndex]
+                        locationId = state.locationIdsNames[pageIndex].first,
+                        locationName = state.locationIdsNames[pageIndex].second,
                     )
                 }
             }

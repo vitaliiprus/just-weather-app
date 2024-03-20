@@ -25,7 +25,7 @@ class WeatherViewModel @Inject constructor(
                         WeatherUiState.Empty
                     } else {
                         WeatherUiState.Success(
-                            locationIds = data.map { it.id }
+                            locationIdsNames = data.map { it.id to it.displayName }
                         )
                     }
                 } ?: WeatherUiState.Error(
