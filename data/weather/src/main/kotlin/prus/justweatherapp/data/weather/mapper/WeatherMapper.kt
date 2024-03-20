@@ -5,10 +5,13 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.toInstant
-import prus.justweatherapp.domain.weather.model.TempScale
+import prus.justweatherapp.core.common.util.addTimezoneOffset
 import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.model.WeatherConditions
 import prus.justweatherapp.domain.weather.model.Wind
+import prus.justweatherapp.domain.weather.model.scale.PressureScale
+import prus.justweatherapp.domain.weather.model.scale.TempScale
+import prus.justweatherapp.domain.weather.model.scale.WindScale
 import prus.justweatherapp.local.db.entity.WeatherEntity
 import prus.justweatherapp.local.db.model.MainWeatherDataDBO
 import prus.justweatherapp.local.db.model.WindDBO
@@ -17,6 +20,7 @@ import prus.justweatherapp.remote.model.CurrentWeatherDTO
 import prus.justweatherapp.remote.model.ForecastWeatherDataDTO
 import prus.justweatherapp.remote.model.MainWeatherDataDTO
 import prus.justweatherapp.remote.model.WindDTO
+import kotlin.math.abs
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
 
@@ -68,7 +72,7 @@ internal fun MainWeatherDataDTO.mapToDBO() =
 internal fun WeatherEntity.mapToDomainModel() =
     Weather(
         locationId = this.locationId,
-        dateTime = this.dateTime,
+        dateTime = this.dateTime.addTimezoneOffset(this.timezoneOffset),
         timezoneOffset = this.timezoneOffset,
         temp = this.main.temp,
         feelsLike = this.main.feelsLike,
@@ -76,6 +80,7 @@ internal fun WeatherEntity.mapToDomainModel() =
         tempMax = this.main.tempMax,
         tempScale = TempScale.KELVIN,
         pressure = this.main.pressure,
+        pressureScale = PressureScale.MM_HG,
         humidity = this.main.humidity,
         weatherConditions = mapWeatherConditionsIdToDomainModel(this.weatherConditions),
         clouds = this.clouds,
@@ -84,8 +89,8 @@ internal fun WeatherEntity.mapToDomainModel() =
         wind = this.wind.mapToDomainModel(),
         visibility = this.visibility,
         probOfPrecipitations = this.probOfPrecipitations,
-        sunrise = this.sunrise,
-        sunset = this.sunset,
+        sunrise = this.sunrise.addTimezoneOffset(this.timezoneOffset),
+        sunset = this.sunset.addTimezoneOffset(this.timezoneOffset),
         daylight = getDayLight(this.sunrise, this.sunset)
     )
 
@@ -104,6 +109,7 @@ internal fun WindDBO.mapToDomainModel() =
         speed = this.speed,
         gust = this.gust,
         degree = this.degree,
+        windScale = WindScale.M_S
     )
 
 internal fun mapWeatherConditionsIdToDomainModel(weatherConditionsId: Int?): WeatherConditions {
@@ -122,10 +128,10 @@ internal fun mapWeatherConditionsIdToDomainModel(weatherConditionsId: Int?): Wea
 }
 
 internal fun getDayLight(sunrise: LocalDateTime, sunset: LocalDateTime): Duration {
-    return sunrise
+    return abs(sunset
         .toInstant(TimeZone.UTC)
         .minus(
-            other = sunset.toInstant(TimeZone.UTC),
+            other = sunrise.toInstant(TimeZone.UTC),
             unit = DateTimeUnit.MINUTE
-        ).minutes
+        )).minutes
 }

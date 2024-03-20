@@ -13,9 +13,15 @@ import kotlinx.coroutines.flow.stateIn
 import prus.justweatherapp.core.common.result.RequestResult
 import prus.justweatherapp.core.common.util.formatDateTime
 import prus.justweatherapp.core.common.util.formatTime
-import prus.justweatherapp.domain.weather.model.TempScale
+import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.domain.weather.model.Weather
+import prus.justweatherapp.domain.weather.model.Wind
+import prus.justweatherapp.domain.weather.model.WindDirection
+import prus.justweatherapp.domain.weather.model.scale.PressureScale
+import prus.justweatherapp.domain.weather.model.scale.TempScale
+import prus.justweatherapp.domain.weather.model.scale.WindScale
 import prus.justweatherapp.domain.weather.usecase.GetLocationCurrentWeatherUseCase
+import prus.justweatherapp.feature.weather.R
 import prus.justweatherapp.feature.weather.mapper.getWeatherConditionImageResId
 import prus.justweatherapp.feature.weather.mapper.getWeatherConditionsString
 import kotlin.math.roundToInt
@@ -54,14 +60,23 @@ class CurrentWeatherViewModel @AssistedInject constructor(
         return CurrentWeatherUiModel(
             dateTime = data.dateTime.formatDateTime(),
             temp = getTempString(data.temp, true, data.tempScale),
-            feelsLike = getTempString(data.feelsLike, false),
-            tempMinMax = getTempMinMaxString(data.tempMin, data.tempMax),
+            feelsLike = UiText.StringResource(
+                id = R.string.template_feels_like,
+                args = arrayOf(getTempString(data.feelsLike, false))
+            ),
             weatherConditions = getWeatherConditionsString(data.weatherConditions),
             conditionImageResId = getWeatherConditionImageResId(data.weatherConditions),
             //TODO: handle polar day and polar night
             sunrise = data.sunrise.formatTime(),
             daylight = data.daylight.formatTime(),
             sunset = data.sunset.formatTime(),
+            tempMinMax = getTempMinMaxString(data.tempMin, data.tempMax),
+            uvIndex = "1",
+            pressure = getPressureString(data.pressure, data.pressureScale),
+            precipitationProb = "${data.probOfPrecipitations?.roundToInt() ?: 0}%",
+            humidity = "${data.humidity.roundToInt()}%",
+            wind = getWindString(data.wind)
+
         )
     }
 
@@ -89,5 +104,61 @@ class CurrentWeatherViewModel @AssistedInject constructor(
     ): String {
         return "↓${getTempString(tempMin, false)} " +
                 "↑${getTempString(tempMax, false)}"
+    }
+
+    private fun getPressureString(pressure: Double, pressureScale: PressureScale): UiText {
+        val pressureScaleStringResId = when (pressureScale) {
+            PressureScale.MM_HG -> R.string.scale_mm_hg
+            PressureScale.H_PA -> R.string.scale_hpa
+        }
+        return UiText.StringResource(
+            id = R.string.template_value_scale,
+            args = arrayOf(
+                pressure.roundToInt().toString(),
+                UiText.StringResource(pressureScaleStringResId)
+            )
+        )
+    }
+
+    private fun getWindString(wind: Wind?): UiText {
+        if (wind == null)
+            return UiText.DynamicString("-")
+
+        val windScaleStringResId = when (wind.windScale) {
+            WindScale.M_S -> R.string.scale_m_s
+            WindScale.KM_H -> R.string.scale_km_h
+            WindScale.MPH -> R.string.scale_mph
+            WindScale.KT -> R.string.scale_kt
+        }
+        var args = arrayOf(
+            (wind.speed ?: 0.0).roundToInt().toString(),
+            UiText.StringResource(windScaleStringResId)
+        )
+        return if (wind.getDirection() == WindDirection.Undefined) {
+            UiText.StringResource(
+                id = R.string.template_value_scale,
+                args = args
+            )
+        } else {
+            args = args.plus(getWindDirectionString(wind.getDirection()))
+            UiText.StringResource(
+                id = R.string.template_wind_value,
+                args = args
+            )
+        }
+    }
+
+    private fun getWindDirectionString(direction: WindDirection): UiText {
+        return when (direction) {
+            WindDirection.N -> UiText.StringResource(R.string.wind_n)
+            WindDirection.NE -> UiText.StringResource(R.string.wind_ne)
+            WindDirection.E -> UiText.StringResource(R.string.wind_e)
+            WindDirection.SE -> UiText.StringResource(R.string.wind_se)
+            WindDirection.S -> UiText.StringResource(R.string.wind_s)
+            WindDirection.SW -> UiText.StringResource(R.string.wind_sw)
+            WindDirection.W -> UiText.StringResource(R.string.wind_w)
+            WindDirection.NW -> UiText.StringResource(R.string.wind_nw)
+            WindDirection.Undefined -> UiText.DynamicString("")
+        }
     }
 }

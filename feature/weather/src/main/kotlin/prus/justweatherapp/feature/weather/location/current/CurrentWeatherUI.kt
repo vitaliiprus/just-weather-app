@@ -8,11 +8,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -38,11 +39,12 @@ import prus.justweatherapp.theme.contentPaddings
 fun CurrentWeatherUI(
     modifier: Modifier,
     locationId: String,
-    viewModel: CurrentWeatherViewModel = hiltViewModel<CurrentWeatherViewModel,
-            CurrentWeatherViewModel.ViewModelFactory>
-        (key = locationId) { factory ->
+    viewModel: CurrentWeatherViewModel = hiltViewModel<
+            CurrentWeatherViewModel,
+            CurrentWeatherViewModel.ViewModelFactory
+            >(key = locationId) { factory ->
         factory.create(locationId)
-    },
+    }
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -60,14 +62,11 @@ private fun CurrentWeatherUI(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(300.dp),
+            .height(350.dp),
         shape = RoundedCornerShape(25.dp),
-        colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-            disabledContentColor = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.5f),
-        )
+        colors = CardDefaults.cardColors().copy(
+            containerColor = MaterialTheme.colorScheme.onTertiary
+        ),
     )
     {
         val context = LocalContext.current
@@ -88,6 +87,7 @@ private fun CurrentWeatherUI(
 
             Row(
                 modifier = Modifier
+                    .padding(4.dp)
                     .fillMaxWidth()
                     .weight(1f)
             ) {
@@ -111,10 +111,12 @@ private fun CurrentWeatherUI(
                         Text(
                             text = weather.weatherConditions.asString(),
                             style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface,
                         )
                         Text(
-                            text = weather.feelsLike,
+                            text = weather.feelsLike.asString(),
                             style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface,
                         )
                     } else {
                         ShimmerRectangle(
@@ -161,7 +163,7 @@ private fun CurrentWeatherUI(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
-            )  {
+            ) {
                 if (weather != null) {
                     JwaLabeledText(
                         label = stringResource(id = R.string.sunrise),
@@ -174,6 +176,82 @@ private fun CurrentWeatherUI(
                     JwaLabeledText(
                         label = stringResource(id = R.string.sunset),
                         text = weather.sunset
+                    )
+                } else {
+                    ShimmerRectangle(
+                        modifier = Modifier
+                            .width(70.dp)
+                            .height(40.dp)
+                    )
+                    ShimmerRectangle(
+                        modifier = Modifier
+                            .width(70.dp)
+                            .height(40.dp)
+                    )
+                    ShimmerRectangle(
+                        modifier = Modifier
+                            .width(70.dp)
+                            .height(40.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                if (weather != null) {
+                    JwaLabeledText(
+                        label = stringResource(id = R.string.temp_min_max),
+                        text = weather.tempMinMax
+                    )
+                    JwaLabeledText(
+                        label = stringResource(id = R.string.uv_index),
+                        text = weather.uvIndex
+                    )
+                    JwaLabeledText(
+                        label = stringResource(id = R.string.pressure),
+                        text = weather.pressure.asString()
+                    )
+                } else {
+                    ShimmerRectangle(
+                        modifier = Modifier
+                            .width(70.dp)
+                            .height(40.dp)
+                    )
+                    ShimmerRectangle(
+                        modifier = Modifier
+                            .width(70.dp)
+                            .height(40.dp)
+                    )
+                    ShimmerRectangle(
+                        modifier = Modifier
+                            .width(70.dp)
+                            .height(40.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                if (weather != null) {
+                    JwaLabeledText(
+                        label = stringResource(id = R.string.precip_prob),
+                        text = weather.precipitationProb
+                    )
+                    JwaLabeledText(
+                        label = stringResource(id = R.string.humidity),
+                        text = weather.humidity
+                    )
+                    JwaLabeledText(
+                        label = stringResource(id = R.string.wind),
+                        text = weather.wind.asString()
                     )
                 } else {
                     ShimmerRectangle(
@@ -223,13 +301,21 @@ private fun CurrentWeatherUISuccessPreview(
                     weather = CurrentWeatherUiModel(
                         dateTime = "Mon, 18 March, 15:40",
                         temp = "15ºC",
-                        feelsLike = "Feels like 14ºC",
-                        tempMinMax = "↓6º ↑18º",
+                        feelsLike = UiText.StringResource(
+                            id = R.string.template_feels_like,
+                            args = arrayOf("14ºC")
+                        ),
                         weatherConditions = UiText.DynamicString("Mostly cloudy"),
                         conditionImageResId = prus.justweatherapp.core.ui.R.drawable.mostlycloudy,
                         sunrise = "07:07",
                         daylight = "12:01",
                         sunset = "19:08",
+                        tempMinMax = "↓6º ↑18º",
+                        uvIndex = "1",
+                        pressure = UiText.DynamicString("765 mmHg"),
+                        precipitationProb = "5%",
+                        humidity = "87%",
+                        wind = UiText.DynamicString("2 m/s, S")
                     )
                 )
             )

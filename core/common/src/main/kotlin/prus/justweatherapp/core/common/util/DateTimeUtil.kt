@@ -18,8 +18,10 @@ fun LocalDateTime.formatTime(): String {
 }
 
 fun Duration.formatTime(): String {
-    this.toComponents { hours, minutes ->
-        return "$hours:$minutes"
+    this.toComponents { hours, minutes, _, _ ->
+        val hoursString = if(hours < 10) "0${hours}" else hours
+        val minutesString = if(minutes < 10) "0${minutes}" else minutes
+        return "$hoursString:$minutesString"
     }
 }
 
@@ -30,6 +32,13 @@ fun LocalDateTime.formatDateTime(): String {
 
 fun getLocationCurrentTime(timezoneOffset: Int): LocalDateTime {
     return Clock.System.now().toLocalDateTime(TimeZone.UTC)
+        .toInstant(UtcOffset.ZERO)
+        .plus(timezoneOffset, DateTimeUnit.SECOND)
+        .toLocalDateTime(TimeZone.UTC)
+}
+
+fun LocalDateTime.addTimezoneOffset(timezoneOffset: Int): LocalDateTime {
+    return this
         .toInstant(UtcOffset.ZERO)
         .plus(timezoneOffset, DateTimeUnit.SECOND)
         .toLocalDateTime(TimeZone.UTC)
