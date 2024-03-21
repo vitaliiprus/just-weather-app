@@ -47,17 +47,20 @@ fun CurrentWeatherUI(
     }
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val timeState by viewModel.timeState.collectAsStateWithLifecycle()
 
     CurrentWeatherUI(
         modifier = modifier,
-        state = state
+        state = state,
+        timeState = timeState,
     )
 }
 
 @Composable
 private fun CurrentWeatherUI(
     modifier: Modifier = Modifier,
-    state: CurrentWeatherUiState
+    state: CurrentWeatherUiState,
+    timeState: CurrentWeatherTimeUiState
 ) {
     Card(
         modifier = modifier
@@ -79,6 +82,10 @@ private fun CurrentWeatherUI(
             if (state is CurrentWeatherUiState.Success) state.weather
             else null
 
+        val time: String? =
+            if (timeState is CurrentWeatherTimeUiState.Success) timeState.time
+            else null
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -95,13 +102,22 @@ private fun CurrentWeatherUI(
                     modifier = Modifier
                         .weight(1f)
                 ) {
-                    if (weather != null) {
+                    if (time != null) {
                         Text(
-                            text = weather.dateTime,
+                            text = time,
                             style = MaterialTheme.typography.bodySmall,
                             fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                         )
+                    } else {
+                        ShimmerRectangle(
+                            modifier = Modifier
+                                .width(140.dp)
+                                .height(16.dp)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                    if (weather != null) {
                         Text(
                             text = weather.temp,
                             color = MaterialTheme.colorScheme.onTertiaryContainer,
@@ -119,12 +135,7 @@ private fun CurrentWeatherUI(
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                     } else {
-                        ShimmerRectangle(
-                            modifier = Modifier
-                                .width(140.dp)
-                                .height(16.dp)
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
+
                         ShimmerRectangle(
                             modifier = Modifier
                                 .width(130.dp)
@@ -284,7 +295,8 @@ private fun CurrentWeatherUILoadingPreview(
     AppTheme {
         Surface {
             CurrentWeatherUI(
-                state = CurrentWeatherUiState.Loading
+                state = CurrentWeatherUiState.Loading,
+                timeState = CurrentWeatherTimeUiState.Loading,
             )
         }
     }
@@ -299,7 +311,6 @@ private fun CurrentWeatherUISuccessPreview(
             CurrentWeatherUI(
                 state = CurrentWeatherUiState.Success(
                     weather = CurrentWeatherUiModel(
-                        dateTime = "Mon, 18 March, 15:40",
                         temp = "15ºC",
                         feelsLike = UiText.StringResource(
                             id = R.string.template_feels_like,
@@ -317,6 +328,9 @@ private fun CurrentWeatherUISuccessPreview(
                         humidity = "87%",
                         wind = UiText.DynamicString("2 m/s, S")
                     )
+                ),
+                timeState = CurrentWeatherTimeUiState.Success(
+                    time = "Mon, 18 March, 15:40",
                 )
             )
         }

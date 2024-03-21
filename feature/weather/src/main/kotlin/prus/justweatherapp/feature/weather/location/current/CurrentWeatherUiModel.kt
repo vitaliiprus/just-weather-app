@@ -3,7 +3,6 @@ package prus.justweatherapp.feature.weather.location.current
 import prus.justweatherapp.core.ui.UiText
 
 data class CurrentWeatherUiModel(
-    val dateTime:String,
     val temp:String,
     val feelsLike: UiText,
     var weatherConditions: UiText,

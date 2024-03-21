@@ -6,11 +6,14 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import prus.justweatherapp.core.common.result.RequestResult
+import prus.justweatherapp.core.common.util.TimeUpdater
 import prus.justweatherapp.core.common.util.formatDateTime
 import prus.justweatherapp.core.common.util.formatTime
 import prus.justweatherapp.core.ui.UiText
@@ -37,8 +40,31 @@ class CurrentWeatherViewModel @AssistedInject constructor(
         fun create(locationId: String): CurrentWeatherViewModel
     }
 
+    private var _timeState: MutableStateFlow<CurrentWeatherTimeUiState> =
+        MutableStateFlow(CurrentWeatherTimeUiState.Loading)
+
+    var timeState: StateFlow<CurrentWeatherTimeUiState> = _timeState
+
+    private var timeUpdater: TimeUpdater? = null
+
     val state: StateFlow<CurrentWeatherUiState> =
         getCurrentWeatherUseCase(locationId)
+            .onEach { result ->
+                timeUpdater?.cancel()
+                when (result) {
+                    is RequestResult.Error -> CurrentWeatherTimeUiState.Error()
+                    is RequestResult.Loading -> CurrentWeatherTimeUiState.Loading
+                    is RequestResult.Success -> {
+                        result.data?.let { data ->
+                            timeUpdater = TimeUpdater(data.timezoneOffset) { newTime ->
+                                _timeState.value = CurrentWeatherTimeUiState.Success(
+                                    time = newTime.formatDateTime()
+                                )
+                            }
+                        }
+                    }
+                }
+            }
             .map { result ->
                 when (result) {
                     is RequestResult.Error -> CurrentWeatherUiState.Error(result.error?.message)
@@ -58,7 +84,6 @@ class CurrentWeatherViewModel @AssistedInject constructor(
 
     private fun mapToUiModel(data: Weather): CurrentWeatherUiModel {
         return CurrentWeatherUiModel(
-            dateTime = data.dateTime.formatDateTime(),
             temp = getTempString(data.temp, true, data.tempScale),
             feelsLike = UiText.StringResource(
                 id = R.string.template_feels_like,
@@ -160,5 +185,10 @@ class CurrentWeatherViewModel @AssistedInject constructor(
             WindDirection.NW -> UiText.StringResource(R.string.wind_nw)
             WindDirection.Undefined -> UiText.DynamicString("")
         }
+    }
+
+    override fun onCleared() {
+        timeUpdater?.cancel()
+        super.onCleared()
     }
 }
