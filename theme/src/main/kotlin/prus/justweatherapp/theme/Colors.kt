@@ -67,6 +67,7 @@ val md_theme_dark_scrim = Color(0xFF000000)
 
 val seed = Color(0xFF6490B5)
 val accent = Color(0xFFF9BA01)
+val purple = Color(0xFFA185EE)
 val light_accent = Color(0xFF795900)
 val light_onaccent = Color(0xFFFFFFFF)
 val light_accentContainer = Color(0xFFFFDEA0)
