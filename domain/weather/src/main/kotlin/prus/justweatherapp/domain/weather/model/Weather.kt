@@ -1,6 +1,7 @@
 package prus.justweatherapp.domain.weather.model
 
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import prus.justweatherapp.domain.weather.model.scale.PressureScale
 import prus.justweatherapp.domain.weather.model.scale.TempScale
 import kotlin.time.Duration
@@ -24,7 +25,7 @@ data class Weather(
     val wind: Wind? = null,
     val visibility: Int? = null,
     val probOfPrecipitations: Double? = null,
-    val sunrise: LocalDateTime,
-    val sunset: LocalDateTime,
+    val sunrise: LocalTime,
+    val sunset: LocalTime,
     val daylight: Duration,
 )

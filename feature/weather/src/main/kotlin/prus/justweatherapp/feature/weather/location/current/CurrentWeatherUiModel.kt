@@ -8,7 +8,6 @@ data class CurrentWeatherUiModel(
     var weatherConditions: UiText,
     var conditionImageResId: Int,
     val sunrise: String,
-    val daylight: String,
     val sunset: String,
     val tempMinMax:String,
     val uvIndex:String,

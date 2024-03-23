@@ -89,8 +89,8 @@ internal fun WeatherEntity.mapToDomainModel() =
         wind = this.wind.mapToDomainModel(),
         visibility = this.visibility,
         probOfPrecipitations = this.probOfPrecipitations,
-        sunrise = this.sunrise.addTimezoneOffset(this.timezoneOffset),
-        sunset = this.sunset.addTimezoneOffset(this.timezoneOffset),
+        sunrise = this.sunrise.addTimezoneOffset(this.timezoneOffset).time,
+        sunset = this.sunset.addTimezoneOffset(this.timezoneOffset).time,
         daylight = getDayLight(this.sunrise, this.sunset)
     )
 

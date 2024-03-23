@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -42,6 +43,10 @@ internal fun DaylightUI(
 
         val filledColor = MaterialTheme.colorScheme.onSurface
         val dottedColor = MaterialTheme.colorScheme.outline
+        val gradientColors = listOf(
+            MaterialTheme.colorScheme.primary.copy(0.15f),
+            MaterialTheme.colorScheme.primary.copy(0.0f),
+        )
 
         val image = ImageVector.vectorResource(
             id = if (data.isDay) R.drawable.ic_sun else R.drawable.ic_moon
@@ -65,9 +70,21 @@ internal fun DaylightUI(
             val circleOffset = Offset(20f, 15f)
 
             drawArc(
+                brush = Brush.verticalGradient(
+                    colors = gradientColors,
+
+                ),
+                startAngle = 180f,
+                sweepAngle = 180f,
+                useCenter = false,
+                size = circleSize,
+                topLeft = circleOffset,
+            )
+
+            drawArc(
                 color = filledColor,
                 startAngle = 180f,
-                sweepAngle = 180f * (data.percentage.toFloat() / 100f),
+                sweepAngle = 180f * (data.percentage / 100f),
                 useCenter = false,
                 size = circleSize,
                 topLeft = circleOffset,
@@ -78,8 +95,8 @@ internal fun DaylightUI(
 
             drawArc(
                 color = dottedColor,
-                startAngle = 180f + 180f * (data.percentage.toFloat() / 100f),
-                sweepAngle = 180f * (1 - data.percentage.toFloat() / 100f),
+                startAngle = 180f + 180f * (data.percentage / 100f),
+                sweepAngle = 180f * (1 - data.percentage / 100f),
                 useCenter = false,
                 size = circleSize,
                 topLeft = circleOffset,
@@ -103,7 +120,7 @@ internal fun DaylightUI(
                 radius = 8f,
             )
 
-            val percentage = data.percentage.coerceIn(2.0, 98.0)
+            val percentage = data.percentage.coerceIn(2f, 98f)
             val angle = (180f + 180f * percentage / 100).toFloat()
 
             translate(
@@ -135,7 +152,7 @@ private fun DaylightUIPreview(
             DaylightUI(
                 data = DaylightUiModel(
                     text = "12h 01m",
-                    percentage = 30.0,
+                    percentage = 30f,
                     isDay = false
                 )
             )

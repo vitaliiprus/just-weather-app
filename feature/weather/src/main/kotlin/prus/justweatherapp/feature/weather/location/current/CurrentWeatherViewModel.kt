@@ -12,10 +12,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.datetime.LocalDateTime
 import prus.justweatherapp.core.common.result.RequestResult
 import prus.justweatherapp.core.common.util.TimeUpdater
 import prus.justweatherapp.core.common.util.formatDateTime
+import prus.justweatherapp.core.common.util.formatDuration
 import prus.justweatherapp.core.common.util.formatTime
+import prus.justweatherapp.core.common.util.getPercentageOfTimeBetween
+import prus.justweatherapp.core.common.util.isBetween
 import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.model.Wind
@@ -25,6 +29,7 @@ import prus.justweatherapp.domain.weather.model.scale.TempScale
 import prus.justweatherapp.domain.weather.model.scale.WindScale
 import prus.justweatherapp.domain.weather.usecase.GetLocationCurrentWeatherUseCase
 import prus.justweatherapp.feature.weather.R
+import prus.justweatherapp.feature.weather.location.current.daylight.DaylightUiModel
 import prus.justweatherapp.feature.weather.mapper.getWeatherConditionImageResId
 import prus.justweatherapp.feature.weather.mapper.getWeatherConditionsString
 import kotlin.math.roundToInt
@@ -58,7 +63,8 @@ class CurrentWeatherViewModel @AssistedInject constructor(
                         result.data?.let { data ->
                             timeUpdater = TimeUpdater(data.timezoneOffset) { newTime ->
                                 _timeState.value = CurrentWeatherTimeUiState.Success(
-                                    time = newTime.formatDateTime()
+                                    time = newTime.formatDateTime(),
+                                    daylight = getDaylightData(data, newTime),
                                 )
                             }
                         }
@@ -93,7 +99,6 @@ class CurrentWeatherViewModel @AssistedInject constructor(
             conditionImageResId = getWeatherConditionImageResId(data.weatherConditions),
             //TODO: handle polar day and polar night
             sunrise = data.sunrise.formatTime(),
-            daylight = data.daylight.formatTime(),
             sunset = data.sunset.formatTime(),
             tempMinMax = getTempMinMaxString(data.tempMin, data.tempMax),
             uvIndex = "1",
@@ -101,7 +106,14 @@ class CurrentWeatherViewModel @AssistedInject constructor(
             precipitationProb = "${data.probOfPrecipitations?.roundToInt() ?: 0}%",
             humidity = "${data.humidity.roundToInt()}%",
             wind = getWindString(data.wind)
+        )
+    }
 
+    private fun getDaylightData(weather: Weather, newTime: LocalDateTime): DaylightUiModel {
+        return DaylightUiModel(
+            text = weather.daylight.formatDuration(),
+            percentage = newTime.time.getPercentageOfTimeBetween(weather.sunrise, weather.sunset),
+            isDay = newTime.time.isBetween(weather.sunrise, weather.sunset)
         )
     }
 

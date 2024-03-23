@@ -1,6 +1,7 @@
 package prus.justweatherapp.feature.weather.location.current
 
 import android.widget.Toast
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -31,7 +33,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.core.ui.components.JwaLabeledText
 import prus.justweatherapp.core.ui.shimmer.ShimmerRectangle
+import prus.justweatherapp.core.ui.shimmer.ShimmerSemiCircle
 import prus.justweatherapp.feature.weather.R
+import prus.justweatherapp.feature.weather.location.current.daylight.DaylightUI
+import prus.justweatherapp.feature.weather.location.current.daylight.DaylightUiModel
 import prus.justweatherapp.theme.AppTheme
 import prus.justweatherapp.theme.contentPaddings
 
@@ -65,8 +70,11 @@ private fun CurrentWeatherUI(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(350.dp),
+            .height(370.dp),
         shape = RoundedCornerShape(25.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        ),
         colors = CardDefaults.cardColors().copy(
             containerColor = MaterialTheme.colorScheme.onTertiary
         ),
@@ -74,215 +82,234 @@ private fun CurrentWeatherUI(
     {
         val context = LocalContext.current
 
-        if (state is CurrentWeatherUiState.Error) {
-            Toast.makeText(context, state.message, Toast.LENGTH_LONG).show()
-        }
 
-        val weather: CurrentWeatherUiModel? =
-            if (state is CurrentWeatherUiState.Success) state.weather
-            else null
+        Crossfade(
+            targetState = state,
+            label = "CurrentWeatherUI Crossfade"
+        ) { state ->
 
-        val time: String? =
-            if (timeState is CurrentWeatherTimeUiState.Success) timeState.time
-            else null
+            if (state is CurrentWeatherUiState.Error) {
+                Toast.makeText(context, state.message, Toast.LENGTH_LONG).show()
+            }
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .contentPaddings(),
-        ) {
+            val weather: CurrentWeatherUiModel? =
+                if (state is CurrentWeatherUiState.Success) state.weather
+                else null
 
-            Row(
+            val time: String? =
+                if (timeState is CurrentWeatherTimeUiState.Success) timeState.time
+                else null
+
+            val daylight: DaylightUiModel? =
+                if (timeState is CurrentWeatherTimeUiState.Success) timeState.daylight
+                else null
+
+            Column(
                 modifier = Modifier
-                    .padding(4.dp)
                     .fillMaxWidth()
-                    .weight(1f)
+                    .contentPaddings(),
             ) {
-                Column(
+
+                Row(
                     modifier = Modifier
+                        .padding(4.dp)
+                        .fillMaxWidth()
                         .weight(1f)
                 ) {
-                    if (time != null) {
-                        Text(
-                            text = time,
-                            style = MaterialTheme.typography.bodySmall,
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                        )
-                    } else {
-                        ShimmerRectangle(
-                            modifier = Modifier
-                                .width(140.dp)
-                                .height(16.dp)
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                    ) {
+                        if (time != null) {
+                            Text(
+                                text = time,
+                                style = MaterialTheme.typography.bodySmall,
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                            )
+                        } else {
+                            ShimmerRectangle(
+                                modifier = Modifier
+                                    .width(140.dp)
+                                    .height(16.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                        if (weather != null) {
+                            Text(
+                                text = weather.temp,
+                                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontSize = 56.sp,
+                            )
+                            Text(
+                                text = weather.weatherConditions.asString(),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurface,
+                            )
+                            Text(
+                                text = weather.feelsLike.asString(),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurface,
+                            )
+                        } else {
+
+                            ShimmerRectangle(
+                                modifier = Modifier
+                                    .width(130.dp)
+                                    .height(70.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            ShimmerRectangle(
+                                modifier = Modifier
+                                    .width(90.dp)
+                                    .height(18.dp)
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            ShimmerRectangle(
+                                modifier = Modifier
+                                    .width(120.dp)
+                                    .height(18.dp)
+                            )
+                        }
                     }
+
                     if (weather != null) {
-                        Text(
-                            text = weather.temp,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer,
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontSize = 56.sp,
-                        )
-                        Text(
-                            text = weather.weatherConditions.asString(),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Text(
-                            text = weather.feelsLike.asString(),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurface,
+                        Image(
+                            modifier = Modifier
+                                .size(130.dp),
+                            painter = painterResource(id = weather.conditionImageResId),
+                            contentDescription = weather.weatherConditions.asString()
                         )
                     } else {
-
                         ShimmerRectangle(
                             modifier = Modifier
-                                .width(130.dp)
-                                .height(70.dp)
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        ShimmerRectangle(
-                            modifier = Modifier
-                                .width(90.dp)
-                                .height(18.dp)
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        ShimmerRectangle(
-                            modifier = Modifier
-                                .width(120.dp)
-                                .height(18.dp)
+                                .size(130.dp)
                         )
                     }
                 }
 
-                if (weather != null) {
-                    Image(
-                        modifier = Modifier
-                            .size(130.dp),
-                        painter = painterResource(id = weather.conditionImageResId),
-                        contentDescription = weather.weatherConditions.asString()
-                    )
-                } else {
-                    ShimmerRectangle(
-                        modifier = Modifier
-                            .size(130.dp)
-                    )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    if (weather != null) {
+                        JwaLabeledText(
+                            label = stringResource(id = R.string.sunrise),
+                            text = weather.sunrise
+                        )
+                        if (daylight != null) {
+                            DaylightUI(
+                                data = daylight
+                            )
+                        } else {
+                            ShimmerSemiCircle(
+                                modifier = Modifier
+                                    .width(160.dp)
+                                    .height(80.dp)
+                            )
+                        }
+                        JwaLabeledText(
+                            label = stringResource(id = R.string.sunset),
+                            text = weather.sunset
+                        )
+                    } else {
+                        ShimmerRectangle(
+                            modifier = Modifier
+                                .width(70.dp)
+                                .height(40.dp)
+                        )
+                        ShimmerSemiCircle(
+                            modifier = Modifier
+                                .width(160.dp)
+                                .height(80.dp)
+                        )
+                        ShimmerRectangle(
+                            modifier = Modifier
+                                .width(70.dp)
+                                .height(40.dp)
+                        )
+                    }
                 }
-            }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                if (weather != null) {
-                    JwaLabeledText(
-                        label = stringResource(id = R.string.sunrise),
-                        text = weather.sunrise
-                    )
-                    JwaLabeledText(
-                        label = stringResource(id = R.string.daylight),
-                        text = weather.daylight
-                    )
-                    JwaLabeledText(
-                        label = stringResource(id = R.string.sunset),
-                        text = weather.sunset
-                    )
-                } else {
-                    ShimmerRectangle(
-                        modifier = Modifier
-                            .width(70.dp)
-                            .height(40.dp)
-                    )
-                    ShimmerRectangle(
-                        modifier = Modifier
-                            .width(70.dp)
-                            .height(40.dp)
-                    )
-                    ShimmerRectangle(
-                        modifier = Modifier
-                            .width(70.dp)
-                            .height(40.dp)
-                    )
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    if (weather != null) {
+                        JwaLabeledText(
+                            label = stringResource(id = R.string.temp_min_max),
+                            text = weather.tempMinMax
+                        )
+                        JwaLabeledText(
+                            label = stringResource(id = R.string.uv_index),
+                            text = weather.uvIndex
+                        )
+                        JwaLabeledText(
+                            label = stringResource(id = R.string.pressure),
+                            text = weather.pressure.asString()
+                        )
+                    } else {
+                        ShimmerRectangle(
+                            modifier = Modifier
+                                .width(70.dp)
+                                .height(40.dp)
+                        )
+                        ShimmerRectangle(
+                            modifier = Modifier
+                                .width(70.dp)
+                                .height(40.dp)
+                        )
+                        ShimmerRectangle(
+                            modifier = Modifier
+                                .width(70.dp)
+                                .height(40.dp)
+                        )
+                    }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                if (weather != null) {
-                    JwaLabeledText(
-                        label = stringResource(id = R.string.temp_min_max),
-                        text = weather.tempMinMax
-                    )
-                    JwaLabeledText(
-                        label = stringResource(id = R.string.uv_index),
-                        text = weather.uvIndex
-                    )
-                    JwaLabeledText(
-                        label = stringResource(id = R.string.pressure),
-                        text = weather.pressure.asString()
-                    )
-                } else {
-                    ShimmerRectangle(
-                        modifier = Modifier
-                            .width(70.dp)
-                            .height(40.dp)
-                    )
-                    ShimmerRectangle(
-                        modifier = Modifier
-                            .width(70.dp)
-                            .height(40.dp)
-                    )
-                    ShimmerRectangle(
-                        modifier = Modifier
-                            .width(70.dp)
-                            .height(40.dp)
-                    )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    if (weather != null) {
+                        JwaLabeledText(
+                            label = stringResource(id = R.string.precip_prob),
+                            text = weather.precipitationProb
+                        )
+                        JwaLabeledText(
+                            label = stringResource(id = R.string.humidity),
+                            text = weather.humidity
+                        )
+                        JwaLabeledText(
+                            label = stringResource(id = R.string.wind),
+                            text = weather.wind.asString()
+                        )
+                    } else {
+                        ShimmerRectangle(
+                            modifier = Modifier
+                                .width(70.dp)
+                                .height(40.dp)
+                        )
+                        ShimmerRectangle(
+                            modifier = Modifier
+                                .width(70.dp)
+                                .height(40.dp)
+                        )
+                        ShimmerRectangle(
+                            modifier = Modifier
+                                .width(70.dp)
+                                .height(40.dp)
+                        )
+                    }
                 }
+
             }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                if (weather != null) {
-                    JwaLabeledText(
-                        label = stringResource(id = R.string.precip_prob),
-                        text = weather.precipitationProb
-                    )
-                    JwaLabeledText(
-                        label = stringResource(id = R.string.humidity),
-                        text = weather.humidity
-                    )
-                    JwaLabeledText(
-                        label = stringResource(id = R.string.wind),
-                        text = weather.wind.asString()
-                    )
-                } else {
-                    ShimmerRectangle(
-                        modifier = Modifier
-                            .width(70.dp)
-                            .height(40.dp)
-                    )
-                    ShimmerRectangle(
-                        modifier = Modifier
-                            .width(70.dp)
-                            .height(40.dp)
-                    )
-                    ShimmerRectangle(
-                        modifier = Modifier
-                            .width(70.dp)
-                            .height(40.dp)
-                    )
-                }
-            }
-
         }
 
     }
@@ -319,7 +346,6 @@ private fun CurrentWeatherUISuccessPreview(
                         weatherConditions = UiText.DynamicString("Mostly cloudy"),
                         conditionImageResId = prus.justweatherapp.core.ui.R.drawable.mostlycloudy,
                         sunrise = "07:07",
-                        daylight = "12:01",
                         sunset = "19:08",
                         tempMinMax = "↓6º ↑18º",
                         uvIndex = "1",
@@ -331,6 +357,11 @@ private fun CurrentWeatherUISuccessPreview(
                 ),
                 timeState = CurrentWeatherTimeUiState.Success(
                     time = "Mon, 18 March, 15:40",
+                    daylight = DaylightUiModel(
+                        text = "12h 01m",
+                        percentage = 40f,
+                        isDay = true
+                    ),
                 )
             )
         }
