@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -23,9 +24,8 @@ fun ShimmerCircle(
 ) {
     Box(
         modifier = modifier
-            .background(
-                color = MaterialTheme.colorScheme.primaryContainer,
-                shape = CircleShape)
+            .clip(shape = CircleShape)
+            .background(color = MaterialTheme.colorScheme.primaryContainer)
             .shimmerLoadingAnimation(isLoadingCompleted, isLightModeActive)
     )
 }
