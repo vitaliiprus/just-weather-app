@@ -1,5 +1,6 @@
 package prus.justweatherapp.feature.locations.mapper
 
+import prus.justweatherapp.core.common.util.isBetween
 import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.feature.locations.model.CurrentWeatherUiModel
 import prus.justweatherapp.feature.weather.mapper.getWeatherConditionImageResId
@@ -11,7 +12,10 @@ fun Weather.mapToUiModel(): CurrentWeatherUiModel =
         currentTemp = getCurrentTempString(this.temp),
         minMaxTemp = getMinMaxTempString(this.tempMin, this.tempMax),
         weatherConditions = getWeatherConditionsString(this.weatherConditions),
-        conditionImageResId = getWeatherConditionImageResId(this.weatherConditions)
+        conditionImageResId = getWeatherConditionImageResId(
+            weatherConditions = this.weatherConditions,
+            isDay = this.dateTime.time.isBetween(this.sunrise, this.sunset)
+        )
     )
 
 private fun getCurrentTempString(currentTemp: Double): String {

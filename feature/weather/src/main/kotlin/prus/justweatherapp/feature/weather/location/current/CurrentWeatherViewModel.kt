@@ -96,7 +96,10 @@ class CurrentWeatherViewModel @AssistedInject constructor(
                 args = arrayOf(getTempString(data.feelsLike, false))
             ),
             weatherConditions = getWeatherConditionsString(data.weatherConditions),
-            conditionImageResId = getWeatherConditionImageResId(data.weatherConditions),
+            conditionImageResId = getWeatherConditionImageResId(
+                weatherConditions = data.weatherConditions,
+                isDay = data.dateTime.time.isBetween(data.sunrise, data.sunset)
+            ),
             //TODO: handle polar day and polar night
             sunrise = data.sunrise.formatTime(),
             sunset = data.sunset.formatTime(),
