@@ -28,7 +28,7 @@ class GetLocationCurrentWeatherUseCase @Inject constructor(
                 if (requestResult is RequestResult.Success) {
                     val data = checkNotNull(requestResult.data)
                     RequestResult.Success(
-                        checkNotNull(requestResult.data).copy(
+                        data.copy(
                             temp = convertTemp(data.temp, tempScale),
                             feelsLike = convertTemp(data.feelsLike, tempScale),
                             tempMin = convertTemp(data.tempMin, tempScale),

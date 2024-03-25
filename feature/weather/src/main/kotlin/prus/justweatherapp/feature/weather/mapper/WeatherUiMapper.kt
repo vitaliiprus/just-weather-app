@@ -3,6 +3,94 @@ package prus.justweatherapp.feature.weather.mapper
 import prus.justweatherapp.core.ui.R
 import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.domain.weather.model.WeatherConditions
+import prus.justweatherapp.domain.weather.model.Wind
+import prus.justweatherapp.domain.weather.model.WindDirection
+import prus.justweatherapp.domain.weather.model.scale.PressureScale
+import prus.justweatherapp.domain.weather.model.scale.TempScale
+import prus.justweatherapp.domain.weather.model.scale.WindScale
+import kotlin.math.roundToInt
+
+fun getTempString(
+    temp: Double,
+    withScaleUnits: Boolean = false,
+    tempScale: TempScale? = null
+): String {
+    if (!withScaleUnits) {
+        return "${temp.roundToInt()}º"
+    } else {
+        requireNotNull(tempScale).let {
+            return when (it) {
+                TempScale.KELVIN -> "${temp.roundToInt()}K"
+                TempScale.CELSIUS -> "${temp.roundToInt()}ºC"
+                TempScale.FAHRENHEIT -> "${temp.roundToInt()}ºF"
+            }
+        }
+    }
+}
+
+fun getTempMinMaxString(
+    tempMin: Double,
+    tempMax: Double,
+): String {
+    return "↓${getTempString(tempMin, false)} " +
+            "↑${getTempString(tempMax, false)}"
+}
+
+fun getPressureString(pressure: Double, pressureScale: PressureScale): UiText {
+    val pressureScaleStringResId = when (pressureScale) {
+        PressureScale.MM_HG -> prus.justweatherapp.feature.weather.R.string.scale_mm_hg
+        PressureScale.H_PA -> prus.justweatherapp.feature.weather.R.string.scale_hpa
+    }
+    return UiText.StringResource(
+        id = prus.justweatherapp.feature.weather.R.string.template_value_scale,
+        args = arrayOf(
+            pressure.roundToInt().toString(),
+            UiText.StringResource(pressureScaleStringResId)
+        )
+    )
+}
+
+fun getWindString(wind: Wind?): UiText {
+    if (wind == null)
+        return UiText.DynamicString("-")
+
+    val windScaleStringResId = when (wind.windScale) {
+        WindScale.M_S -> prus.justweatherapp.feature.weather.R.string.scale_m_s
+        WindScale.KM_H -> prus.justweatherapp.feature.weather.R.string.scale_km_h
+        WindScale.MPH -> prus.justweatherapp.feature.weather.R.string.scale_mph
+        WindScale.KT -> prus.justweatherapp.feature.weather.R.string.scale_kt
+    }
+    var args = arrayOf(
+        (wind.speed ?: 0.0).roundToInt().toString(),
+        UiText.StringResource(windScaleStringResId)
+    )
+    return if (wind.getDirection() == WindDirection.Undefined) {
+        UiText.StringResource(
+            id = prus.justweatherapp.feature.weather.R.string.template_value_scale,
+            args = args
+        )
+    } else {
+        args = args.plus(getWindDirectionString(wind.getDirection()))
+        UiText.StringResource(
+            id = prus.justweatherapp.feature.weather.R.string.template_wind_value,
+            args = args
+        )
+    }
+}
+
+fun getWindDirectionString(direction: WindDirection): UiText {
+    return when (direction) {
+        WindDirection.N -> UiText.StringResource(prus.justweatherapp.feature.weather.R.string.wind_n)
+        WindDirection.NE -> UiText.StringResource(prus.justweatherapp.feature.weather.R.string.wind_ne)
+        WindDirection.E -> UiText.StringResource(prus.justweatherapp.feature.weather.R.string.wind_e)
+        WindDirection.SE -> UiText.StringResource(prus.justweatherapp.feature.weather.R.string.wind_se)
+        WindDirection.S -> UiText.StringResource(prus.justweatherapp.feature.weather.R.string.wind_s)
+        WindDirection.SW -> UiText.StringResource(prus.justweatherapp.feature.weather.R.string.wind_sw)
+        WindDirection.W -> UiText.StringResource(prus.justweatherapp.feature.weather.R.string.wind_w)
+        WindDirection.NW -> UiText.StringResource(prus.justweatherapp.feature.weather.R.string.wind_nw)
+        WindDirection.Undefined -> UiText.DynamicString("")
+    }
+}
 
 fun getWeatherConditionsString(weatherConditions: WeatherConditions): UiText {
     return UiText.StringResource(

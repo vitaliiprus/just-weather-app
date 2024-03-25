@@ -82,7 +82,6 @@ private fun CurrentWeatherUI(
     {
         val context = LocalContext.current
 
-
         Crossfade(
             targetState = state,
             label = "CurrentWeatherUI Crossfade"
