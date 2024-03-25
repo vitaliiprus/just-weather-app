@@ -17,6 +17,7 @@ import prus.justweatherapp.local.db.model.MainWeatherDataDBO
 import prus.justweatherapp.local.db.model.WindDBO
 import prus.justweatherapp.remote.model.CityDTO
 import prus.justweatherapp.remote.model.CurrentWeatherDTO
+import prus.justweatherapp.remote.model.ForecastWeatherDTO
 import prus.justweatherapp.remote.model.ForecastWeatherDataDTO
 import prus.justweatherapp.remote.model.MainWeatherDataDTO
 import prus.justweatherapp.remote.model.WindDTO
@@ -96,6 +97,9 @@ internal fun WeatherEntity.mapToDomainModel() =
 
 internal fun CurrentWeatherDTO.mapToDomainModel(locationId: String) =
     mapToDBO(locationId).mapToDomainModel()
+
+internal fun ForecastWeatherDTO.mapToDomainModel(locationId: String) =
+    list.map { it.mapToDBO(locationId, city).mapToDomainModel() }
 
 internal fun WindDTO.mapToDBO() =
     WindDBO(

@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.datetime.Clock
@@ -46,6 +45,7 @@ class WeatherRepositoryImpl @Inject constructor(
                     is RequestResult.Error -> {
                         emitAll(getCurrentWeatherFromServer(locationId))
                     }
+
                     else -> {
                         emit(dbRequestResult)
                     }
@@ -93,15 +93,16 @@ class WeatherRepositoryImpl @Inject constructor(
             .toRequestResult()
             .also { apiRequestResult ->
                 if (apiRequestResult is RequestResult.Success) {
-                    saveApiResponseToDb(
-                        response = listOf(checkNotNull(apiRequestResult.data).mapToDBO(locationId))
+                    val dbo = listOf(checkNotNull(apiRequestResult.data).mapToDBO(locationId))
+                    saveDbosToDb(
+                        response = dbo
                     )
                 }
                 emit(apiRequestResult.map { it.mapToDomainModel(locationId) })
             }
     }.onStart { emit(RequestResult.Loading()) }
 
-    private suspend fun saveApiResponseToDb(response: List<WeatherEntity>) {
+    private suspend fun saveDbosToDb(response: List<WeatherEntity>) {
         weatherDao.insertAll(response)
     }
 
@@ -111,9 +112,9 @@ class WeatherRepositoryImpl @Inject constructor(
         val mergeStrategy = ForecastWeatherMergeStrategy<List<Weather>>()
 
         getForecastWeatherFromDb(locationId)
-            .collect { dbRequestResult ->
-                if (dbRequestResult is RequestResult.Success
-                    && checkNotNull(dbRequestResult.data).size < forecastWeatherListMaxSize
+            .onEach { dbRequestResult ->
+                if (dbRequestResult is RequestResult.Success &&
+                    checkNotNull(dbRequestResult.data).size < forecastWeatherListMaxSize
                 ) {
                     emitAll(
                         getForecastWeatherFromServer(locationId)
@@ -125,21 +126,21 @@ class WeatherRepositoryImpl @Inject constructor(
                 } else {
                     emit(dbRequestResult)
                 }
-            }
-    }
+            }.collect(this)
+    }.onStart { emit(RequestResult.Loading()) }
 
     private fun getForecastWeatherFromDb(
         locationId: String
     ): Flow<RequestResult<List<Weather>>> = flow {
         emit(
-            weatherDao.getForecastWeatherByLocationId(
-                locationId = locationId,
-                limit = forecastWeatherListMaxSize
-            ).map { it.mapToDomainModel() }
+            RequestResult.Success(
+                weatherDao.getForecastWeatherByLocationId(
+                    locationId = locationId,
+                    limit = forecastWeatherListMaxSize
+                ).map { it.mapToDomainModel() }
+            )
         )
-    }
-        .map { RequestResult.Success(it) }
-        .onStart { RequestResult.Loading(data = null) }
+    }.onStart { RequestResult.Loading(data = null) }
 
     private suspend fun getForecastWeatherFromServer(
         locationId: String
@@ -159,23 +160,14 @@ class WeatherRepositoryImpl @Inject constructor(
         weatherDataSource.getForecastWeatherData(location.lat, location.lng)
             .toRequestResult()
             .also { apiRequestResult ->
-                when (apiRequestResult) {
-                    is RequestResult.Success -> {
-                        val data = checkNotNull(apiRequestResult.data)
-                        val dbos = data.list.map { it.mapToDBO(locationId, data.city) }
-                        saveApiResponseToDb(
-                            response = dbos
-                        )
-                        emit(RequestResult.Success(dbos.map { it.mapToDomainModel() }))
-                    }
-
-                    is RequestResult.Loading ->
-                        emit(RequestResult.Loading(null))
-
-                    is RequestResult.Error ->
-                        emit(RequestResult.Error(data = null, error = apiRequestResult.error))
+                if (apiRequestResult is RequestResult.Success) {
+                    val data = checkNotNull(apiRequestResult.data)
+                    val dbos = data.list.map { it.mapToDBO(locationId, data.city) }
+                    saveDbosToDb(
+                        response = dbos
+                    )
                 }
-
+                emit(apiRequestResult.map { it.mapToDomainModel(locationId) })
             }
-    }.onStart { emit(RequestResult.Loading(null)) }
+    }.onStart { emit(RequestResult.Loading()) }
 }

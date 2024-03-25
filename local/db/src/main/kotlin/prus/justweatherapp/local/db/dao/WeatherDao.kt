@@ -30,6 +30,7 @@ interface WeatherDao {
     suspend fun getForecastWeatherByLocationId(
         locationId: String,
         dateFrom: LocalDateTime = Clock.System.now()
+            .plus(-3, DateTimeUnit.HOUR)
             .toLocalDateTime(TimeZone.currentSystemDefault()),
         limit: Int
     ): List<WeatherEntity>

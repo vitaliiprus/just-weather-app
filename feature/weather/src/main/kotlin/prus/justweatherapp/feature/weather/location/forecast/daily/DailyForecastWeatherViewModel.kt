@@ -45,6 +45,12 @@ class DailyForecastWeatherViewModel @AssistedInject constructor(
             )
 
     private fun mapToUiModel(data: List<Weather>): List<DailyForecastWeatherUiModel> {
-        TODO("Not yet implemented")
+        return data.map {
+            DailyForecastWeatherUiModel(
+                temp = "",
+                feelsLike = "",
+                tempMinMax = "",
+            )
+        }
     }
 }

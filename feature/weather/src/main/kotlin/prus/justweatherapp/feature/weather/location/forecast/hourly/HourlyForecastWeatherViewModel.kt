@@ -11,8 +11,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import prus.justweatherapp.core.common.result.RequestResult
+import prus.justweatherapp.core.common.util.formatTime
+import prus.justweatherapp.core.common.util.isBetween
 import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.usecase.GetLocationForecastWeatherUseCase
+import prus.justweatherapp.feature.weather.mapper.getTempString
+import prus.justweatherapp.feature.weather.mapper.getWeatherConditionImageResId
+import prus.justweatherapp.feature.weather.mapper.getWeatherConditionsString
+import kotlin.math.ceil
+import kotlin.math.roundToInt
 
 @HiltViewModel(assistedFactory = HourlyForecastWeatherViewModel.ViewModelFactory::class)
 class HourlyForecastWeatherViewModel @AssistedInject constructor(
@@ -45,6 +52,24 @@ class HourlyForecastWeatherViewModel @AssistedInject constructor(
             )
 
     private fun mapToUiModel(data: List<Weather>): List<HourlyForecastWeatherUiModel> {
-        TODO("Not yet implemented")
+        return data.map { weather ->
+            HourlyForecastWeatherUiModel(
+                conditionImageResId = getWeatherConditionImageResId(
+                    weatherConditions = weather.weatherConditions,
+                    isDay = weather.dateTime.time.isBetween(weather.sunrise, weather.sunset)
+                ),
+                weatherConditions = getWeatherConditionsString(weather.weatherConditions),
+                time = weather.dateTime.formatTime(),
+                temp = getTempString(weather.temp, false, weather.tempScale),
+                precipitationProb = getPrecipitationProbString(weather.probOfPrecipitations)
+            )
+        }
+    }
+
+    private fun getPrecipitationProbString(probOfPrecipitations: Double?): String? {
+        return if(probOfPrecipitations == null || probOfPrecipitations == 0.0)
+            null
+        else "${ceil(probOfPrecipitations).roundToInt()}%"
+
     }
 }

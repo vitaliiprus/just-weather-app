@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import prus.justweatherapp.feature.weather.location.current.CurrentWeatherUI
+import prus.justweatherapp.feature.weather.location.forecast.hourly.HourlyForecastWeatherUI
 import prus.justweatherapp.theme.AppTheme
 import prus.justweatherapp.theme.Dimens
 import prus.justweatherapp.theme.screenContentPaddings
@@ -43,10 +44,10 @@ fun LocationWeatherUI(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-//        HourlyForecastWeatherUI(
-//            modifier = Modifier.fillMaxWidth(),
-//            locationId = locationId
-//        )
+        HourlyForecastWeatherUI(
+            modifier = Modifier.fillMaxWidth(),
+            locationId = locationId
+        )
 //
 //        Spacer(modifier = Modifier.height(20.dp))
 //

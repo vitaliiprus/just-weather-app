@@ -1,7 +1,11 @@
 package prus.justweatherapp.feature.weather.location.forecast.hourly
 
+import prus.justweatherapp.core.ui.UiText
+
 data class HourlyForecastWeatherUiModel(
-    val temp:String,
-    val feelsLike:String,
-    val tempMinMax:String,
+    val conditionImageResId: Int,
+    var weatherConditions: UiText,
+    val time: String,
+    val temp: String,
+    val precipitationProb: String? = null,
 )
