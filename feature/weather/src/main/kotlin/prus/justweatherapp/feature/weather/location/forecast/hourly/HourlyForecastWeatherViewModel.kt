@@ -69,7 +69,7 @@ class HourlyForecastWeatherViewModel @AssistedInject constructor(
     private fun getPrecipitationProbString(probOfPrecipitations: Double?): String? {
         return if(probOfPrecipitations == null || probOfPrecipitations == 0.0)
             null
-        else "${ceil(probOfPrecipitations).roundToInt()}%"
+        else "${ceil(probOfPrecipitations * 100).roundToInt()}%"
 
     }
 }

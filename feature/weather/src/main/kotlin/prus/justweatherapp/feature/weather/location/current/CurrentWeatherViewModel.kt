@@ -31,6 +31,7 @@ import prus.justweatherapp.feature.weather.mapper.getTempString
 import prus.justweatherapp.feature.weather.mapper.getWeatherConditionImageResId
 import prus.justweatherapp.feature.weather.mapper.getWeatherConditionsString
 import prus.justweatherapp.feature.weather.mapper.getWindString
+import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 @HiltViewModel(assistedFactory = CurrentWeatherViewModel.ViewModelFactory::class)
@@ -105,7 +106,7 @@ class CurrentWeatherViewModel @AssistedInject constructor(
             tempMinMax = getTempMinMaxString(data.tempMin, data.tempMax),
             uvIndex = "1",
             pressure = getPressureString(data.pressure, data.pressureScale),
-            precipitationProb = "${data.probOfPrecipitations?.roundToInt() ?: 0}%",
+            precipitationProb = getPrecipitationProbString(data.probOfPrecipitations),
             humidity = "${data.humidity.roundToInt()}%",
             wind = getWindString(data.wind)
         )
@@ -117,6 +118,13 @@ class CurrentWeatherViewModel @AssistedInject constructor(
             percentage = newTime.time.getPercentageOfTimeBetween(weather.sunrise, weather.sunset),
             isDay = newTime.time.isBetween(weather.sunrise, weather.sunset)
         )
+    }
+
+    private fun getPrecipitationProbString(probOfPrecipitations: Double?): String {
+        return if (probOfPrecipitations == null || probOfPrecipitations == 0.0)
+            "0%"
+        else "${ceil(probOfPrecipitations * 100).roundToInt()}%"
+
     }
 
     override fun onCleared() {
