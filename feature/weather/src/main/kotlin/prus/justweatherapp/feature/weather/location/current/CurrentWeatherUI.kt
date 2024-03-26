@@ -20,6 +20,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -70,7 +71,7 @@ private fun CurrentWeatherUI(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(370.dp),
+            .height(360.dp),
         shape = RoundedCornerShape(25.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
@@ -102,6 +103,8 @@ private fun CurrentWeatherUI(
             val daylight: DaylightUiModel? =
                 if (timeState is CurrentWeatherTimeUiState.Success) timeState.daylight
                 else null
+
+            val spacerHeight = remember { 12.dp }
 
             Column(
                 modifier = Modifier
@@ -193,11 +196,50 @@ private fun CurrentWeatherUI(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.Bottom
                 ) {
-                    if (weather != null) {
-                        JwaLabeledText(
-                            label = stringResource(id = R.string.sunrise),
-                            text = weather.sunrise
-                        )
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        if (weather != null) {
+                            JwaLabeledText(
+                                label = stringResource(id = R.string.sunrise),
+                                text = weather.sunrise
+                            )
+                            Spacer(modifier = Modifier.height(spacerHeight))
+                            JwaLabeledText(
+                                label = stringResource(id = R.string.temp_min_max),
+                                text = weather.tempMinMax
+                            )
+                            Spacer(modifier = Modifier.height(spacerHeight))
+                            JwaLabeledText(
+                                label = stringResource(id = R.string.precip_prob),
+                                text = weather.precipitationProb
+                            )
+
+                        } else {
+                            ShimmerRectangle(
+                                modifier = Modifier
+                                    .width(70.dp)
+                                    .height(40.dp)
+                            )
+                            Spacer(modifier = Modifier.height(spacerHeight))
+                            ShimmerRectangle(
+                                modifier = Modifier
+                                    .width(70.dp)
+                                    .height(40.dp)
+                            )
+                            Spacer(modifier = Modifier.height(spacerHeight))
+                            ShimmerRectangle(
+                                modifier = Modifier
+                                    .width(70.dp)
+                                    .height(40.dp)
+                            )
+                        }
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         if (daylight != null) {
                             DaylightUI(
                                 data = daylight
@@ -209,108 +251,75 @@ private fun CurrentWeatherUI(
                                     .height(80.dp)
                             )
                         }
-                        JwaLabeledText(
-                            label = stringResource(id = R.string.sunset),
-                            text = weather.sunset
-                        )
-                    } else {
-                        ShimmerRectangle(
-                            modifier = Modifier
-                                .width(70.dp)
-                                .height(40.dp)
-                        )
-                        ShimmerSemiCircle(
-                            modifier = Modifier
-                                .width(160.dp)
-                                .height(80.dp)
-                        )
-                        ShimmerRectangle(
-                            modifier = Modifier
-                                .width(70.dp)
-                                .height(40.dp)
-                        )
+
+                        if (weather != null) {
+                            Spacer(modifier = Modifier.height(spacerHeight))
+                            JwaLabeledText(
+                                label = stringResource(id = R.string.uv_index),
+                                text = weather.uvIndex
+                            )
+                            Spacer(modifier = Modifier.height(spacerHeight))
+                            JwaLabeledText(
+                                label = stringResource(id = R.string.humidity),
+                                text = weather.humidity
+                            )
+                        } else {
+                            Spacer(modifier = Modifier.height(spacerHeight))
+                            ShimmerRectangle(
+                                modifier = Modifier
+                                    .width(70.dp)
+                                    .height(40.dp)
+                            )
+                            Spacer(modifier = Modifier.height(spacerHeight))
+                            ShimmerRectangle(
+                                modifier = Modifier
+                                    .width(70.dp)
+                                    .height(40.dp)
+                            )
+                        }
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        if (weather != null) {
+                            JwaLabeledText(
+                                label = stringResource(id = R.string.sunset),
+                                text = weather.sunset
+                            )
+                            Spacer(modifier = Modifier.height(spacerHeight))
+                            JwaLabeledText(
+                                label = stringResource(id = R.string.pressure),
+                                text = weather.pressure.asString()
+                            )
+                            Spacer(modifier = Modifier.height(spacerHeight))
+                            JwaLabeledText(
+                                label = stringResource(id = R.string.wind),
+                                text = weather.wind.asString()
+                            )
+                        } else {
+                            ShimmerRectangle(
+                                modifier = Modifier
+                                    .width(70.dp)
+                                    .height(40.dp)
+                            )
+                            Spacer(modifier = Modifier.height(spacerHeight))
+                            ShimmerRectangle(
+                                modifier = Modifier
+                                    .width(70.dp)
+                                    .height(40.dp)
+                            )
+                            Spacer(modifier = Modifier.height(spacerHeight))
+                            ShimmerRectangle(
+                                modifier = Modifier
+                                    .width(70.dp)
+                                    .height(40.dp)
+                            )
+                        }
                     }
                 }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    if (weather != null) {
-                        JwaLabeledText(
-                            label = stringResource(id = R.string.temp_min_max),
-                            text = weather.tempMinMax
-                        )
-                        JwaLabeledText(
-                            label = stringResource(id = R.string.uv_index),
-                            text = weather.uvIndex
-                        )
-                        JwaLabeledText(
-                            label = stringResource(id = R.string.pressure),
-                            text = weather.pressure.asString()
-                        )
-                    } else {
-                        ShimmerRectangle(
-                            modifier = Modifier
-                                .width(70.dp)
-                                .height(40.dp)
-                        )
-                        ShimmerRectangle(
-                            modifier = Modifier
-                                .width(70.dp)
-                                .height(40.dp)
-                        )
-                        ShimmerRectangle(
-                            modifier = Modifier
-                                .width(70.dp)
-                                .height(40.dp)
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    if (weather != null) {
-                        JwaLabeledText(
-                            label = stringResource(id = R.string.precip_prob),
-                            text = weather.precipitationProb
-                        )
-                        JwaLabeledText(
-                            label = stringResource(id = R.string.humidity),
-                            text = weather.humidity
-                        )
-                        JwaLabeledText(
-                            label = stringResource(id = R.string.wind),
-                            text = weather.wind.asString()
-                        )
-                    } else {
-                        ShimmerRectangle(
-                            modifier = Modifier
-                                .width(70.dp)
-                                .height(40.dp)
-                        )
-                        ShimmerRectangle(
-                            modifier = Modifier
-                                .width(70.dp)
-                                .height(40.dp)
-                        )
-                        ShimmerRectangle(
-                            modifier = Modifier
-                                .width(70.dp)
-                                .height(40.dp)
-                        )
-                    }
-                }
-
             }
         }
-
     }
 }
 
@@ -358,7 +367,7 @@ private fun CurrentWeatherUISuccessPreview(
                     time = "Mon, 18 March, 15:40",
                     daylight = DaylightUiModel(
                         text = "12h 01m",
-                        percentage = 40f,
+                        percentage = 50f,
                         isDay = true
                     ),
                 )
