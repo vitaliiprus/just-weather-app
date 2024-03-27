@@ -1,21 +1,14 @@
 package prus.justweatherapp.feature.weather.location.forecast.hourly
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -24,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -33,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.core.ui.shimmer.ShimmerRectangle
+import prus.justweatherapp.feature.weather.location.forecast.weathercard.WeatherCardUI
 import prus.justweatherapp.theme.AppTheme
 import prus.justweatherapp.theme.Dimens
 
@@ -95,78 +88,28 @@ private fun HourlyForecastWeatherUI(
     }
 }
 
+private val itemPadding = PaddingValues(
+    start = 8.dp,
+    end = 8.dp,
+    top = 4.dp,
+    bottom = 4.dp
+)
+
 @Composable
-fun HourlyWeatherItem(
+private fun HourlyWeatherItem(
     data: HourlyForecastWeatherUiModel
 ) {
     Column(
         modifier = Modifier
-            .padding(PaddingValues(
-                start = 8.dp,
-                end = 8.dp,
-                top = 4.dp,
-                bottom = 4.dp
-            )),
+            .padding(itemPadding),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Card(
-            modifier = Modifier
-                .size(60.dp),
-            shape = RoundedCornerShape(16.dp),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 4.dp
-            ),
-            colors = CardDefaults.cardColors().copy(
-                containerColor = MaterialTheme.colorScheme.onTertiary
-            ),
+        WeatherCardUI(
+            weatherConditionImageResId = data.conditionImageResId,
+            weatherConditionString = data.weatherConditions.asString(),
+            precipitationProb = data.precipitationProb
         )
-        {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    modifier = Modifier
-                        .size(36.dp),
-                    painter = painterResource(id = data.conditionImageResId),
-                    contentDescription = data.weatherConditions.asString(),
-                    alignment = Alignment.Center
-                )
-
-                if (data.precipitationProb != null) {
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.BottomEnd
-                    ) {
-                            Text(
-                                modifier = Modifier
-                                    .background(
-                                        color = MaterialTheme.colorScheme.tertiary,
-                                        shape = RoundedCornerShape(
-                                            topStart = 8.dp,
-                                            bottomStart = 0.dp,
-                                            topEnd = 0.dp
-                                        )
-                                    )
-                                    .padding(
-                                        start = 6.dp,
-                                        end = 8.dp,
-                                        top = 1.dp
-                                    ),
-                                text = data.precipitationProb,
-                                style = MaterialTheme.typography.bodySmall,
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 10.sp,
-                                color = MaterialTheme.colorScheme.inversePrimary
-                            )
-                    }
-                }
-            }
-        }
 
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -188,10 +131,10 @@ fun HourlyWeatherItem(
 }
 
 @Composable
-fun ShimmeringItem() {
+private fun ShimmeringItem() {
     Column(
         modifier = Modifier
-            .padding(4.dp),
+            .padding(itemPadding),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ShimmerRectangle(
