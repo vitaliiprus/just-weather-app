@@ -13,7 +13,7 @@ import prus.justweatherapp.domain.weather.util.convertTemp
 import prus.justweatherapp.domain.weather.util.convertWind
 import javax.inject.Inject
 
-class GetLocationForecastWeatherUseCase @Inject constructor(
+class GetLocationHourlyForecastUseCase @Inject constructor(
     private val weatherRepository: WeatherRepository
 ) {
     operator fun invoke(

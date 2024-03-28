@@ -14,7 +14,7 @@ import prus.justweatherapp.core.common.result.RequestResult
 import prus.justweatherapp.core.common.util.formatTime
 import prus.justweatherapp.core.common.util.isBetween
 import prus.justweatherapp.domain.weather.model.Weather
-import prus.justweatherapp.domain.weather.usecase.GetLocationForecastWeatherUseCase
+import prus.justweatherapp.domain.weather.usecase.GetLocationHourlyForecastUseCase
 import prus.justweatherapp.feature.weather.mapper.getTempString
 import prus.justweatherapp.feature.weather.mapper.getWeatherConditionImageResId
 import prus.justweatherapp.feature.weather.mapper.getWeatherConditionsString
@@ -24,7 +24,7 @@ import kotlin.math.roundToInt
 @HiltViewModel(assistedFactory = HourlyForecastWeatherViewModel.ViewModelFactory::class)
 class HourlyForecastWeatherViewModel @AssistedInject constructor(
     @Assisted val locationId: String,
-    getForecastWeatherUseCase: GetLocationForecastWeatherUseCase
+    getHourlyForecastUseCase: GetLocationHourlyForecastUseCase
 ) : ViewModel() {
 
     @AssistedFactory
@@ -33,7 +33,7 @@ class HourlyForecastWeatherViewModel @AssistedInject constructor(
     }
 
     val state: StateFlow<HourlyForecastWeatherUiState> =
-        getForecastWeatherUseCase(locationId)
+        getHourlyForecastUseCase(locationId)
             .map { result ->
                 when (result) {
                     is RequestResult.Error -> HourlyForecastWeatherUiState.Error(result.error?.message)
