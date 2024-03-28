@@ -11,13 +11,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import prus.justweatherapp.core.common.result.RequestResult
+import prus.justweatherapp.core.ui.R
+import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.domain.weather.model.Weather
-import prus.justweatherapp.domain.weather.usecase.GetLocationForecastWeatherUseCase
+import prus.justweatherapp.domain.weather.usecase.GetLocationDailyForecastUseCase
+import prus.justweatherapp.feature.weather.location.forecast.daily.temprange.TempRangeModel
 
 @HiltViewModel(assistedFactory = DailyForecastWeatherViewModel.ViewModelFactory::class)
 class DailyForecastWeatherViewModel @AssistedInject constructor(
     @Assisted val locationId: String,
-    getForecastWeatherUseCase: GetLocationForecastWeatherUseCase
+    getForecastWeatherUseCase: GetLocationDailyForecastUseCase
 ) : ViewModel() {
 
     @AssistedFactory
@@ -46,10 +49,18 @@ class DailyForecastWeatherViewModel @AssistedInject constructor(
 
     private fun mapToUiModel(data: List<Weather>): List<DailyForecastWeatherUiModel> {
         return data.map {
+            //TODO:
             DailyForecastWeatherUiModel(
-                temp = "",
-                feelsLike = "",
-                tempMinMax = "",
+                date = "FR, 29 March",
+                conditionImageResId = R.drawable.mostlysunny,
+                weatherConditions = UiText.DynamicString("Mostly sunny"),
+                precipitationProb = "29%",
+                tempRangeModel = TempRangeModel(
+                    dayMinTemp = 7.0,
+                    dayMaxTemp = 12.0,
+                    rangeMinTemp = -2.0,
+                    rangeMaxTemp = 12.0
+                )
             )
         }
     }
