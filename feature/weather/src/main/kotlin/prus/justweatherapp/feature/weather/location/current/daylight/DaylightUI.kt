@@ -35,7 +35,6 @@ internal fun DaylightUI(
     modifier: Modifier = Modifier,
     data: DaylightUiModel
 ) {
-
     Box(
         modifier = modifier,
         contentAlignment = Alignment.BottomCenter
@@ -61,7 +60,6 @@ internal fun DaylightUI(
                 .width(160.dp)
                 .height(80.dp),
         ) {
-
             val height = size.height
             val width = size.width
 
@@ -72,7 +70,6 @@ internal fun DaylightUI(
             drawArc(
                 brush = Brush.verticalGradient(
                     colors = gradientColors,
-
                 ),
                 startAngle = 180f,
                 sweepAngle = 180f,
