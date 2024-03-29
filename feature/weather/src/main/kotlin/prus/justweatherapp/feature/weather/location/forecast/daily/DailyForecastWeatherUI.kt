@@ -29,7 +29,7 @@ import prus.justweatherapp.core.ui.R
 import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.core.ui.shimmer.ShimmerRectangle
 import prus.justweatherapp.feature.weather.location.forecast.daily.temprange.TempRangeModel
-import prus.justweatherapp.feature.weather.location.forecast.daily.temprange.TempRangeUi
+import prus.justweatherapp.feature.weather.location.forecast.daily.temprange.TempRangeUI
 import prus.justweatherapp.feature.weather.location.forecast.weathercard.WeatherCardUI
 import prus.justweatherapp.theme.AppTheme
 import prus.justweatherapp.theme.Dimens
@@ -135,11 +135,11 @@ private fun DailyWeatherItem(
 
         }
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
-        TempRangeUi(
+        TempRangeUI(
             modifier = Modifier
-                .weight(1f),
+                .width(130.dp),
             data = data.tempRangeModel
         )
 
