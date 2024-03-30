@@ -18,7 +18,7 @@ import prus.justweatherapp.core.common.result.map
 import prus.justweatherapp.core.common.result.toRequestResult
 import prus.justweatherapp.data.weather.mapper.mapToDBO
 import prus.justweatherapp.data.weather.mapper.mapToDomainModel
-import prus.justweatherapp.data.weather.mergestrategy.ForecastWeatherMergeStrategy
+import prus.justweatherapp.data.weather.mergestrategy.RequestResultMergeStrategy
 import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.repository.WeatherRepository
 import prus.justweatherapp.local.db.dao.LocationsDao
@@ -39,11 +39,19 @@ class WeatherRepositoryImpl @Inject constructor(
     override fun getCurrentWeatherByLocationId(
         locationId: String
     ): Flow<RequestResult<Weather?>> = flow {
+        val mergeStrategy = RequestResultMergeStrategy<Weather?>()
+
         getCurrentWeatherFromDb(locationId)
             .onEach { dbRequestResult ->
                 when (dbRequestResult) {
                     is RequestResult.Error -> {
-                        emitAll(getCurrentWeatherFromServer(locationId))
+                        emitAll(
+                            flowOf(dbRequestResult)
+                                .combine(
+                                    getCurrentWeatherFromServer(locationId),
+                                    mergeStrategy::merge
+                                )
+                        )
                     }
 
                     else -> {
@@ -51,7 +59,7 @@ class WeatherRepositoryImpl @Inject constructor(
                     }
                 }
             }.collect()
-    }.onStart { emit(RequestResult.Loading()) }
+    }
 
     private fun getCurrentWeatherFromDb(
         locationId: String
@@ -109,7 +117,7 @@ class WeatherRepositoryImpl @Inject constructor(
     override fun getForecastWeatherByLocationId(
         locationId: String,
     ): Flow<RequestResult<List<Weather>>> = flow {
-        val mergeStrategy = ForecastWeatherMergeStrategy<List<Weather>>()
+        val mergeStrategy = RequestResultMergeStrategy<List<Weather>>()
 
         getForecastWeatherFromDb(locationId)
             .onEach { dbRequestResult ->
@@ -117,17 +125,17 @@ class WeatherRepositoryImpl @Inject constructor(
                     checkNotNull(dbRequestResult.data).size < forecastWeatherListMaxSize
                 ) {
                     emitAll(
-                        getForecastWeatherFromServer(locationId)
+                        flowOf(dbRequestResult)
                             .combine(
-                                flowOf(dbRequestResult),
+                                getForecastWeatherFromServer(locationId),
                                 mergeStrategy::merge
                             )
                     )
                 } else {
                     emit(dbRequestResult)
                 }
-            }.collect(this)
-    }.onStart { emit(RequestResult.Loading()) }
+            }.collect()
+    }
 
     private fun getForecastWeatherFromDb(
         locationId: String
