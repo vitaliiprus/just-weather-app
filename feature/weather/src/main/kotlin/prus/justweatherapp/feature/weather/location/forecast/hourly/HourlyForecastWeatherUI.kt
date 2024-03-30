@@ -32,13 +32,17 @@ import prus.justweatherapp.theme.Dimens
 @Composable
 fun HourlyForecastWeatherUI(
     modifier: Modifier,
-    locationId: String,
-    viewModel: HourlyForecastWeatherViewModel = hiltViewModel<HourlyForecastWeatherViewModel,
-            HourlyForecastWeatherViewModel.ViewModelFactory>
-        (key = locationId) { factory ->
-        factory.create(locationId)
-    },
+    locationId: String
 ) {
+    val viewModel: HourlyForecastWeatherViewModel = hiltViewModel<
+            HourlyForecastWeatherViewModel,
+            HourlyForecastWeatherViewModel.ViewModelFactory
+            >(
+        key = HourlyForecastWeatherViewModel::class.qualifiedName.plus(" $locationId")
+    ) { factory ->
+        factory.create(locationId)
+    }
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     HourlyForecastWeatherUI(

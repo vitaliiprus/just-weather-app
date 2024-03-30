@@ -45,13 +45,16 @@ import prus.justweatherapp.theme.contentPaddings
 fun CurrentWeatherUI(
     modifier: Modifier,
     locationId: String,
-    viewModel: CurrentWeatherViewModel = hiltViewModel<
+) {
+    val viewModel: CurrentWeatherViewModel = hiltViewModel<
             CurrentWeatherViewModel,
             CurrentWeatherViewModel.ViewModelFactory
-            >(key = locationId) { factory ->
+            >(
+        key =  CurrentWeatherViewModel::class.qualifiedName.plus(" $locationId")
+    ) { factory ->
         factory.create(locationId)
     }
-) {
+
     val state by viewModel.state.collectAsStateWithLifecycle()
     val timeState by viewModel.timeState.collectAsStateWithLifecycle()
 
