@@ -13,6 +13,6 @@ data class ForecastWeatherDataDTO(
     @SerialName("rain") val rain: RainDTO? = null,
     @SerialName("snow") val snow: SnowDTO? = null,
     @SerialName("wind") val wind: WindDTO,
-    @SerialName("visibility") val visibility: Int,
-    @SerialName("pop") val probOfPrecipitations: Double,
+    @SerialName("visibility") val visibility: Int? = null,
+    @SerialName("pop") val probOfPrecipitations: Double? = null,
 )
