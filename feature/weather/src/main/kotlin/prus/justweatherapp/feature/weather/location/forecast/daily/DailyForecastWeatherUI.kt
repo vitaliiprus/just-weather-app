@@ -177,11 +177,11 @@ private fun ShimmeringItem() {
 
         }
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
         ShimmerRectangle(
             modifier = Modifier
-                .weight(1f)
+                .width(140.dp)
                 .height(50.dp)
         )
     }
