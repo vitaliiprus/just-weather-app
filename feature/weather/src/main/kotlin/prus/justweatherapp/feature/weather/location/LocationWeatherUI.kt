@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -14,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import prus.justweatherapp.feature.weather.location.current.CurrentWeatherUI
+import prus.justweatherapp.feature.weather.location.forecast.daily.DailyForecastWeatherUI
 import prus.justweatherapp.feature.weather.location.forecast.hourly.HourlyForecastWeatherUI
 import prus.justweatherapp.theme.AppTheme
 import prus.justweatherapp.theme.Dimens
@@ -24,9 +27,14 @@ fun LocationWeatherUI(
     locationId: String,
     locationName: String? = null
 ) {
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(
+                state = scrollState
+            )
     ) {
 
         if (!locationName.isNullOrBlank()) {
@@ -48,13 +56,13 @@ fun LocationWeatherUI(
             modifier = Modifier.fillMaxWidth(),
             locationId = locationId
         )
-//
-//        Spacer(modifier = Modifier.height(20.dp))
-//
-//        DailyForecastWeatherUI(
-//            modifier = Modifier.fillMaxWidth(),
-//            locationId = locationId
-//        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        DailyForecastWeatherUI(
+            modifier = Modifier.fillMaxWidth(),
+            locationId = locationId
+        )
 
     }
 }

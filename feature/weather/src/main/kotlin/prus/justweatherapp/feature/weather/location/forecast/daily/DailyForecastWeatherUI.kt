@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -37,13 +36,17 @@ import prus.justweatherapp.theme.Dimens
 @Composable
 fun DailyForecastWeatherUI(
     modifier: Modifier,
-    locationId: String,
-    viewModel: DailyForecastWeatherViewModel = hiltViewModel<DailyForecastWeatherViewModel,
-            DailyForecastWeatherViewModel.ViewModelFactory>
-        (key = locationId) { factory ->
-        factory.create(locationId)
-    },
+    locationId: String
 ) {
+    val viewModel: DailyForecastWeatherViewModel = hiltViewModel<
+            DailyForecastWeatherViewModel,
+            DailyForecastWeatherViewModel.ViewModelFactory
+            >(
+        key = DailyForecastWeatherViewModel::class.qualifiedName.plus(" $locationId")
+    ) { factory ->
+        factory.create(locationId)
+    }
+
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     DailyForecastWeatherUI(
@@ -66,26 +69,26 @@ private fun DailyForecastWeatherUI(
         if (state is DailyForecastWeatherUiState.Success) state.weather
         else null
 
-    LazyColumn(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .then(modifier),
-        contentPadding = PaddingValues(
-            horizontal = Dimens.contentPaddings.start,
-            vertical = 0.dp
-        )
-    ) {
-        if (dataItems == null) {
-            items(count = 4) {
-                ShimmeringItem()
-            }
-        } else {
-            items(
-                count = dataItems.size
-            ) {
-                DailyWeatherItem(
-                    data = dataItems[it]
+            .padding(
+                PaddingValues(
+                    horizontal = Dimens.contentPaddings.start,
+                    vertical = 0.dp
                 )
+            )
+            .then(modifier),
+    ) {
+        dataItems?.let {
+            dataItems.forEach { item ->
+                DailyWeatherItem(
+                    data = item
+                )
+            }
+        } ?: run {
+            for (i in 0..4) {
+                ShimmeringItem()
             }
         }
     }
