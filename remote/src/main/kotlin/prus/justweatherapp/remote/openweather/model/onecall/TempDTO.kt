@@ -1,4 +1,4 @@
-package prus.justweatherapp.remote.model.onecall
+package prus.justweatherapp.remote.openweather.model.onecall
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

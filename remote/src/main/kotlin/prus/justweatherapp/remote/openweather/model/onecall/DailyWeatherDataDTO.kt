@@ -1,9 +1,9 @@
-package prus.justweatherapp.remote.model.onecall
+package prus.justweatherapp.remote.openweather.model.onecall
 
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import prus.justweatherapp.remote.model.WeatherConditionsDTO
+import prus.justweatherapp.remote.openweather.model.WeatherConditionsDTO
 
 @Serializable
 data class DailyWeatherDataDTO(

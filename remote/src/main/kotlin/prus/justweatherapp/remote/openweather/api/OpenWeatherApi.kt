@@ -1,7 +1,7 @@
 package prus.justweatherapp.remote.openweather.api
 
-import prus.justweatherapp.remote.model.CurrentWeatherDTO
-import prus.justweatherapp.remote.model.ForecastWeatherDTO
+import prus.justweatherapp.remote.openweather.model.CurrentWeatherDTO
+import prus.justweatherapp.remote.openweather.model.ForecastWeatherDTO
 import retrofit2.http.GET
 import retrofit2.http.Query
 

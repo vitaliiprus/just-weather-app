@@ -1,4 +1,4 @@
-package prus.justweatherapp.remote.model.onecall
+package prus.justweatherapp.remote.openweather.model.onecall
 
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
