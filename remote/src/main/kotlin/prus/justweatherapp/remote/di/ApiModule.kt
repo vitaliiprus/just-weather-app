@@ -5,12 +5,12 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import prus.justweatherapp.remote.datasource.WeatherDataSource
-import prus.justweatherapp.remote.openweather.OpenWeatherApiClient
+import prus.justweatherapp.remote.openmeteo.OpenMeteoApiClient
 
 @Module
 @InstallIn(SingletonComponent::class)
 internal interface ApiModule {
 
     @Binds
-    fun binds(impl: OpenWeatherApiClient): WeatherDataSource
+    fun binds(impl: OpenMeteoApiClient): WeatherDataSource
 }

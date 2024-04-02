@@ -26,6 +26,7 @@ android {
 
         buildConfigField("String", "OPENWEATHER_BASE_URL", "\"https://api.openweathermap.org/data/2.5/\"")
         buildConfigField("String", "OPENWEATHER_API_KEY", props.getProperty("OPENWEATHER_API_KEY"))
+        buildConfigField("String", "OPENMETEO_BASE_URL", "\"https://api.open-meteo.com/v1/\"")
     }
 
     buildFeatures{
