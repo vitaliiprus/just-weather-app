@@ -10,7 +10,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.datetime.LocalDate
 import prus.justweatherapp.core.common.result.RequestResult
+import prus.justweatherapp.core.common.util.formatHeaderDate
 import prus.justweatherapp.core.common.util.formatTime
 import prus.justweatherapp.core.common.util.isBetween
 import prus.justweatherapp.domain.weather.model.Weather
@@ -18,6 +20,7 @@ import prus.justweatherapp.domain.weather.usecase.GetLocationHourlyForecastUseCa
 import prus.justweatherapp.feature.weather.mapper.getTempString
 import prus.justweatherapp.feature.weather.mapper.getWeatherConditionImageResId
 import prus.justweatherapp.feature.weather.mapper.getWeatherConditionsString
+import java.util.SortedMap
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
@@ -51,23 +54,30 @@ class HourlyForecastWeatherViewModel @AssistedInject constructor(
                 initialValue = HourlyForecastWeatherUiState.Loading
             )
 
-    private fun mapToUiModel(data: List<Weather>): List<HourlyForecastWeatherUiModel> {
-        return data.map { weather ->
-            HourlyForecastWeatherUiModel(
-                conditionImageResId = getWeatherConditionImageResId(
-                    weatherConditions = weather.weatherConditions,
-                    isDay = weather.dateTime.time.isBetween(weather.sunrise, weather.sunset)
-                ),
-                weatherConditions = getWeatherConditionsString(weather.weatherConditions),
-                time = weather.dateTime.formatTime(),
-                temp = getTempString(weather.temp, false, weather.tempScale),
-                precipitationProb = getPrecipitationProbString(weather.probOfPrecipitations)
-            )
-        }
+    private fun mapToUiModel(data: SortedMap<LocalDate, List<Weather>>): List<HourlyForecastWeatherUiModel> {
+        return data
+            .flatMap { entry ->
+                entry.value.mapIndexed { index, weather ->
+                    HourlyForecastWeatherUiModel(
+                        conditionImageResId = getWeatherConditionImageResId(
+                            weatherConditions = weather.weatherConditions,
+                            isDay = weather.dateTime.time.isBetween(
+                                weather.sunrise,
+                                weather.sunset
+                            )
+                        ),
+                        weatherConditions = getWeatherConditionsString(weather.weatherConditions),
+                        time = weather.dateTime.formatTime(),
+                        temp = getTempString(weather.temp, false, weather.tempScale),
+                        precipitationProb = getPrecipitationProbString(weather.probOfPrecipitations),
+                        date = if (index == 0) entry.key.formatHeaderDate() else null
+                    )
+                }
+            }
     }
 
     private fun getPrecipitationProbString(probOfPrecipitations: Double?): String? {
-        return if(probOfPrecipitations == null || probOfPrecipitations == 0.0)
+        return if (probOfPrecipitations == null || probOfPrecipitations == 0.0)
             null
         else "${ceil(probOfPrecipitations * 100).roundToInt()}%"
 

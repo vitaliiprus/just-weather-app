@@ -50,14 +50,12 @@ fun LocationWeatherUI(
             locationId = locationId
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
-
         HourlyForecastWeatherUI(
             modifier = Modifier.fillMaxWidth(),
             locationId = locationId
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         DailyForecastWeatherUI(
             modifier = Modifier.fillMaxWidth(),

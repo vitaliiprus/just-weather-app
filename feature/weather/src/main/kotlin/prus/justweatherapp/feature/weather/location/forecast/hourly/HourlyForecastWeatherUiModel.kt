@@ -8,4 +8,5 @@ data class HourlyForecastWeatherUiModel(
     val time: String,
     val temp: String,
     val precipitationProb: String? = null,
+    val date: String? = null,
 )

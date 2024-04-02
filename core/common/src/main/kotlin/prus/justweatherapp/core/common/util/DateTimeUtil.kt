@@ -2,12 +2,14 @@ package prus.justweatherapp.core.common.util
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.UtcOffset
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
+import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toJavaLocalTime
 import kotlinx.datetime.toLocalDateTime
@@ -42,6 +44,11 @@ fun Duration.formatDuration(): String {
 fun LocalDateTime.formatDateTime(): String {
     val formatter = DateTimeFormatter.ofPattern("EEE, dd LLLL, HH:mm")
     return formatter.format(this.toJavaLocalDateTime())
+}
+
+fun LocalDate.formatHeaderDate(): String {
+    val formatter = DateTimeFormatter.ofPattern("dd LLL")
+    return formatter.format(this.toJavaLocalDate())
 }
 
 fun getLocationCurrentTime(timezoneOffset: Int): LocalDateTime {

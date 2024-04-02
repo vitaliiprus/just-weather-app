@@ -1,9 +1,11 @@
 package prus.justweatherapp.feature.weather.location.forecast.hourly
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -67,26 +70,27 @@ private fun HourlyForecastWeatherUI(
 
     LazyRow(
         modifier = Modifier
-            .height(120.dp)
+            .height(140.dp)
             .then(modifier),
         contentPadding = PaddingValues(
             horizontal = Dimens.contentPaddings.start,
             vertical = 0.dp
         ),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
 
-        if (dataItems == null) {
-            items(count = 10) {
-                ShimmeringItem()
-            }
-        } else {
+        dataItems?.let { items ->
             items(
-                count = dataItems.size
+                count = items.size
             ) {
                 HourlyWeatherItem(
-                    data = dataItems[it]
+                    data = items[it]
                 )
+            }
+
+        } ?: run {
+            items(count = 10) {
+                ShimmeringItem()
             }
         }
     }
@@ -101,13 +105,29 @@ private val itemPadding = PaddingValues(
 
 @Composable
 private fun HourlyWeatherItem(
+    modifier: Modifier = Modifier,
     data: HourlyForecastWeatherUiModel
 ) {
     Column(
         modifier = Modifier
-            .padding(itemPadding),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxHeight()
+            .padding(itemPadding)
+            .then(modifier),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Bottom
     ) {
+
+        if (data.date != null) {
+            Text(
+                modifier = Modifier
+                    .padding(
+                        bottom = 4.dp,
+                    ),
+                text = data.date,
+                textAlign = TextAlign.Start,
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
 
         WeatherCardUI(
             weatherConditionImageResId = data.conditionImageResId,
@@ -125,7 +145,6 @@ private fun HourlyWeatherItem(
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
         )
 
-
         Text(
             text = data.temp,
             style = MaterialTheme.typography.bodySmall,
@@ -138,8 +157,10 @@ private fun HourlyWeatherItem(
 private fun ShimmeringItem() {
     Column(
         modifier = Modifier
+            .fillMaxHeight()
             .padding(itemPadding),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Bottom
     ) {
         ShimmerRectangle(
             modifier = Modifier
@@ -174,7 +195,8 @@ private fun HourlyForecastWeatherUISuccessPreview(
                             weatherConditions = UiText.DynamicString("Chance rain"),
                             time = "11:00",
                             temp = "15º",
-                            precipitationProb = "10%"
+                            precipitationProb = "10%",
+                            date = "01 Apr"
                         ),
                         HourlyForecastWeatherUiModel(
                             conditionImageResId = prus.justweatherapp.core.ui.R.drawable.mostlysunny,

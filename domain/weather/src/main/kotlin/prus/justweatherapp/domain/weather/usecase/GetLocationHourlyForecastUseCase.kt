@@ -2,7 +2,9 @@ package prus.justweatherapp.domain.weather.usecase
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.LocalDate
 import prus.justweatherapp.core.common.result.RequestResult
+import prus.justweatherapp.core.common.result.map
 import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.model.scale.PressureScale
 import prus.justweatherapp.domain.weather.model.scale.TempScale
@@ -11,6 +13,7 @@ import prus.justweatherapp.domain.weather.repository.WeatherRepository
 import prus.justweatherapp.domain.weather.util.convertPressure
 import prus.justweatherapp.domain.weather.util.convertTemp
 import prus.justweatherapp.domain.weather.util.convertWind
+import java.util.SortedMap
 import javax.inject.Inject
 
 class GetLocationHourlyForecastUseCase @Inject constructor(
@@ -18,17 +21,19 @@ class GetLocationHourlyForecastUseCase @Inject constructor(
 ) {
     operator fun invoke(
         locationId: String
-    ): Flow<RequestResult<List<Weather>>> {
+    ): Flow<RequestResult<SortedMap<LocalDate, List<Weather>>>> {
         return weatherRepository.getForecastWeatherByLocationId(locationId)
 //            .combine(getSettingsUseCase())
             .map { requestResult ->
                 val tempScale = TempScale.CELSIUS
                 val pressureScale = PressureScale.MM_HG
                 val windScale = WindScale.M_S
-                if (requestResult is RequestResult.Success) {
-                    val data = checkNotNull(requestResult.data)
-                    RequestResult.Success(
-                        data.map { weather ->
+
+                val resultData = hashMapOf<LocalDate, List<Weather>>()
+
+                requestResult.map {
+                    checkNotNull(requestResult.data)
+                        .map { weather ->
                             weather.copy(
                                 temp = convertTemp(weather.temp, tempScale),
                                 feelsLike = convertTemp(weather.feelsLike, tempScale),
@@ -48,9 +53,15 @@ class GetLocationHourlyForecastUseCase @Inject constructor(
                                 )
                             )
                         }
-                    )
-                } else {
-                    requestResult
+                        .forEach { weather ->
+                            val key = weather.dateTime.date
+                            val list = resultData.getOrDefault(
+                                key = key,
+                                defaultValue = listOf()
+                            )
+                            resultData[key] = list.plus(weather)
+                        }
+                    resultData.toSortedMap()
                 }
             }
     }
