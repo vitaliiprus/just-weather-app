@@ -9,6 +9,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import prus.justweatherapp.remote.interceptor.getHttpLoggingInterceptor
+import prus.justweatherapp.remote.openmeteo.OpenMeteoApiClient
 import prus.justweatherapp.remote.openweather.OpenWeatherApiClient
 import javax.inject.Singleton
 
@@ -37,6 +38,17 @@ internal object NetworkModule {
         okhttpCallFactory: Call.Factory,
     ): OpenWeatherApiClient {
         return OpenWeatherApiClient(
+            networkJson,
+            okhttpCallFactory
+        )
+    }
+
+    @Provides
+    fun providesOpenMeteoApiClient(
+        networkJson: Json,
+        okhttpCallFactory: Call.Factory,
+    ): OpenMeteoApiClient {
+        return OpenMeteoApiClient(
             networkJson,
             okhttpCallFactory
         )

@@ -1,8 +1,9 @@
 package prus.justweatherapp.remote.openweather.mapper
 
 import prus.justweatherapp.remote.model.ForecastResponseDTO
+import prus.justweatherapp.remote.model.HourlyWeatherDTO
 import prus.justweatherapp.remote.model.SunDataDTO
-import prus.justweatherapp.remote.model.WeatherDTO
+import prus.justweatherapp.remote.model.WeatherConditions
 import prus.justweatherapp.remote.openweather.model.ForecastWeatherDTO
 import prus.justweatherapp.remote.openweather.model.ForecastWeatherDataDTO
 
@@ -25,7 +26,7 @@ internal fun Result<ForecastWeatherDTO>.mapToForecastResponseDto() =
 
 internal fun List<ForecastWeatherDataDTO>.mapToWeatherDtoList() =
     this.map {
-        WeatherDTO(
+        HourlyWeatherDTO(
             dateTime = it.dateTime,
             temp = it.main.temp,
             feelsLike = it.main.feelsLike,
@@ -35,7 +36,7 @@ internal fun List<ForecastWeatherDataDTO>.mapToWeatherDtoList() =
             rain = it.rain?.h1 ?: 0.0,
             showers = it.rain?.h1 ?: 0.0,
             snowfall = it.snow?.h1 ?: 0.0,
-            weatherCode = it.weather.firstOrNull()?.id ?: -1,
+            weatherConditions = mapToWeatherConditions(it.weather.firstOrNull()?.id ?: -1),
             cloudCover = it.clouds?.all ?: 0.0,
             visibility = it.visibility?.toDouble() ?: 0.0,
             windSpeed = it.wind.speed ?: 0.0,
@@ -45,3 +46,18 @@ internal fun List<ForecastWeatherDataDTO>.mapToWeatherDtoList() =
 
         )
     }
+
+internal fun mapToWeatherConditions(weatherCode: Int?): WeatherConditions {
+    return when (weatherCode) {
+        in (200..299) -> WeatherConditions.Thunderstorm
+        in (300..399) -> WeatherConditions.ChanceRain
+        in (500..599) -> WeatherConditions.Rain
+        in (600..699) -> WeatherConditions.Snow
+        in (700..799) -> WeatherConditions.Fog
+        800 -> WeatherConditions.Clear
+        801 -> WeatherConditions.MostlySunny
+        802, 803 -> WeatherConditions.MostlyCloudy
+        804 -> WeatherConditions.Cloudy
+        else -> WeatherConditions.Unknown
+    }
+}
