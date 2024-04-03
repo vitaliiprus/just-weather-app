@@ -104,7 +104,7 @@ class CurrentWeatherViewModel @AssistedInject constructor(
             sunrise = data.sunrise.formatTime(),
             sunset = data.sunset.formatTime(),
             tempMinMax = getTempMinMaxString(data.tempMin, data.tempMax),
-            uvIndex = "1",
+            uvIndex = data.uvi?.toInt().toString(),
             pressure = getPressureString(data.pressure, data.pressureScale),
             precipitationProb = getPrecipitationProbString(data.probOfPrecipitations),
             humidity = "${data.humidity.roundToInt()}%",

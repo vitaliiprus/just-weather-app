@@ -29,11 +29,16 @@ fun getTempString(
 }
 
 fun getTempMinMaxString(
-    tempMin: Double,
-    tempMax: Double,
+    tempMin: Double?,
+    tempMax: Double?,
 ): String {
-    return "↓${getTempString(tempMin, false)} " +
-            "↑${getTempString(tempMax, false)}"
+    val tempMinString = tempMin?.let {
+        getTempString(tempMin, false)
+    } ?: "-"
+    val tempMaxString = tempMax?.let {
+        getTempString(tempMax, false)
+    } ?: "-"
+    return "↓${tempMinString} ↑${tempMaxString}"
 }
 
 fun getPressureString(pressure: Double, pressureScale: PressureScale): UiText {

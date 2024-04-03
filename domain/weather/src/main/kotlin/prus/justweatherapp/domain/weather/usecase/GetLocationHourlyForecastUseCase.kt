@@ -37,8 +37,10 @@ class GetLocationHourlyForecastUseCase @Inject constructor(
                             weather.copy(
                                 temp = convertTemp(weather.temp, tempScale),
                                 feelsLike = convertTemp(weather.feelsLike, tempScale),
-                                tempMin = convertTemp(weather.tempMin, tempScale),
-                                tempMax = convertTemp(weather.tempMax, tempScale),
+                                tempMin = if (weather.tempMin != null)
+                                    convertTemp(weather.tempMin, tempScale) else null,
+                                tempMax = if (weather.tempMax != null)
+                                    convertTemp(weather.tempMax, tempScale) else null,
                                 tempScale = tempScale,
                                 pressure = convertPressure(weather.pressure, pressureScale),
                                 pressureScale = pressureScale,

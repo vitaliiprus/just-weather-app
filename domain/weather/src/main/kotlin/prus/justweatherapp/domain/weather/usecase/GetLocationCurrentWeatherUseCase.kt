@@ -31,8 +31,10 @@ class GetLocationCurrentWeatherUseCase @Inject constructor(
                         data.copy(
                             temp = convertTemp(data.temp, tempScale),
                             feelsLike = convertTemp(data.feelsLike, tempScale),
-                            tempMin = convertTemp(data.tempMin, tempScale),
-                            tempMax = convertTemp(data.tempMax, tempScale),
+                            tempMin = if (data.tempMin != null)
+                                convertTemp(data.tempMin, tempScale) else null,
+                            tempMax = if (data.tempMax != null)
+                                convertTemp(data.tempMax, tempScale) else null,
                             tempScale = tempScale,
                             pressure = convertPressure(data.pressure, pressureScale),
                             pressureScale = pressureScale,
