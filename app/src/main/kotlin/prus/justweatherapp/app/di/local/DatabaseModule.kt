@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import prus.justweatherapp.local.db.AppDatabase
 import prus.justweatherapp.local.db.dao.LocationsDao
+import prus.justweatherapp.local.db.dao.SunDataDao
 import prus.justweatherapp.local.db.dao.UserLocationsDao
 import prus.justweatherapp.local.db.dao.WeatherDao
 import javax.inject.Singleton
@@ -38,5 +39,11 @@ class DatabaseModule {
     @Provides
     fun provideWeatherDao(appDatabase: AppDatabase): WeatherDao {
         return appDatabase.weatherDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideSunDataDao(appDatabase: AppDatabase): SunDataDao {
+        return appDatabase.sunDataDao()
     }
 }
