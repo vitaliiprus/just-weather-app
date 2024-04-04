@@ -17,12 +17,11 @@ import prus.justweatherapp.core.common.util.formatTime
 import prus.justweatherapp.core.common.util.isBetween
 import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.usecase.GetLocationHourlyForecastUseCase
+import prus.justweatherapp.feature.weather.mapper.getPrecipitationProbString
 import prus.justweatherapp.feature.weather.mapper.getTempString
 import prus.justweatherapp.feature.weather.mapper.getWeatherConditionImageResId
 import prus.justweatherapp.feature.weather.mapper.getWeatherConditionsString
 import java.util.SortedMap
-import kotlin.math.ceil
-import kotlin.math.roundToInt
 
 @HiltViewModel(assistedFactory = HourlyForecastWeatherViewModel.ViewModelFactory::class)
 class HourlyForecastWeatherViewModel @AssistedInject constructor(
@@ -74,12 +73,5 @@ class HourlyForecastWeatherViewModel @AssistedInject constructor(
                     )
                 }
             }
-    }
-
-    private fun getPrecipitationProbString(probOfPrecipitations: Double?): String? {
-        return if (probOfPrecipitations == null || probOfPrecipitations == 0.0)
-            null
-        else "${ceil(probOfPrecipitations * 100).roundToInt()}%"
-
     }
 }

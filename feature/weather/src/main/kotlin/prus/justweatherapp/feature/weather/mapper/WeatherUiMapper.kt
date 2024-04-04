@@ -8,6 +8,7 @@ import prus.justweatherapp.domain.weather.model.WindDirection
 import prus.justweatherapp.domain.weather.model.scale.PressureScale
 import prus.justweatherapp.domain.weather.model.scale.TempScale
 import prus.justweatherapp.domain.weather.model.scale.WindScale
+import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 fun getTempString(
@@ -53,6 +54,13 @@ fun getPressureString(pressure: Double, pressureScale: PressureScale): UiText {
             UiText.StringResource(pressureScaleStringResId)
         )
     )
+}
+
+fun getPrecipitationProbString(probOfPrecipitations: Double?): String? {
+    return if (probOfPrecipitations == null || probOfPrecipitations == 0.0)
+        null
+    else "${ceil(probOfPrecipitations).roundToInt()}%"
+
 }
 
 fun getWindString(wind: Wind?): UiText {
