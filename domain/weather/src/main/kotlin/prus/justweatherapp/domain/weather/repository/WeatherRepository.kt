@@ -8,5 +8,5 @@ interface WeatherRepository {
 
     fun getCurrentWeatherByLocationId(locationId: String): Flow<RequestResult<Weather?>>
 
-    fun getForecastWeatherByLocationId(locationId: String): Flow<RequestResult<List<Weather>>>
+    fun getForecastWeatherByLocationId(locationId: String, count:Int): Flow<RequestResult<List<Weather>>>
 }

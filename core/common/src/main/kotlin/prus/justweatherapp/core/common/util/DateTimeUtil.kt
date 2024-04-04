@@ -51,6 +51,11 @@ fun LocalDate.formatHeaderDate(): String {
     return formatter.format(this.toJavaLocalDate())
 }
 
+fun LocalDate.formatDailyDate(): String {
+    val formatter = DateTimeFormatter.ofPattern("EE, dd LLL")
+    return formatter.format(this.toJavaLocalDate())
+}
+
 fun getLocationCurrentTime(timezoneOffset: Int): LocalDateTime {
     return Clock.System.now().toLocalDateTime(TimeZone.UTC)
         .toInstant(UtcOffset.ZERO)

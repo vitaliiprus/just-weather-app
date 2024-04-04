@@ -38,8 +38,7 @@ class WeatherRepositoryImpl @Inject constructor(
 ) : WeatherRepository {
 
     private val currentWeatherDataRefreshTimeMinutes = 30
-    private val forecastDaysMaxCount = 10
-    private val forecastWeatherListMaxSize = 24 * forecastDaysMaxCount - 1
+    private val forecastDaysMaxCount = 14
 
     override fun getCurrentWeatherByLocationId(
         locationId: String
@@ -97,43 +96,17 @@ class WeatherRepositoryImpl @Inject constructor(
         emit(RequestResult.Success(Pair(weatherEntity, sunDataEntity).mapToDomainModel()))
     }.onStart { emit(RequestResult.Loading()) }
 
-//    private suspend fun getCurrentWeatherFromServer(
-//        locationId: String
-//    ): Flow<RequestResult<Weather?>> = flow {
-//        val location = locationsDao.getLocationById(
-//            locationId = locationId
-//        )
-//        if (location == null) {
-//            emit(
-//                RequestResult.Error(
-//                    error = Throwable("Cannot find the location in the database")
-//                )
-//            )
-//            return@flow
-//        }
-//
-//        weatherDataSource.getCurrentWeatherData(location.lat, location.lng)
-//            .toRequestResult()
-//            .also { apiRequestResult ->
-//                if (apiRequestResult is RequestResult.Success) {
-//                    val dbo = listOf(checkNotNull(apiRequestResult.data).mapToDBO(locationId))
-//                    saveDbosToDb(
-//                        response = dbo
-//                    )
-//                }
-//                emit(apiRequestResult.map { it.mapToDomainModel(locationId) })
-//            }
-//    }.onStart { emit(RequestResult.Loading()) }
 
     override fun getForecastWeatherByLocationId(
         locationId: String,
+        count: Int
     ): Flow<RequestResult<List<Weather>>> = flow {
         val mergeStrategy = RequestResultMergeStrategy<List<Weather>>()
 
-        getForecastWeatherFromDb(locationId)
+        getForecastWeatherFromDb(locationId, count)
             .onEach { dbRequestResult ->
                 if (dbRequestResult is RequestResult.Success &&
-                    checkNotNull(dbRequestResult.data).size < forecastWeatherListMaxSize
+                    checkNotNull(dbRequestResult.data).size < count
                 ) {
                     emitAll(
                         flowOf(dbRequestResult)
@@ -149,11 +122,12 @@ class WeatherRepositoryImpl @Inject constructor(
     }
 
     private fun getForecastWeatherFromDb(
-        locationId: String
+        locationId: String,
+        count: Int
     ): Flow<RequestResult<List<Weather>>> = flow {
         val weatherDbos = weatherDao.getForecastWeatherByLocationId(
             locationId = locationId,
-            limit = forecastWeatherListMaxSize
+            limit = count
         )
         val sunDataDbos = sunDataDao.getDataByLocationId(
             locationId = locationId,
@@ -165,11 +139,14 @@ class WeatherRepositoryImpl @Inject constructor(
         )
 
         emit(RequestResult.Success(
-            weatherDbos.map { weatherDbo ->
-                val sunDataDbo = sunDataDbos
-                    .first { it.date == weatherDbo.dateTime.date }
-                Pair(weatherDbo, sunDataDbo).mapToDomainModel()
-            }
+            weatherDbos
+                .filter { weatherDbo ->
+                    sunDataDbos.firstOrNull { it.date == weatherDbo.dateTime.date } != null
+                }
+                .map { weatherDbo ->
+                    val sunDataDbo = sunDataDbos.first { it.date == weatherDbo.dateTime.date }
+                    Pair(weatherDbo, sunDataDbo).mapToDomainModel()
+                }
         ))
     }.onStart { RequestResult.Loading(data = null) }
 

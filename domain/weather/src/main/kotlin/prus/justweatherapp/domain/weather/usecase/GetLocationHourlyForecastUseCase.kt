@@ -19,10 +19,11 @@ import javax.inject.Inject
 class GetLocationHourlyForecastUseCase @Inject constructor(
     private val weatherRepository: WeatherRepository
 ) {
+    private val itemsCountNeeded = 24 * 2
     operator fun invoke(
         locationId: String
     ): Flow<RequestResult<SortedMap<LocalDate, List<Weather>>>> {
-        return weatherRepository.getForecastWeatherByLocationId(locationId)
+        return weatherRepository.getForecastWeatherByLocationId(locationId, itemsCountNeeded)
 //            .combine(getSettingsUseCase())
             .map { requestResult ->
                 val tempScale = TempScale.CELSIUS
@@ -37,10 +38,6 @@ class GetLocationHourlyForecastUseCase @Inject constructor(
                             weather.copy(
                                 temp = convertTemp(weather.temp, tempScale),
                                 feelsLike = convertTemp(weather.feelsLike, tempScale),
-                                tempMin = if (weather.tempMin != null)
-                                    convertTemp(weather.tempMin, tempScale) else null,
-                                tempMax = if (weather.tempMax != null)
-                                    convertTemp(weather.tempMax, tempScale) else null,
                                 tempScale = tempScale,
                                 pressure = convertPressure(weather.pressure, pressureScale),
                                 pressureScale = pressureScale,

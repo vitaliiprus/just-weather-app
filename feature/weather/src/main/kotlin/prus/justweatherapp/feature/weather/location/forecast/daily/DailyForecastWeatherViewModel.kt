@@ -11,11 +11,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import prus.justweatherapp.core.common.result.RequestResult
-import prus.justweatherapp.core.ui.R
-import prus.justweatherapp.core.ui.UiText
+import prus.justweatherapp.core.common.util.formatDailyDate
 import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.usecase.GetLocationDailyForecastUseCase
 import prus.justweatherapp.feature.weather.location.forecast.daily.temprange.TempRangeModel
+import prus.justweatherapp.feature.weather.mapper.getPrecipitationProbString
+import prus.justweatherapp.feature.weather.mapper.getWeatherConditionImageResId
+import prus.justweatherapp.feature.weather.mapper.getWeatherConditionsString
 
 @HiltViewModel(assistedFactory = DailyForecastWeatherViewModel.ViewModelFactory::class)
 class DailyForecastWeatherViewModel @AssistedInject constructor(
@@ -36,7 +38,11 @@ class DailyForecastWeatherViewModel @AssistedInject constructor(
                     is RequestResult.Loading -> DailyForecastWeatherUiState.Loading
                     is RequestResult.Success -> {
                         result.data?.let { data ->
-                            DailyForecastWeatherUiState.Success(weather = mapToUiModel(data))
+                            val rangeMin = data.minWith(compareBy { it.tempMin!! }).tempMin!!
+                            val rangeMax = data.maxWith(compareBy { it.tempMax!! }).tempMax!!
+                            DailyForecastWeatherUiState.Success(
+                                weather = mapToUiModel(data, rangeMin, rangeMax)
+                            )
                         } ?: DailyForecastWeatherUiState.Error("Cannot get weather data")
                     }
                 }
@@ -47,20 +53,23 @@ class DailyForecastWeatherViewModel @AssistedInject constructor(
                 initialValue = DailyForecastWeatherUiState.Loading
             )
 
-    private fun mapToUiModel(data: List<Weather>): List<DailyForecastWeatherUiModel> {
-        return data.map {
-            //TODO:
+    private fun mapToUiModel(
+        data: List<Weather>,
+        rangeMin: Double,
+        rangeMax: Double
+    ): List<DailyForecastWeatherUiModel> {
+        return data.map { weather ->
             DailyForecastWeatherUiModel(
-                date = "FR, 29 March",
-                conditionImageResId = R.drawable.mostlysunny,
-                weatherConditions = UiText.DynamicString("Mostly sunny"),
-                precipitationProb = "29%",
+                date = weather.dateTime.date.formatDailyDate(),
+                conditionImageResId = getWeatherConditionImageResId(weather.weatherConditions),
+                weatherConditions = getWeatherConditionsString(weather.weatherConditions),
+                precipitationProb = getPrecipitationProbString(weather.probOfPrecipitations),
                 tempRangeModel = TempRangeModel(
-                    dayMinTemp = 7.0,
-                    dayMaxTemp = 12.0,
-                    rangeMinTemp = -2.0,
-                    rangeMaxTemp = 12.0
-                )
+                    dayMinTemp = weather.tempMin!!,
+                    dayMaxTemp = weather.tempMax!!,
+                    rangeMinTemp = rangeMin,
+                    rangeMaxTemp = rangeMax
+                ),
             )
         }
     }
