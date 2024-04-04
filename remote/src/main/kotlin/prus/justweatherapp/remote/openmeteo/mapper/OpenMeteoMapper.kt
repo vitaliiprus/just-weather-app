@@ -13,8 +13,8 @@ internal fun Result<OpenMeteoResponseDTO>.mapToForecastResponseDto() =
             hourly = List(it.hourly.dateTime.size) { index ->
                 HourlyWeatherDTO(
                     dateTime = it.hourly.dateTime[index],
-                    temp = it.hourly.temp[index],
-                    feelsLike = it.hourly.feelsLike[index],
+                    temp = it.hourly.temp[index].kelvin,
+                    feelsLike = it.hourly.feelsLike[index].kelvin,
                     humidity = it.hourly.humidity[index],
                     pop = it.hourly.pop[index],
                     rain = it.hourly.rain[index],
@@ -41,8 +41,9 @@ internal fun Result<OpenMeteoResponseDTO>.mapToForecastResponseDto() =
             }
         )
     }
+private inline val Double.kelvin: Double get() = this + 273.15
 
-internal fun mapToWeatherConditions(weatherCode: Int?): WeatherConditions {
+private fun mapToWeatherConditions(weatherCode: Int?): WeatherConditions {
     return when (weatherCode) {
         0 -> WeatherConditions.Clear
         1 -> WeatherConditions.MostlySunny

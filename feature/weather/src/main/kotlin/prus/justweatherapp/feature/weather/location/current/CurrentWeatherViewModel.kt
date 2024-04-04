@@ -123,7 +123,7 @@ class CurrentWeatherViewModel @AssistedInject constructor(
     private fun getPrecipitationProbString(probOfPrecipitations: Double?): String {
         return if (probOfPrecipitations == null || probOfPrecipitations == 0.0)
             "0%"
-        else "${ceil(probOfPrecipitations * 100).roundToInt()}%"
+        else "${ceil(probOfPrecipitations).roundToInt()}%"
 
     }
 
