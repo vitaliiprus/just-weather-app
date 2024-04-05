@@ -9,9 +9,7 @@ import prus.justweatherapp.domain.weather.model.scale.PressureScale
 import prus.justweatherapp.domain.weather.model.scale.TempScale
 import prus.justweatherapp.domain.weather.model.scale.WindScale
 import prus.justweatherapp.domain.weather.repository.WeatherRepository
-import prus.justweatherapp.domain.weather.util.convertPressure
-import prus.justweatherapp.domain.weather.util.convertTemp
-import prus.justweatherapp.domain.weather.util.convertWind
+import prus.justweatherapp.domain.weather.util.getWeatherWithConvertedUnits
 import javax.inject.Inject
 import kotlin.math.max
 import kotlin.math.min
@@ -81,34 +79,6 @@ class GetLocationCurrentWeatherUseCase @Inject constructor(
         return currentData.copy(
             tempMin = minTemp,
             tempMax = maxTemp
-        )
-    }
-
-    private fun getWeatherWithConvertedUnits(
-        data: Weather,
-        tempScale: TempScale,
-        pressureScale: PressureScale,
-        windScale: WindScale
-    ): Weather {
-        return data.copy(
-            temp = convertTemp(data.temp, tempScale),
-            feelsLike = convertTemp(data.feelsLike, tempScale),
-            tempMin = if (data.tempMin != null)
-                convertTemp(data.tempMin, tempScale) else null,
-            tempMax = if (data.tempMax != null)
-                convertTemp(data.tempMax, tempScale) else null,
-            tempScale = tempScale,
-            pressure = convertPressure(data.pressure, pressureScale),
-            pressureScale = pressureScale,
-            wind = data.wind?.copy(
-                speed = data.wind.speed?.let {
-                    convertWind(it, windScale)
-                },
-                gust = data.wind.gust?.let {
-                    convertWind(it, windScale)
-                },
-                windScale = windScale
-            )
         )
     }
 }

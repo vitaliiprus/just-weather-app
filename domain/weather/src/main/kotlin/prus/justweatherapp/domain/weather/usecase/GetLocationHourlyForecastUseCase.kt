@@ -10,9 +10,7 @@ import prus.justweatherapp.domain.weather.model.scale.PressureScale
 import prus.justweatherapp.domain.weather.model.scale.TempScale
 import prus.justweatherapp.domain.weather.model.scale.WindScale
 import prus.justweatherapp.domain.weather.repository.WeatherRepository
-import prus.justweatherapp.domain.weather.util.convertPressure
-import prus.justweatherapp.domain.weather.util.convertTemp
-import prus.justweatherapp.domain.weather.util.convertWind
+import prus.justweatherapp.domain.weather.util.getWeatherWithConvertedUnits
 import java.util.SortedMap
 import javax.inject.Inject
 
@@ -35,21 +33,11 @@ class GetLocationHourlyForecastUseCase @Inject constructor(
                 requestResult.map {
                     checkNotNull(requestResult.data)
                         .map { weather ->
-                            weather.copy(
-                                temp = convertTemp(weather.temp, tempScale),
-                                feelsLike = convertTemp(weather.feelsLike, tempScale),
+                            getWeatherWithConvertedUnits(
+                                data = weather,
                                 tempScale = tempScale,
-                                pressure = convertPressure(weather.pressure, pressureScale),
                                 pressureScale = pressureScale,
-                                wind = weather.wind?.copy(
-                                    speed = weather.wind.speed?.let {
-                                        convertWind(it, windScale)
-                                    },
-                                    gust = weather.wind.gust?.let {
-                                        convertWind(it, windScale)
-                                    },
-                                    windScale = windScale
-                                )
+                                windScale = windScale
                             )
                         }
                         .forEach { weather ->

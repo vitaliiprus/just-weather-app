@@ -1,10 +1,39 @@
 package prus.justweatherapp.domain.weather.util
 
+import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.model.scale.PressureScale
 import prus.justweatherapp.domain.weather.model.scale.TempScale
 import prus.justweatherapp.domain.weather.model.scale.WindScale
 
-fun convertTemp(
+internal fun getWeatherWithConvertedUnits(
+    data: Weather,
+    tempScale: TempScale,
+    pressureScale: PressureScale,
+    windScale: WindScale
+): Weather {
+    return data.copy(
+        temp = convertTemp(data.temp, tempScale),
+        feelsLike = convertTemp(data.feelsLike, tempScale),
+        tempMin = if (data.tempMin != null)
+            convertTemp(data.tempMin, tempScale) else null,
+        tempMax = if (data.tempMax != null)
+            convertTemp(data.tempMax, tempScale) else null,
+        tempScale = tempScale,
+        pressure = convertPressure(data.pressure, pressureScale),
+        pressureScale = pressureScale,
+        wind = data.wind?.copy(
+            speed = data.wind.speed?.let {
+                convertWind(it, windScale)
+            },
+            gust = data.wind.gust?.let {
+                convertWind(it, windScale)
+            },
+            windScale = windScale
+        )
+    )
+}
+
+private fun convertTemp(
     tempKelvin: Double,
     toScale: TempScale
 ): Double {
@@ -15,7 +44,7 @@ fun convertTemp(
     }
 }
 
-fun convertPressure(
+private fun convertPressure(
     pressureHpa: Double,
     toScale: PressureScale
 ): Double {
@@ -25,7 +54,7 @@ fun convertPressure(
     }
 }
 
-fun convertWind(
+private fun convertWind(
     windMs: Double,
     toScale: WindScale
 ): Double {

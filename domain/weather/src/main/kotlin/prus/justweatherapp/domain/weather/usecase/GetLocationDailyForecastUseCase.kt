@@ -10,9 +10,7 @@ import prus.justweatherapp.domain.weather.model.scale.PressureScale
 import prus.justweatherapp.domain.weather.model.scale.TempScale
 import prus.justweatherapp.domain.weather.model.scale.WindScale
 import prus.justweatherapp.domain.weather.repository.WeatherRepository
-import prus.justweatherapp.domain.weather.util.convertPressure
-import prus.justweatherapp.domain.weather.util.convertTemp
-import prus.justweatherapp.domain.weather.util.convertWind
+import prus.justweatherapp.domain.weather.util.getWeatherWithConvertedUnits
 import javax.inject.Inject
 import kotlin.math.max
 import kotlin.math.min
@@ -54,25 +52,11 @@ class GetLocationDailyForecastUseCase @Inject constructor(
 
                     RequestResult.Success(
                         result.map { weather ->
-                            weather.copy(
-                                temp = convertTemp(weather.temp, tempScale),
-                                feelsLike = convertTemp(weather.feelsLike, tempScale),
-                                tempMin = if (weather.tempMin != null)
-                                    convertTemp(weather.tempMin, tempScale) else null,
-                                tempMax = if (weather.tempMax != null)
-                                    convertTemp(weather.tempMax, tempScale) else null,
+                            getWeatherWithConvertedUnits(
+                                data = weather,
                                 tempScale = tempScale,
-                                pressure = convertPressure(weather.pressure, pressureScale),
                                 pressureScale = pressureScale,
-                                wind = weather.wind?.copy(
-                                    speed = weather.wind.speed?.let {
-                                        convertWind(it, windScale)
-                                    },
-                                    gust = weather.wind.gust?.let {
-                                        convertWind(it, windScale)
-                                    },
-                                    windScale = windScale
-                                )
+                                windScale = windScale
                             )
                         }
                     )
