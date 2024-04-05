@@ -38,6 +38,7 @@ import prus.justweatherapp.core.ui.shimmer.ShimmerSemiCircle
 import prus.justweatherapp.feature.weather.R
 import prus.justweatherapp.feature.weather.location.current.daylight.DaylightUI
 import prus.justweatherapp.feature.weather.location.current.daylight.DaylightUiModel
+import prus.justweatherapp.feature.weather.location.current.uvi.UviUI
 import prus.justweatherapp.theme.AppTheme
 import prus.justweatherapp.theme.contentPaddings
 
@@ -257,9 +258,8 @@ private fun CurrentWeatherUI(
 
                         if (weather != null) {
                             Spacer(modifier = Modifier.height(spacerHeight))
-                            JwaLabeledText(
-                                label = stringResource(id = R.string.uv_index),
-                                text = weather.uvIndex
+                            UviUI(
+                                uvIndex = weather.uvIndex
                             )
                             Spacer(modifier = Modifier.height(spacerHeight))
                             JwaLabeledText(
@@ -359,7 +359,7 @@ private fun CurrentWeatherUISuccessPreview(
                         sunrise = "07:07",
                         sunset = "19:08",
                         tempMinMax = "↓6º ↑18º",
-                        uvIndex = "1",
+                        uvIndex = 1,
                         pressure = UiText.DynamicString("765 mmHg"),
                         precipitationProb = "5%",
                         humidity = "87%",

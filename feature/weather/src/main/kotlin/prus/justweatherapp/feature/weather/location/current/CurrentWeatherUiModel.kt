@@ -10,7 +10,7 @@ data class CurrentWeatherUiModel(
     val sunrise: String,
     val sunset: String,
     val tempMinMax:String,
-    val uvIndex:String,
+    val uvIndex:Int,
     val pressure: UiText,
     val precipitationProb:String,
     val humidity:String,

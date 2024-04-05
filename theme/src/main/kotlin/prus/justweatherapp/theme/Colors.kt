@@ -77,3 +77,10 @@ val dark_onaccent = Color(0xFF402D00)
 val dark_accentContainer = Color(0xFF5C4300)
 val dark_onaccentContainer = Color(0xFFFFDEA0)
 
+
+val green = Color(0xFF97D700)
+val yellow = Color(0xFFFCE300)
+val orange = Color(0xFFFF8200)
+val red = Color(0xFFEF3340)
+val violet = Color(0xFF9063CD)
+
