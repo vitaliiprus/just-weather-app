@@ -52,8 +52,10 @@ class WeatherRepositoryImpl @Inject constructor(
                         emitAll(
                             flowOf(dbRequestResult)
                                 .combine(
-                                    getForecastWeatherFromServer(locationId)
-                                        .map { result -> result.map { it.firstOrNull() } },
+                                    getForecastWeatherFromServer(
+                                        locationId = locationId,
+                                        count = 1
+                                    ).map { result -> result.map { it.firstOrNull() } },
                                     mergeStrategy::merge
                                 )
                         )
@@ -111,7 +113,10 @@ class WeatherRepositoryImpl @Inject constructor(
                     emitAll(
                         flowOf(dbRequestResult)
                             .combine(
-                                getForecastWeatherFromServer(locationId),
+                                getForecastWeatherFromServer(
+                                    locationId = locationId,
+                                    count = count
+                                ),
                                 mergeStrategy::merge
                             )
                     )
@@ -151,7 +156,8 @@ class WeatherRepositoryImpl @Inject constructor(
     }.onStart { RequestResult.Loading(data = null) }
 
     private suspend fun getForecastWeatherFromServer(
-        locationId: String
+        locationId: String,
+        count: Int
     ): Flow<RequestResult<List<Weather>>> = flow {
         val location = locationsDao.getLocationById(
             locationId = locationId
@@ -171,7 +177,20 @@ class WeatherRepositoryImpl @Inject constructor(
                 if (apiRequestResult is RequestResult.Success) {
                     saveServerResponseToDb(checkNotNull(apiRequestResult.data), locationId)
                 }
-                emit(apiRequestResult.map { it.mapToDomainModels(locationId) })
+                emit(
+                    apiRequestResult
+                        .map {
+                            it.mapToDomainModels(locationId)
+                        }
+                        .map { data ->
+                            data.sortedBy {
+                                it.dateTime
+                            }
+                        }
+                        .map {
+                            it.take(count)
+                        }
+                )
             }
     }.onStart { emit(RequestResult.Loading()) }
 
