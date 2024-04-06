@@ -132,6 +132,9 @@ class WeatherRepositoryImpl @Inject constructor(
     ): Flow<RequestResult<List<Weather>>> = flow {
         val weatherDbos = weatherDao.getForecastWeatherByLocationId(
             locationId = locationId,
+            dateFrom = Clock.System.now()
+                .plus(-1, DateTimeUnit.HOUR)
+                .toLocalDateTime(TimeZone.currentSystemDefault()),
             limit = count
         )
         val sunDataDbos = sunDataDao.getDataByLocationId(
@@ -179,16 +182,17 @@ class WeatherRepositoryImpl @Inject constructor(
                 }
                 emit(
                     apiRequestResult
-                        .map {
-                            it.mapToDomainModels(locationId)
-                        }
-                        .map { data ->
-                            data.sortedBy {
-                                it.dateTime
-                            }
-                        }
-                        .map {
-                            it.take(count)
+                        .map { response ->
+                            response
+                                .mapToDomainModels(locationId)
+                                .filter {
+                                    it.dateTime > Clock.System.now()
+                                        .plus(-1, DateTimeUnit.HOUR)
+                                        .plus(it.timezoneOffset, DateTimeUnit.SECOND)
+                                        .toLocalDateTime(TimeZone.currentSystemDefault())
+                                }
+                                .sortedBy { it.dateTime }
+                                .take(count)
                         }
                 )
             }
