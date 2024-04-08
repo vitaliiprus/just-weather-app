@@ -30,7 +30,9 @@ fun MessageScreen(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String,
-    imagePainter: Painter? = null
+    imagePainter: Painter? = null,
+    buttonText: String? = null,
+    onButtonClick: (() -> Unit)? = null
 ) {
     Box(
         modifier = Modifier
@@ -44,7 +46,7 @@ fun MessageScreen(
     ) {
         Column(
             modifier = Modifier
-                .width(230.dp),
+                .width(300.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -76,6 +78,14 @@ fun MessageScreen(
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodyMedium
             )
+
+            if (buttonText != null) {
+                Spacer(Modifier.height(20.dp))
+                JwaButton(
+                    text = buttonText,
+                    onClick = { onButtonClick?.invoke() }
+                )
+            }
         }
     }
 }
@@ -86,7 +96,8 @@ private fun MessageScreenPreview() {
     AppTheme {
         MessageScreen(
             title = "No results found",
-            subtitle = "This message explains what is wrong and how to fix this."
+            subtitle = "This message explains what is wrong and how to fix this.",
+            buttonText = "Button"
         )
     }
 }

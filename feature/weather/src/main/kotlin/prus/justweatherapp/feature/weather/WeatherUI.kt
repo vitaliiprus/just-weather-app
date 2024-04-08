@@ -15,22 +15,26 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
-import prus.justweatherapp.core.ui.components.JwaButton
+import prus.justweatherapp.core.ui.components.MessageScreen
 import prus.justweatherapp.feature.weather.location.LocationWeatherUI
 import prus.justweatherapp.theme.AppTheme
 
 @Composable
-fun WeatherUI() {
+fun WeatherUI(
+    onFindLocationsClick: () -> Unit
+) {
     val viewModel: WeatherViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     WeatherUI(
-        state = state
+        state = state,
+        onFindLocationsClick = onFindLocationsClick
     )
 
 }
@@ -38,7 +42,8 @@ fun WeatherUI() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun WeatherUI(
-    state: WeatherUiState
+    state: WeatherUiState,
+    onFindLocationsClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -62,8 +67,12 @@ private fun WeatherUI(
             }
 
             WeatherUiState.Empty -> {
-                JwaButton(
-                    text = stringResource(id = R.string.find_locations)
+                MessageScreen(
+                    title = stringResource(id = R.string.empty_title),
+                    subtitle = stringResource(id = R.string.empty_subtitle),
+                    imagePainter = painterResource(id = R.drawable.ic_weather),
+                    buttonText = stringResource(id = R.string.find_locations),
+                    onButtonClick = onFindLocationsClick
                 )
             }
 
@@ -93,7 +102,8 @@ private fun WeatherUILoadingPreview() {
     AppTheme {
         Surface {
             WeatherUI(
-                state = WeatherUiState.Loading
+                state = WeatherUiState.Loading,
+                onFindLocationsClick = {}
             )
         }
     }
@@ -105,7 +115,8 @@ private fun WeatherUIEmptyPreview() {
     AppTheme {
         Surface {
             WeatherUI(
-                state = WeatherUiState.Empty
+                state = WeatherUiState.Empty,
+                onFindLocationsClick = {}
             )
         }
     }

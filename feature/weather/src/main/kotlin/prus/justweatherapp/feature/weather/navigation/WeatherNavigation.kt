@@ -41,6 +41,7 @@ fun NavController.navigateToLocationWeather(locationId: String) {
 }
 
 fun NavGraphBuilder.weatherScreen(
+    onFindLocationsClick: () -> Unit
 ) {
     composable(
         route = WEATHER_ROUTE,
@@ -48,6 +49,8 @@ fun NavGraphBuilder.weatherScreen(
             navArgument(LOCATION_ID_ARG) { type = NavType.StringType },
         ),
     ) {
-        WeatherUI()
+        WeatherUI(
+            onFindLocationsClick = onFindLocationsClick
+        )
     }
 }

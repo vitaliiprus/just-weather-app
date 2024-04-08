@@ -28,7 +28,13 @@ fun MainNavGraph(
             )
         }
 
-        weatherScreen()
+        weatherScreen(
+            onFindLocationsClick = {
+                navController.navigate(MainScreen.MyLocations.route){
+                    launchSingleTop = true
+                }
+            }
+        )
 
         composable(route = MainScreen.Settings.route) {
             SettingsUI()

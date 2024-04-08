@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="empty_title">There is no bad weather,\nonly the wrong clothes</string>
+    <string name="empty_subtitle">See the weather around the world and save your favorite locations.</string>
     <string name="find_locations">Find locations</string>
+
     <string name="sunrise">Sunrise</string>
     <string name="daylight">Daylight</string>
     <string name="sunset">Sunset</string>
@@ -11,14 +14,14 @@
     <string name="precip_prob">Precipprob</string>
     <string name="humidity">Humidity</string>
     <string name="wind">Wind</string>
+
     <string name="scale_mm_hg">mmHg</string>
     <string name="scale_hpa">hPa</string>
-    <string name="template_value_scale">%s %s</string>
     <string name="scale_m_s">m/s</string>
     <string name="scale_km_h">km/h</string>
     <string name="scale_mph">mph</string>
     <string name="scale_kt">kt</string>
-    <string name="template_wind_value">%s %s, %s</string>
+
     <string name="wind_n">N</string>
     <string name="wind_ne">NE</string>
     <string name="wind_e">E</string>
@@ -27,4 +30,7 @@
     <string name="wind_sw">SW</string>
     <string name="wind_w">W</string>
     <string name="wind_nw">NW</string>
+
+    <string name="template_value_scale">%s %s</string>
+    <string name="template_wind_value">%s %s, %s</string>
 </resources>

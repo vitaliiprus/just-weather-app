@@ -45,9 +45,10 @@ fun MainBottomNavigation(
                 ),
                 onClick = {
                     navController.navigate(screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
                         launchSingleTop = true
-                        restoreState = true
                     }
                 },
                 icon = {
