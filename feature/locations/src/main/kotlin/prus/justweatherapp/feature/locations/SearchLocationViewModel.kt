@@ -40,7 +40,7 @@ class SearchLocationViewModel @Inject constructor(
     }
 
     fun onSearchQueryChanged(query: String) {
-        savedStateHandle[SEARCH_QUERY] = query
+        savedStateHandle[SEARCH_QUERY] = query.trim()
     }
 
     fun onSearchFocused() {
