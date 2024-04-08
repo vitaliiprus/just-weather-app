@@ -3,6 +3,7 @@ package prus.justweatherapp.app.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import prus.justweatherapp.app.R
+import prus.justweatherapp.feature.weather.navigation.WEATHER_ROUTE
 
 sealed class MainScreen(
     val route: String,
@@ -27,7 +28,7 @@ sealed class MainScreen(
 
     companion object {
         const val MY_LOCATIONS = "my_locations"
-        const val WEATHER = "weather"
+        const val WEATHER = WEATHER_ROUTE
         const val SETTINGS = "settings"
     }
 }

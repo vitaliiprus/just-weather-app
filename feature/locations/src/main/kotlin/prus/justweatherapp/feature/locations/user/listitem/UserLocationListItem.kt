@@ -53,6 +53,7 @@ internal fun UserLocationListItem(
     modifier: Modifier = Modifier,
     location: LocationUiModel,
     isEditing: Boolean = false,
+    onLocationClicked: (String) -> Unit = {},
     onEditClicked: (String) -> Unit = {},
     onDeleteClicked: (String) -> Unit = {},
     onDragDropStateChanged: (Boolean) -> Unit = {},
@@ -69,6 +70,7 @@ internal fun UserLocationListItem(
         state = state,
         locationName = location.name,
         isEditing = isEditing,
+        onLocationClicked = onLocationClicked,
         onEditClicked = onEditClicked,
         onDeleteClicked = onDeleteClicked,
         onDragDropStateChanged = onDragDropStateChanged
@@ -82,6 +84,7 @@ private fun UserLocationListItem(
     state: UserLocationListItemUiState,
     locationName: String?,
     isEditing: Boolean,
+    onLocationClicked: (String) -> Unit = {},
     onEditClicked: (String) -> Unit = {},
     onDeleteClicked: (String) -> Unit = {},
     onDragDropStateChanged: (Boolean) -> Unit = {},
@@ -144,7 +147,12 @@ private fun UserLocationListItem(
             Card(
                 modifier = modifier
                     .weight(1f)
-                    .height(100.dp),
+                    .height(100.dp)
+                    .clickable {
+                        location?.let {
+                            onLocationClicked(it.id)
+                        }
+                    },
                 colors = CardDefaults.cardColors().copy(
                     containerColor = MaterialTheme.colorScheme.onTertiary
                 ),

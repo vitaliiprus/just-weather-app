@@ -9,7 +9,8 @@ import prus.justweatherapp.feature.locations.LocationsScreen
 import prus.justweatherapp.feature.locations.add.navigation.addLocationScreen
 import prus.justweatherapp.feature.locations.add.navigation.navigateToAddLocation
 import prus.justweatherapp.feature.settings.SettingsUI
-import prus.justweatherapp.feature.weather.WeatherUI
+import prus.justweatherapp.feature.weather.navigation.navigateToLocationWeather
+import prus.justweatherapp.feature.weather.navigation.weatherScreen
 
 @Composable
 fun MainNavGraph(
@@ -22,15 +23,17 @@ fun MainNavGraph(
     ) {
         composable(route = MainScreen.MyLocations.route) {
             LocationsScreen(
-                onSearchLocationClicked = navController::navigateToAddLocation
+                onSearchLocationClicked = navController::navigateToAddLocation,
+                onLocationClicked = navController::navigateToLocationWeather
             )
         }
-        composable(route = MainScreen.Weather.route) {
-            WeatherUI()
-        }
+
+        weatherScreen()
+
         composable(route = MainScreen.Settings.route) {
             SettingsUI()
         }
+
         addLocationScreen(
             onBackClicked = navController::popBackStack,
             onLocationAdded = {

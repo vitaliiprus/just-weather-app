@@ -9,7 +9,9 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -17,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 import prus.justweatherapp.core.ui.components.JwaButton
 import prus.justweatherapp.feature.weather.location.LocationWeatherUI
 import prus.justweatherapp.theme.AppTheme
@@ -44,6 +47,7 @@ private fun WeatherUI(
     )
     {
         val context = LocalContext.current
+        val coroutineScope = rememberCoroutineScope()
         val pagerState = rememberPagerState(
             pageCount = { if (state is WeatherUiState.Success) state.locationIdsNames.size else 0 }
         )
@@ -64,6 +68,12 @@ private fun WeatherUI(
             }
 
             is WeatherUiState.Success -> {
+                LaunchedEffect(state.initialPage) {
+                    coroutineScope.launch {
+                        pagerState.scrollToPage(state.initialPage)
+                    }
+                }
+
                 HorizontalPager(
                     state = pagerState
                 ) { pageIndex ->

@@ -51,6 +51,7 @@ import prus.justweatherapp.theme.accent
 internal fun UserLocationsUi(
     state: UserLocationsScreenState,
     onFabClicked: () -> Unit,
+    onLocationClicked: (String) -> Unit,
     onLocationNameEditClicked: (String) -> Unit,
     onLocationDeleteClicked: (String) -> Unit,
     onLocationUndoDeleteClicked: (String) -> Unit,
@@ -184,6 +185,7 @@ internal fun UserLocationsUi(
                             UserLocationListItem(
                                 location = location,
                                 isEditing = state.isEditing,
+                                onLocationClicked = onLocationClicked,
                                 onEditClicked = onLocationNameEditClicked,
                                 onDeleteClicked = onLocationDeleteClicked,
                                 onDragDropStateChanged = {
@@ -273,6 +275,7 @@ private fun UserLocationsUiPreview() {
                     isEditing = false
                 ),
                 onFabClicked = {},
+                onLocationClicked = {},
                 onLocationNameEditClicked = {},
                 onLocationDeleteClicked = {},
                 onLocationUndoDeleteClicked = {},
