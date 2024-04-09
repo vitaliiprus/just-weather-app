@@ -64,6 +64,8 @@ class LocationsViewModel @Inject constructor(
                             onSearchCancelClicked()
                     }
                     previousUserLocationsCount = state.locationsState.locations.size
+                } else if (state.locationsState is UserLocationsState.Empty) {
+                    previousUserLocationsCount = 0
                 }
             }
         }

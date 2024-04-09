@@ -30,7 +30,7 @@ fun MainNavGraph(
 
         weatherScreen(
             onFindLocationsClick = {
-                navController.navigate(MainScreen.MyLocations.route){
+                navController.navigate(MainScreen.MyLocations.route) {
                     launchSingleTop = true
                 }
             }
@@ -43,7 +43,10 @@ fun MainNavGraph(
         addLocationScreen(
             onBackClicked = navController::popBackStack,
             onLocationAdded = {
-                navController.popBackStack()
+                navController.popBackStack(
+                    route = MainScreen.MyLocations.route,
+                    inclusive = false
+                )
             }
         )
     }
