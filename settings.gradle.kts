@@ -18,6 +18,7 @@ include(":theme")
 
 include(":domain:locations")
 include(":domain:weather")
+include(":domain:settings")
 
 include(":data:locations")
 include(":data:weather")
