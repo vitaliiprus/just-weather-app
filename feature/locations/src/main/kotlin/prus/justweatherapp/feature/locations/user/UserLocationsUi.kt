@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,6 +35,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -166,6 +172,8 @@ internal fun UserLocationsUi(
                             subtitle = stringResource(id = R.string.use_search_bar_hint),
                             imagePainter = painterResource(id = R.drawable.ic_location_stroke)
                         )
+
+                        ArrowToSearchBar()
                     }
 
                     is UserLocationsState.Success -> {
@@ -224,6 +232,54 @@ internal fun UserLocationsUi(
 
 
 @Composable
+private fun ArrowToSearchBar(
+) {
+    val color = MaterialTheme.colorScheme.onSurface
+    val linePath = remember { Path() }
+    val arrowPath = remember { Path() }
+
+    val endX = 250f
+    val endY = 100f
+    val arrowSize = 10f
+
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth(0.35f)
+            .fillMaxHeight(0.4f)
+    ) {
+        linePath.reset()
+        linePath.moveTo(size.width, size.height)
+        linePath.quadraticBezierTo(50f, size.height / 5 * 4, endX, endY)
+
+        drawPath(
+            path = linePath,
+            color = color,
+            style = Stroke(
+                width = 1.dp.toPx(),
+                cap = StrokeCap.Round,
+                pathEffect = PathEffect.dashPathEffect(floatArrayOf(30f, 30f))
+            )
+        )
+
+        arrowPath.reset()
+        arrowPath.moveTo(endX + 3, endY - 25)
+        arrowPath.relativeLineTo(arrowSize / 2 + 4, - arrowSize / 2 - 1)
+        arrowPath.relativeLineTo(3f,  arrowSize + 1)
+        arrowPath.close()
+
+            drawPath(
+                path = arrowPath,
+                color = color,
+                style = Stroke(
+                    width = 3.dp.toPx(),
+                    cap = StrokeCap.Square,
+                )
+            )
+    }
+}
+
+
+@Composable
 private fun UndoDeleteSnackbar(
     locationId: String,
     locationName: String,
@@ -269,7 +325,7 @@ private fun UserLocationsUiPreview() {
         Surface {
             UserLocationsUi(
                 state = UserLocationsScreenState(
-                    locationsState = UserLocationsState.Loading,
+                    locationsState = UserLocationsState.Empty,
                     editLocationNameDialogState = EditLocationNameDialogState.Hide,
                     locationDeletedMessageState = LocationDeletedMessageState.Hide,
                     isEditing = false
