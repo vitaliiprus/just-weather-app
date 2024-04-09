@@ -101,7 +101,7 @@ fun getWindDirectionString(direction: WindDirection): UiText {
         WindDirection.SW -> UiText.StringResource(prus.justweatherapp.feature.weather.R.string.wind_sw)
         WindDirection.W -> UiText.StringResource(prus.justweatherapp.feature.weather.R.string.wind_w)
         WindDirection.NW -> UiText.StringResource(prus.justweatherapp.feature.weather.R.string.wind_nw)
-        WindDirection.Undefined -> UiText.DynamicString("")
+        WindDirection.Undefined -> UiText.Empty
     }
 }
 

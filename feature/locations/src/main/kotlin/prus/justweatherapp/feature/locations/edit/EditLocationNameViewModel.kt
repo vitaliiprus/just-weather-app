@@ -51,7 +51,7 @@ class EditLocationNameViewModel @Inject constructor(
             } ?: kotlin.run {
                 _state.value = state.value.copy(
                     dialogState = EditLocationNameDialogState.Error(
-                        message = UiText.DynamicString("")
+                        message = UiText.Empty
                     )
                 )
             }
