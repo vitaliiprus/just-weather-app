@@ -22,6 +22,7 @@ include(":domain:settings")
 
 include(":data:locations")
 include(":data:weather")
+include(":data:settings")
 
 include(":local:db")
 include(":remote")
