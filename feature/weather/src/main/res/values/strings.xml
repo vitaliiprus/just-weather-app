@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="empty_title">There is no bad weather,\nonly the wrong clothes</string>
-    <string name="empty_subtitle">See the weather around the world and save your favorite locations.</string>
+    <string name="empty_subtitle">See the weather around the world\nand save your favorite locations.</string>
     <string name="find_locations">Find locations</string>
 
     <string name="sunrise">Sunrise</string>
