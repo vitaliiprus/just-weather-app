@@ -25,6 +25,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain:settings"))
     implementation(project(":core:common"))
 
     implementation(libs.bundles.kotlinx.coroutines)
