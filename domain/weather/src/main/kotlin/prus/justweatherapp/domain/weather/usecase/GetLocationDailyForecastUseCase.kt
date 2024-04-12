@@ -1,14 +1,13 @@
 package prus.justweatherapp.domain.weather.usecase
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import kotlinx.datetime.LocalDate
 import prus.justweatherapp.core.common.result.RequestResult
+import prus.justweatherapp.domain.settings.usecase.GetSettingsUseCase
+import prus.justweatherapp.domain.weather.mapper.toDomainModel
 import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.model.WeatherConditions
-import prus.justweatherapp.domain.weather.model.scale.PressureScale
-import prus.justweatherapp.domain.weather.model.scale.TempScale
-import prus.justweatherapp.domain.weather.model.scale.WindScale
 import prus.justweatherapp.domain.weather.repository.WeatherRepository
 import prus.justweatherapp.domain.weather.util.getWeatherWithConvertedUnits
 import javax.inject.Inject
@@ -16,7 +15,8 @@ import kotlin.math.max
 import kotlin.math.min
 
 class GetLocationDailyForecastUseCase @Inject constructor(
-    private val weatherRepository: WeatherRepository
+    private val weatherRepository: WeatherRepository,
+    private val getSettingsUseCase: GetSettingsUseCase
 ) {
     private val itemsCountNeeded = 24 * 11
 
@@ -24,11 +24,12 @@ class GetLocationDailyForecastUseCase @Inject constructor(
         locationId: String
     ): Flow<RequestResult<List<Weather>>> {
         return weatherRepository.getForecastWeatherByLocationId(locationId, itemsCountNeeded)
-//            .combine(getSettingsUseCase())
-            .map { requestResult ->
-                val tempScale = TempScale.CELSIUS
-                val pressureScale = PressureScale.MM_HG
-                val windScale = WindScale.M_S
+            .combine(
+                getSettingsUseCase()
+            ) { requestResult, settingsModel ->
+                val tempScale = settingsModel.tempScale.toDomainModel()
+                val pressureScale = settingsModel.pressureScale.toDomainModel()
+                val windScale = settingsModel.windScale.toDomainModel()
 
                 val dataByDay = hashMapOf<LocalDate, List<Weather>>()
 

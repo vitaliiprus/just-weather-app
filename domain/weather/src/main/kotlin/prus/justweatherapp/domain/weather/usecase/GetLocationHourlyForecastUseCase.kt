@@ -1,32 +1,33 @@
 package prus.justweatherapp.domain.weather.usecase
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import kotlinx.datetime.LocalDate
 import prus.justweatherapp.core.common.result.RequestResult
 import prus.justweatherapp.core.common.result.map
+import prus.justweatherapp.domain.settings.usecase.GetSettingsUseCase
+import prus.justweatherapp.domain.weather.mapper.toDomainModel
 import prus.justweatherapp.domain.weather.model.Weather
-import prus.justweatherapp.domain.weather.model.scale.PressureScale
-import prus.justweatherapp.domain.weather.model.scale.TempScale
-import prus.justweatherapp.domain.weather.model.scale.WindScale
 import prus.justweatherapp.domain.weather.repository.WeatherRepository
 import prus.justweatherapp.domain.weather.util.getWeatherWithConvertedUnits
 import java.util.SortedMap
 import javax.inject.Inject
 
 class GetLocationHourlyForecastUseCase @Inject constructor(
-    private val weatherRepository: WeatherRepository
+    private val weatherRepository: WeatherRepository,
+    private val getSettingsUseCase: GetSettingsUseCase
 ) {
     private val itemsCountNeeded = 24 * 2
     operator fun invoke(
         locationId: String
     ): Flow<RequestResult<SortedMap<LocalDate, List<Weather>>>> {
         return weatherRepository.getForecastWeatherByLocationId(locationId, itemsCountNeeded)
-//            .combine(getSettingsUseCase())
-            .map { requestResult ->
-                val tempScale = TempScale.CELSIUS
-                val pressureScale = PressureScale.MM_HG
-                val windScale = WindScale.M_S
+            .combine(
+                getSettingsUseCase()
+            ) { requestResult, settingsModel ->
+                val tempScale = settingsModel.tempScale.toDomainModel()
+                val pressureScale = settingsModel.pressureScale.toDomainModel()
+                val windScale = settingsModel.windScale.toDomainModel()
 
                 val resultData = hashMapOf<LocalDate, List<Weather>>()
 
