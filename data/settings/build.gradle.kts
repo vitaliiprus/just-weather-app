@@ -26,6 +26,8 @@ dependencies {
     implementation(project(":domain:settings"))
     implementation(project(":core:common"))
 
+    api(libs.datastore)
+
     implementation(libs.bundles.kotlinx.coroutines)
     implementation(libs.timber)
 

@@ -90,9 +90,11 @@ dependencies {
 
     implementation(project(":domain:locations"))
     implementation(project(":domain:weather"))
+    implementation(project(":domain:settings"))
 
     implementation(project(":data:locations"))
     implementation(project(":data:weather"))
+    implementation(project(":data:settings"))
 
     implementation(project(":local:db"))
     implementation(project(":remote"))
