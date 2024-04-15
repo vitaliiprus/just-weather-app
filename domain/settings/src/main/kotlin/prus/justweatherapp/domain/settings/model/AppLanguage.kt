@@ -1,6 +1,6 @@
 package prus.justweatherapp.domain.settings.model
 
-enum class Language {
+enum class AppLanguage {
     ENGLISH,
     FINNISH,
     RUSSIAN,

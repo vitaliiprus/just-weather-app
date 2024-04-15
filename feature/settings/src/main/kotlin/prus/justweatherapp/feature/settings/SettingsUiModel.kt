@@ -6,4 +6,6 @@ data class SettingsUiModel(
     val tempValue: UiText,
     val pressureValue: UiText,
     val windValue: UiText,
+    val languageValue: UiText,
+    val themeValue: UiText,
 )

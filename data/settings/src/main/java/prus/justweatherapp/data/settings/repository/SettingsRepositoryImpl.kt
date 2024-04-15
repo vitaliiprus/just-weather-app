@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import prus.justweatherapp.domain.settings.model.AppTheme
-import prus.justweatherapp.domain.settings.model.Language
+import prus.justweatherapp.domain.settings.model.AppLanguage
 import prus.justweatherapp.domain.settings.model.SettingsModel
 import prus.justweatherapp.domain.settings.model.scale.PressureScale
 import prus.justweatherapp.domain.settings.model.scale.TempScale
@@ -32,7 +32,7 @@ class SettingsRepositoryImpl @Inject constructor(
         val PRESSURE_SCALE = PressureScale.MM_HG
         val WIND_SCALE = WindScale.M_S
         val APP_THEME = AppTheme.SYSTEM
-        val LANGUAGE = Language.ENGLISH
+        val AppLANGUAGE = AppLanguage.ENGLISH
     }
 
     override fun getSettings(): Flow<SettingsModel> =
@@ -49,16 +49,16 @@ class SettingsRepositoryImpl @Inject constructor(
             val appTheme = prefs[PreferencesKeys.APP_THEME]?.let {
                 AppTheme.valueOf(it)
             } ?: DefaultValues.APP_THEME
-            val language = prefs[PreferencesKeys.LANGUAGE]?.let {
-                Language.valueOf(it)
-            } ?: DefaultValues.LANGUAGE
+            val appLanguage = prefs[PreferencesKeys.LANGUAGE]?.let {
+                AppLanguage.valueOf(it)
+            } ?: DefaultValues.AppLANGUAGE
 
             SettingsModel(
                 tempScale = tempScale,
                 pressureScale = pressureScale,
                 windScale = windScale,
                 appTheme = appTheme,
-                language = language
+                appLanguage = appLanguage
             )
         }
 
@@ -68,7 +68,7 @@ class SettingsRepositoryImpl @Inject constructor(
             prefs[PreferencesKeys.PRESSURE_SCALE] = settings.pressureScale.name
             prefs[PreferencesKeys.WIND_SCALE] = settings.windScale.name
             prefs[PreferencesKeys.APP_THEME] = settings.appTheme.name
-            prefs[PreferencesKeys.LANGUAGE] = settings.language.name
+            prefs[PreferencesKeys.LANGUAGE] = settings.appLanguage.name
         }
     }
 }

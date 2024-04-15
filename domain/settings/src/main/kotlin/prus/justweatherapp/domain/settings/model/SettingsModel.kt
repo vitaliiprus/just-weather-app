@@ -9,5 +9,5 @@ data class SettingsModel(
     val pressureScale: PressureScale,
     val windScale: WindScale,
     val appTheme: AppTheme,
-    val language: Language,
+    val appLanguage: AppLanguage,
 )

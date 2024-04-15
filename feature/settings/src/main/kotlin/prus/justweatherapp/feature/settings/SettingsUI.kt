@@ -2,6 +2,7 @@ package prus.justweatherapp.feature.settings
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -113,22 +114,90 @@ private fun SettingsUI(
         ) {
             Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .screenContentPaddings(),
+                    .weight(1f),
                 horizontalAlignment = Alignment.Start
             ) {
                 SettingsLabel(
                     text = stringResource(id = R.string.label_degrees),
                 )
 
+                SettingsLabel(
+                    text = stringResource(id = R.string.label_wind),
+                )
+
+                SettingsLabel(
+                    text = stringResource(id = R.string.label_pressure),
+                )
+
             }
             Column(
                 horizontalAlignment = Alignment.End
             ) {
-
                 SettingsValue(
                     value = settings.tempValue.asString(),
+                ) {
+
+                }
+
+                SettingsValue(
+                    value = settings.windValue.asString(),
+                ) {
+
+                }
+
+                SettingsValue(
+                    value = settings.pressureValue.asString(),
+                ) {
+
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(
+            modifier = Modifier
+                .screenContentPaddings(),
+            text = stringResource(id = R.string.label_interface).uppercase(),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+            fontSize = 14.sp
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.onTertiary),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier
+                    .weight(1f),
+                horizontalAlignment = Alignment.Start
+            ) {
+                SettingsLabel(
+                    text = stringResource(id = R.string.label_language),
                 )
+
+                SettingsLabel(
+                    text = stringResource(id = R.string.label_theme),
+                )
+
+            }
+            Column(
+                horizontalAlignment = Alignment.End
+            ) {
+                SettingsValue(
+                    value = settings.languageValue.asString(),
+                ) {
+
+                }
+
+                SettingsValue(
+                    value = settings.themeValue.asString(),
+                ) {
+
+                }
             }
         }
     }
@@ -139,26 +208,33 @@ private fun SettingsLabel(
     text: String
 ) {
     Text(
+        modifier = Modifier.contentPaddings(),
         text = text,
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurface,
+        fontWeight = FontWeight.Medium,
         fontSize = 16.sp
     )
 }
 
 @Composable
 private fun SettingsValue(
-    value: String
+    value: String,
+    onClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier.contentPaddings(),
+        modifier = Modifier
+            .contentPaddings()
+            .clickable {
+                onClick.invoke()
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = value,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurface,
-            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+            fontWeight = FontWeight.Medium,
             fontSize = 16.sp
         )
 
@@ -169,6 +245,7 @@ private fun SettingsValue(
             painter = painterResource(
                 id = R.drawable.ic_arrow_down
             ),
+            tint = MaterialTheme.colorScheme.onSurface.copy(0.5f),
             contentDescription = ""
         )
     }
@@ -186,6 +263,8 @@ private fun SettingsUISuccessPreview(
                         tempValue = UiText.StringResource(R.string.scale_celsius),
                         pressureValue = UiText.StringResource(R.string.scale_mm_hg),
                         windValue = UiText.StringResource(R.string.scale_m_s),
+                        languageValue = UiText.StringResource(R.string.language_english),
+                        themeValue = UiText.StringResource(R.string.theme_system),
                     )
                 )
             )

@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import prus.justweatherapp.core.common.result.asResult
 import prus.justweatherapp.core.ui.UiText
+import prus.justweatherapp.domain.settings.model.AppLanguage
+import prus.justweatherapp.domain.settings.model.AppTheme
 import prus.justweatherapp.domain.settings.model.scale.PressureScale
 import prus.justweatherapp.domain.settings.model.scale.TempScale
 import prus.justweatherapp.domain.settings.model.scale.WindScale
@@ -30,8 +32,9 @@ class SettingsViewModel @Inject constructor(
                             tempValue = getTempValue(model.tempScale),
                             pressureValue = getPressureValue(model.pressureScale),
                             windValue = getWindValue(model.windScale),
-
-                            )
+                            languageValue = getLanguageValue(model.appLanguage),
+                            themeValue = getThemeValue(model.appTheme),
+                        )
                     )
                 } ?: SettingsUiState.Error(
                     result.exceptionOrNull()?.message ?: ""
@@ -63,6 +66,22 @@ class SettingsViewModel @Inject constructor(
             WindScale.KM_H -> UiText.StringResource(R.string.scale_km_h)
             WindScale.MPH -> UiText.StringResource(R.string.scale_mph)
             WindScale.KT -> UiText.StringResource(R.string.scale_kt)
+        }
+    }
+
+    private fun getLanguageValue(appLanguage: AppLanguage): UiText {
+        return when (appLanguage) {
+            AppLanguage.ENGLISH -> UiText.StringResource(R.string.language_english)
+            AppLanguage.FINNISH -> UiText.StringResource(R.string.language_finnish)
+            AppLanguage.RUSSIAN -> UiText.StringResource(R.string.language_russian)
+        }
+    }
+
+    private fun getThemeValue(appTheme: AppTheme): UiText {
+        return when (appTheme) {
+            AppTheme.LIGHT -> UiText.StringResource(R.string.theme_light)
+            AppTheme.DARK -> UiText.StringResource(R.string.theme_dark)
+            AppTheme.SYSTEM -> UiText.StringResource(R.string.theme_system)
         }
     }
 }
