@@ -8,4 +8,18 @@ data class SettingsUiModel(
     val windValue: UiText,
     val languageValue: UiText,
     val themeValue: UiText,
+    val menuOptions: MenuOptionsUiModel
+)
+
+data class MenuOptionsUiModel(
+    val tempOptions: List<MenuOption>,
+    val pressureOptions: List<MenuOption>,
+    val windOptions: List<MenuOption>,
+    val languageOptions: List<MenuOption>,
+    val themeOptions: List<MenuOption>,
+)
+
+data class MenuOption(
+    val value: UiText,
+    val selected: Boolean
 )
