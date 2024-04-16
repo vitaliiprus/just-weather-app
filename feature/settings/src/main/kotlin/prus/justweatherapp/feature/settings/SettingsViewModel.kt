@@ -7,26 +7,33 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import prus.justweatherapp.core.common.result.asResult
 import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.domain.settings.model.AppLanguage
 import prus.justweatherapp.domain.settings.model.AppTheme
+import prus.justweatherapp.domain.settings.model.SettingsModel
 import prus.justweatherapp.domain.settings.model.scale.PressureScale
 import prus.justweatherapp.domain.settings.model.scale.TempScale
 import prus.justweatherapp.domain.settings.model.scale.WindScale
 import prus.justweatherapp.domain.settings.usecase.GetSettingsUseCase
+import prus.justweatherapp.domain.settings.usecase.SaveSettingsUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    getSettingsUseCase: GetSettingsUseCase
+    getSettingsUseCase: GetSettingsUseCase,
+    val saveSettingsUseCase: SaveSettingsUseCase
 ) : ViewModel() {
+
+    private lateinit var settingsModel: SettingsModel
 
     val state: StateFlow<SettingsUiState> =
         getSettingsUseCase()
             .asResult()
             .map { result ->
                 result.getOrNull()?.let { model ->
+                    settingsModel = model
                     SettingsUiState.Success(
                         settings = SettingsUiModel(
                             tempValue = getTempValue(model.tempScale),
@@ -34,6 +41,7 @@ class SettingsViewModel @Inject constructor(
                             windValue = getWindValue(model.windScale),
                             languageValue = getLanguageValue(model.appLanguage),
                             themeValue = getThemeValue(model.appTheme),
+                            menuOptions = getMenuOptions(model)
                         )
                     )
                 } ?: SettingsUiState.Error(
@@ -44,6 +52,51 @@ class SettingsViewModel @Inject constructor(
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = SettingsUiState.Loading
             )
+
+
+    val uiCallbacks = SettingsCallbacks(
+        onTempChanged = {
+            saveSettings(
+                settingsModel.copy(
+                    tempScale = TempScale.entries[it]
+                )
+            )
+        },
+        onPressureChanged = {
+            saveSettings(
+                settingsModel.copy(
+                    pressureScale = PressureScale.entries[it]
+                )
+            )
+        },
+        onWindChanged = {
+            saveSettings(
+                settingsModel.copy(
+                    windScale = WindScale.entries[it]
+                )
+            )
+        },
+        onLanguageChanged = {
+            saveSettings(
+                settingsModel.copy(
+                    appLanguage = AppLanguage.entries[it]
+                )
+            )
+        },
+        onThemeChanged = {
+            saveSettings(
+                settingsModel.copy(
+                    appTheme = AppTheme.entries[it]
+                )
+            )
+        },
+    )
+
+    private fun saveSettings(settingsModel: SettingsModel) {
+        viewModelScope.launch {
+            saveSettingsUseCase(settingsModel)
+        }
+    }
 
     private fun getTempValue(tempScale: TempScale): UiText {
         return when (tempScale) {
@@ -83,5 +136,40 @@ class SettingsViewModel @Inject constructor(
             AppTheme.DARK -> UiText.StringResource(R.string.theme_dark)
             AppTheme.SYSTEM -> UiText.StringResource(R.string.theme_system)
         }
+    }
+
+    private fun getMenuOptions(model: SettingsModel): MenuOptionsUiModel {
+        return MenuOptionsUiModel(
+            tempOptions = TempScale.entries.map {
+                MenuOption(
+                    value = getTempValue(it),
+                    selected = model.tempScale == it
+                )
+            },
+            pressureOptions = PressureScale.entries.map {
+                MenuOption(
+                    value = getPressureValue(it),
+                    selected = model.pressureScale == it
+                )
+            },
+            windOptions = WindScale.entries.map {
+                MenuOption(
+                    value = getWindValue(it),
+                    selected = model.windScale == it
+                )
+            },
+            languageOptions = AppLanguage.entries.map {
+                MenuOption(
+                    value = getLanguageValue(it),
+                    selected = model.appLanguage == it
+                )
+            },
+            themeOptions = AppTheme.entries.map {
+                MenuOption(
+                    value = getThemeValue(it),
+                    selected = model.appTheme == it
+                )
+            },
+        )
     }
 }
