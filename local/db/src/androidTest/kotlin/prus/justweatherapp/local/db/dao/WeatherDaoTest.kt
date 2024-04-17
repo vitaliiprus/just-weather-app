@@ -154,14 +154,22 @@ class WeatherDaoTest {
         return WeatherEntity(
             locationId = locationId,
             dateTime = dateTime,
-            main = createMainWeatherData(),
-            weatherConditions = 0,
-            wind = createWind(),
-            visibility = 10000,
-            probOfPrecipitations = 0.0,
-            sunrise = dateTime,
-            sunset = dateTime,
-            timezoneOffset = 0
+            temp = 290.0,
+            feelsLike = 290.0,
+            humidity = 100.0,
+            pop = 0.0,
+            rain = 0.0,
+            showers = 0.0,
+            snowfall = 0.0,
+            weatherCode= 0,
+            pressure = 1000.0,
+            cloudCover = 100.0,
+            visibility = 10000.0,
+            windSpeed = 100.0,
+            windDirection = 0.0,
+            windGusts = 10.0,
+            uvi = 1.0,
+            timestamp = dateTime,
         )
     }
 
