@@ -103,6 +103,7 @@ dependencies {
     implementation(project(":core:common"))
 
     implementation(libs.androidx.core)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.dagger.hilt.android)
