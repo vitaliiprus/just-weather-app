@@ -75,13 +75,13 @@ class WeatherRepositoryImpl @Inject constructor(
             locationId = locationId,
             dateFrom = Clock.System.now()
                 .plus(-currentWeatherDataRefreshTimeMinutes, DateTimeUnit.MINUTE)
-                .toLocalDateTime(TimeZone.currentSystemDefault())
+                .toLocalDateTime(TimeZone.UTC)
         )
         val sunDataEntity = sunDataDao.getDataByLocationId(
             locationId = locationId,
             dateFrom = Clock.System.now()
                 .plus(-currentWeatherDataRefreshTimeMinutes, DateTimeUnit.MINUTE)
-                .toLocalDateTime(TimeZone.currentSystemDefault())
+                .toLocalDateTime(TimeZone.UTC)
                 .date,
             limit = 1
         ).firstOrNull()
@@ -134,14 +134,14 @@ class WeatherRepositoryImpl @Inject constructor(
             locationId = locationId,
             dateFrom = Clock.System.now()
                 .plus(-1, DateTimeUnit.HOUR)
-                .toLocalDateTime(TimeZone.currentSystemDefault()),
+                .toLocalDateTime(TimeZone.UTC),
             limit = count
         )
         val sunDataDbos = sunDataDao.getDataByLocationId(
             locationId = locationId,
             dateFrom = Clock.System.now()
                 .plus(-currentWeatherDataRefreshTimeMinutes, DateTimeUnit.MINUTE)
-                .toLocalDateTime(TimeZone.currentSystemDefault())
+                .toLocalDateTime(TimeZone.UTC)
                 .date,
             limit = forecastDaysMaxCount
         )
@@ -189,7 +189,7 @@ class WeatherRepositoryImpl @Inject constructor(
                                     it.dateTime > Clock.System.now()
                                         .plus(-1, DateTimeUnit.HOUR)
                                         .plus(it.timezoneOffset, DateTimeUnit.SECOND)
-                                        .toLocalDateTime(TimeZone.currentSystemDefault())
+                                        .toLocalDateTime(TimeZone.UTC)
                                 }
                                 .sortedBy { it.dateTime }
                                 .take(count)
