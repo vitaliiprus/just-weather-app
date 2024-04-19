@@ -51,7 +51,7 @@ fun CurrentWeatherUI(
             CurrentWeatherViewModel,
             CurrentWeatherViewModel.ViewModelFactory
             >(
-        key =  CurrentWeatherViewModel::class.qualifiedName.plus(" $locationId")
+        key = CurrentWeatherViewModel::class.qualifiedName.plus(" $locationId")
     ) { factory ->
         factory.create(locationId)
     }
@@ -163,7 +163,7 @@ private fun CurrentWeatherUI(
                             ShimmerRectangle(
                                 modifier = Modifier
                                     .width(130.dp)
-                                    .height(70.dp)
+                                    .height(60.dp)
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             ShimmerRectangle(
@@ -270,7 +270,7 @@ private fun CurrentWeatherUI(
                             Spacer(modifier = Modifier.height(spacerHeight))
                             ShimmerRectangle(
                                 modifier = Modifier
-                                    .width(70.dp)
+                                    .width(100.dp)
                                     .height(40.dp)
                             )
                             Spacer(modifier = Modifier.height(spacerHeight))
