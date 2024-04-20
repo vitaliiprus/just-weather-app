@@ -1,11 +1,15 @@
 package prus.justweatherapp.feature.weather.location.forecast.hourly
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -68,31 +73,40 @@ private fun HourlyForecastWeatherUI(
         if (state is HourlyForecastWeatherUiState.Success) state.weather
         else null
 
-    LazyRow(
+    Box(
         modifier = Modifier
+            .fillMaxWidth()
             .height(140.dp)
-            .then(modifier),
-        contentPadding = PaddingValues(
-            horizontal = Dimens.contentPaddings.start,
-            vertical = 0.dp
-        ),
-        verticalAlignment = Alignment.Top
+            .then(modifier)
     ) {
 
-        dataItems?.let { items ->
-            items(
-                count = items.size
-            ) {
-                HourlyWeatherItem(
-                    data = items[it]
-                )
-            }
+        LazyRow(
+            modifier = Modifier
+                .fillMaxHeight(),
+            contentPadding = PaddingValues(
+                horizontal = Dimens.contentPaddings.start,
+                vertical = 0.dp
+            ),
+            verticalAlignment = Alignment.Top
+        ) {
 
-        } ?: run {
-            items(count = 10) {
-                ShimmeringItem()
+            dataItems?.let { items ->
+                items(
+                    count = items.size
+                ) {
+                    HourlyWeatherItem(
+                        data = items[it]
+                    )
+                }
+
+            } ?: run {
+                items(count = 10) {
+                    ShimmeringItem()
+                }
             }
         }
+
+        GradientEdges()
     }
 }
 
@@ -177,6 +191,43 @@ private fun ShimmeringItem() {
             modifier = Modifier
                 .width(30.dp)
                 .height(14.dp)
+        )
+    }
+}
+
+@Composable
+private fun GradientEdges() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Box(
+            modifier = Modifier
+                .width(16.dp)
+                .fillMaxHeight()
+                .background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.surface,
+                            MaterialTheme.colorScheme.surface.copy(0f),
+                        )
+                    )
+                )
+        )
+        Box(
+            modifier = Modifier
+                .width(16.dp)
+                .fillMaxHeight()
+                .background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.surface.copy(0f),
+                            MaterialTheme.colorScheme.surface,
+                        )
+                    )
+                )
         )
     }
 }
