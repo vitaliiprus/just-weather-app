@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import prus.justweatherapp.core.ui.UiText
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.accent
 import prus.justweatherapp.theme.screenContentPaddings
 
@@ -330,7 +330,7 @@ private fun SettingsValue(
 @Composable
 private fun SettingsUISuccessPreview(
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             SettingsUI(
                 state = SettingsUiState.Success(
@@ -365,7 +365,7 @@ private fun SettingsUISuccessPreview(
 @Composable
 private fun SettingsValuePreview(
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             Box(
                 modifier = Modifier.fillMaxSize()

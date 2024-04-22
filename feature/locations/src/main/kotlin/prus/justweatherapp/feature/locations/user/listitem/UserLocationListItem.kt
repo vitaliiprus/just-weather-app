@@ -44,7 +44,7 @@ import prus.justweatherapp.core.ui.shimmer.ShimmerRectangle
 import prus.justweatherapp.feature.locations.R
 import prus.justweatherapp.feature.locations.model.CurrentWeatherUiModel
 import prus.justweatherapp.feature.locations.model.LocationUiModel
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.Dimens
 import prus.justweatherapp.theme.contentPaddings
 
@@ -344,7 +344,7 @@ private fun UserLocationListItem(
 private fun UserLocationListItemPreview(
     @PreviewParameter(BooleanPreviewParameterProvider::class) isEditing: Boolean
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             UserLocationListItem(
                 state = UserLocationListItemUiState(
@@ -378,7 +378,7 @@ private fun UserLocationListItemPreview(
 private fun UserLocationListItemLoadingPreview(
     @PreviewParameter(BooleanPreviewParameterProvider::class) isEditing: Boolean
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             UserLocationListItem(
                 state = UserLocationListItemUiState(

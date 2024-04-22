@@ -20,7 +20,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import prus.justweatherapp.core.ui.components.MessageScreen
 import prus.justweatherapp.feature.locations.R
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 
 @Composable
 internal fun SearchLocationsListUi(
@@ -87,7 +87,7 @@ internal fun SearchLocationsListUi(
 @PreviewLightDark
 @Composable
 private fun SearchLocationsListUiPreview() {
-    AppTheme {
+    JwaTheme {
         Surface {
             SearchLocationsListUi(
                 state = SearchLocationScreenState.Loading,

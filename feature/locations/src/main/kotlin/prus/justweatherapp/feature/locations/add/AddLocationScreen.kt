@@ -23,7 +23,7 @@ import prus.justweatherapp.core.ui.components.JwaTextButton
 import prus.justweatherapp.feature.locations.R
 import prus.justweatherapp.feature.locations.model.LocationUiModel
 import prus.justweatherapp.feature.weather.location.LocationWeatherUI
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.startEndPaddings
 import prus.justweatherapp.theme.topBarSize
 
@@ -125,7 +125,7 @@ private fun AddLocationScreen(
 @PreviewLightDark
 @Composable
 private fun AddLocationScreenPreview() {
-    AppTheme {
+    JwaTheme {
         Surface {
             AddLocationScreen(
                 state = AddLocationUiState(

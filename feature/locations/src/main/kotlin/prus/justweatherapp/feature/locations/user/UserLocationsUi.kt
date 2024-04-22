@@ -50,7 +50,7 @@ import prus.justweatherapp.core.ui.dragdrop.rememberDragDropListState
 import prus.justweatherapp.feature.locations.R
 import prus.justweatherapp.feature.locations.edit.EditLocationNameDialog
 import prus.justweatherapp.feature.locations.user.listitem.UserLocationListItem
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.accent
 
 @Composable
@@ -321,7 +321,7 @@ private fun MessageSnackbar(
 @PreviewLightDark
 @Composable
 private fun UserLocationsUiPreview() {
-    AppTheme {
+    JwaTheme {
         Surface {
             UserLocationsUi(
                 state = UserLocationsScreenState(

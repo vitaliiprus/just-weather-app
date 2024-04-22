@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import prus.justweatherapp.core.ui.preview.parameterprovider.BooleanPreviewParameterProvider
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 
 @Composable
 fun ShimmerCircle(
@@ -35,7 +35,7 @@ fun ShimmerCircle(
 private fun ShimmerCirclePreview(
     @PreviewParameter(BooleanPreviewParameterProvider::class) boolean: Boolean
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             ShimmerCircle(
                 modifier = Modifier

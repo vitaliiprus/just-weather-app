@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import prus.justweatherapp.core.ui.preview.parameterprovider.BooleanPreviewParameterProvider
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.accent
 import prus.justweatherapp.theme.textButtonStyle
 
@@ -69,7 +69,7 @@ fun JwaOutlinedButton(
 private fun JwaOutlinedButtonPreview(
     @PreviewParameter(BooleanPreviewParameterProvider::class) enabled: Boolean
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             JwaOutlinedButton(
                 text = "Button",

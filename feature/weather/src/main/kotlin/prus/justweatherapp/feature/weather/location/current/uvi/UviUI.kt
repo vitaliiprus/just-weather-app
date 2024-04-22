@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.sp
 import prus.justweatherapp.feature.weather.R
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.green
 import prus.justweatherapp.theme.orange
 import prus.justweatherapp.theme.red
@@ -85,7 +85,7 @@ private fun getUviColor(uviIndex: Int): Color {
 private fun UviUIPreview(
     @PreviewParameter(UviValuePreviewParameterProvider::class) value: Int
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             UviUI(
                 uvIndex = value

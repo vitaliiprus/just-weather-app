@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.sp
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 
 @Composable
 fun JwaLabeledText(
@@ -42,7 +42,7 @@ fun JwaLabeledText(
 @Composable
 private fun JwaLabeledTextPreview(
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             JwaLabeledText(
                 label = "Label",

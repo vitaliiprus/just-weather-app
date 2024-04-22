@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 
 @Composable
 internal fun WeatherCardUI(
@@ -91,7 +91,7 @@ internal fun WeatherCardUI(
 @Composable
 private fun WeatherCardUIPreview(
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             WeatherCardUI(
                 weatherConditionImageResId = prus.justweatherapp.core.ui.R.drawable.mostlycloudy,

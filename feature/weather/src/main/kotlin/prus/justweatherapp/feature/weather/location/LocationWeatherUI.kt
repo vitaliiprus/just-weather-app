@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import prus.justweatherapp.feature.weather.location.current.CurrentWeatherUI
 import prus.justweatherapp.feature.weather.location.forecast.daily.DailyForecastWeatherUI
 import prus.justweatherapp.feature.weather.location.forecast.hourly.HourlyForecastWeatherUI
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.Dimens
 import prus.justweatherapp.theme.screenContentPaddings
 
@@ -84,7 +84,7 @@ private fun LocationName(
 @PreviewLightDark
 @Composable
 fun LocationNameText() {
-    AppTheme {
+    JwaTheme {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {

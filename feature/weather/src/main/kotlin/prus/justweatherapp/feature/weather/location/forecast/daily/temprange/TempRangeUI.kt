@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import kotlin.math.roundToInt
 
 @Composable
@@ -128,7 +128,7 @@ internal fun TempRangeUI(
 private fun TempRangeUiPreview(
     @PreviewParameter(TempRangeModelParameterProvider::class) data: TempRangeModel
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             TempRangeUI(
                 modifier = Modifier

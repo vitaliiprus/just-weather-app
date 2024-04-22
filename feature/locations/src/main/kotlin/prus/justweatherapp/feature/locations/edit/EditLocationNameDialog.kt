@@ -34,7 +34,7 @@ import prus.justweatherapp.core.ui.components.JwaOutlinedButton
 import prus.justweatherapp.core.ui.components.JwaTextButton
 import prus.justweatherapp.core.ui.components.JwaTextField
 import prus.justweatherapp.feature.locations.R
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.contentPaddings
 import prus.justweatherapp.theme.dialogPaddings
 
@@ -186,7 +186,7 @@ private fun EditLocationNameDialog(
 @PreviewLightDark
 @Composable
 private fun EditLocationNameDialogPreview() {
-    AppTheme {
+    JwaTheme {
         Surface {
             EditLocationNameDialog(
                 state = EditLocationNameUiState(

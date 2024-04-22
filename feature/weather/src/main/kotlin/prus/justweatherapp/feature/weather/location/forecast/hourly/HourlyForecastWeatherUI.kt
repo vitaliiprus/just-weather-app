@@ -34,7 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.core.ui.shimmer.ShimmerRectangle
 import prus.justweatherapp.feature.weather.location.forecast.weathercard.WeatherCardUI
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.Dimens
 
 @Composable
@@ -236,7 +236,7 @@ private fun GradientEdges() {
 @Composable
 private fun HourlyForecastWeatherUISuccessPreview(
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             HourlyForecastWeatherUI(
                 state = HourlyForecastWeatherUiState.Success(
@@ -266,7 +266,7 @@ private fun HourlyForecastWeatherUISuccessPreview(
 @Composable
 private fun HourlyForecastWeatherUILoadingPreview(
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             HourlyForecastWeatherUI(
                 state = HourlyForecastWeatherUiState.Loading

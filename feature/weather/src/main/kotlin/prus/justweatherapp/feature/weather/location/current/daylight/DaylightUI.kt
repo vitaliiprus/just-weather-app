@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import prus.justweatherapp.core.ui.components.JwaLabeledText
 import prus.justweatherapp.feature.weather.R
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.accent
 import prus.justweatherapp.theme.purple
 import kotlin.math.cos
@@ -144,7 +144,7 @@ internal fun DaylightUI(
 @Composable
 private fun DaylightUIPreview(
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             DaylightUI(
                 data = DaylightUiModel(

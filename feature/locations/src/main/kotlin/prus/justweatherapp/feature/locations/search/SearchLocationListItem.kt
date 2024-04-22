@@ -17,7 +17,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import prus.justweatherapp.feature.locations.model.SearchLocationUiModel
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.accent
 
 @Composable
@@ -109,7 +109,7 @@ private fun getAnnotatedPart(name: String, occurrences: List<Pair<Int, Int>>, un
 @PreviewLightDark
 @Composable
 private fun SearchLocationListItemPreview() {
-    AppTheme {
+    JwaTheme {
         Surface {
             SearchLocationListItem(
                 location = SearchLocationUiModel(

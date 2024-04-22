@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import prus.justweatherapp.core.ui.R
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 
 @Composable
 fun JwaTextField(
@@ -101,7 +101,7 @@ fun JwaTextField(
 private fun FindLocationsSearchBarPreview(
     @PreviewParameter(TextFieldValuePreviewParameterProvider::class) value: String
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             JwaTextField(
                 textFieldValue = value,

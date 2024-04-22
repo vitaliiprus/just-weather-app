@@ -20,7 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import prus.justweatherapp.core.ui.components.MessageScreen
 import prus.justweatherapp.feature.weather.location.LocationWeatherUI
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 
 @Composable
 fun WeatherUI(
@@ -91,7 +91,7 @@ private fun WeatherUI(
 @PreviewLightDark
 @Composable
 private fun WeatherUILoadingPreview() {
-    AppTheme {
+    JwaTheme {
         Surface {
             WeatherUI(
                 state = WeatherUiState.Loading,
@@ -104,7 +104,7 @@ private fun WeatherUILoadingPreview() {
 @PreviewLightDark
 @Composable
 private fun WeatherUIEmptyPreview() {
-    AppTheme {
+    JwaTheme {
         Surface {
             WeatherUI(
                 state = WeatherUiState.Empty,

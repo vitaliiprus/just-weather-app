@@ -30,7 +30,7 @@ import prus.justweatherapp.core.ui.shimmer.ShimmerRectangle
 import prus.justweatherapp.feature.weather.location.forecast.daily.temprange.TempRangeModel
 import prus.justweatherapp.feature.weather.location.forecast.daily.temprange.TempRangeUI
 import prus.justweatherapp.feature.weather.location.forecast.weathercard.WeatherCardUI
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.Dimens
 
 @Composable
@@ -194,7 +194,7 @@ private fun ShimmeringItem() {
 @Composable
 private fun DailyForecastWeatherUISuccessPreview(
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             DailyForecastWeatherUI(
                 state = DailyForecastWeatherUiState.Success(
@@ -247,7 +247,7 @@ private fun DailyForecastWeatherUISuccessPreview(
 @Composable
 private fun DailyForecastWeatherUILoadingPreview(
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             DailyForecastWeatherUI(
                 state = DailyForecastWeatherUiState.Loading

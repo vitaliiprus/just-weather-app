@@ -18,7 +18,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.accent
 
 @Composable
@@ -73,7 +73,7 @@ fun MainBottomNavigation(
 @PreviewLightDark
 @Composable
 fun MainBottomNavigationPreview() {
-    AppTheme {
+    JwaTheme {
         MainBottomNavigation(
             navController = rememberNavController(),
             items = listOf(MainScreen.MyLocations, MainScreen.Weather, MainScreen.Settings)

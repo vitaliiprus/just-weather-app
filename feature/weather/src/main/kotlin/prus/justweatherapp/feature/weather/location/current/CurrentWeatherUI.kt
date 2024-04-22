@@ -39,7 +39,7 @@ import prus.justweatherapp.feature.weather.R
 import prus.justweatherapp.feature.weather.location.current.daylight.DaylightUI
 import prus.justweatherapp.feature.weather.location.current.daylight.DaylightUiModel
 import prus.justweatherapp.feature.weather.location.current.uvi.UviUI
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.contentPaddings
 
 @Composable
@@ -330,7 +330,7 @@ private fun CurrentWeatherUI(
 @Composable
 private fun CurrentWeatherUILoadingPreview(
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             CurrentWeatherUI(
                 state = CurrentWeatherUiState.Loading,
@@ -344,7 +344,7 @@ private fun CurrentWeatherUILoadingPreview(
 @Composable
 private fun CurrentWeatherUISuccessPreview(
 ) {
-    AppTheme {
+    JwaTheme {
         Surface {
             CurrentWeatherUI(
                 state = CurrentWeatherUiState.Success(

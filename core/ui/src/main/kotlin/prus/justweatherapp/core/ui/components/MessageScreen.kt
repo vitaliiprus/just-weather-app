@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 
 @Composable
 fun MessageScreen(
@@ -93,7 +93,7 @@ fun MessageScreen(
 @PreviewLightDark
 @Composable
 private fun MessageScreenPreview() {
-    AppTheme {
+    JwaTheme {
         MessageScreen(
             title = "No results found",
             subtitle = "This message explains what is wrong and how to fix this.",

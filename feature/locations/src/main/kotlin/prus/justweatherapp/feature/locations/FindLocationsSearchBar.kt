@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import prus.justweatherapp.core.ui.components.JwaTextButton
 import prus.justweatherapp.core.ui.components.JwaTextField
-import prus.justweatherapp.theme.AppTheme
+import prus.justweatherapp.theme.JwaTheme
 
 @Composable
 internal fun FindLocationsSearchBar(
@@ -126,7 +126,7 @@ internal fun FindLocationsSearchBar(
 @PreviewLightDark
 @Composable
 private fun FindLocationsSearchBarEmptyPreview() {
-    AppTheme {
+    JwaTheme {
         Surface {
             FindLocationsSearchBar(
                 state = SearchBarState(
@@ -142,7 +142,7 @@ private fun FindLocationsSearchBarEmptyPreview() {
 @PreviewLightDark
 @Composable
 private fun FindLocationsSearchBarTextPreview() {
-    AppTheme {
+    JwaTheme {
         Surface {
             FindLocationsSearchBar(
                 state = SearchBarState(
