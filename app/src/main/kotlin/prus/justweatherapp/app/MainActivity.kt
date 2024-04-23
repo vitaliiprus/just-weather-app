@@ -1,7 +1,11 @@
 package prus.justweatherapp.app
 
+import android.app.LocaleManager
+import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.os.LocaleList
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -13,6 +17,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,8 +26,10 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import prus.justweatherapp.domain.settings.model.AppLanguage
 import prus.justweatherapp.domain.settings.model.AppTheme
 import prus.justweatherapp.theme.JwaTheme
+import java.util.Locale
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -40,7 +47,7 @@ class MainActivity : ComponentActivity() {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state
                     .onEach { uiState = it }
-                    .collect{}
+                    .collect {}
             }
         }
 
@@ -52,6 +59,10 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
+            uiState.also {
+                if (it is MainActivityUiState.Success)
+                    setAppLocale(it.data.appLanguage, LocalContext.current)
+            }
             val useDarkTheme = shouldUseDarkTheme(uiState)
 
             DisposableEffect(useDarkTheme) {
@@ -78,6 +89,27 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+}
+
+private fun setAppLocale(appLanguage: AppLanguage, context: Context) {
+    val languageTag =
+            when (appLanguage) {
+                AppLanguage.ENGLISH -> "en"
+                AppLanguage.FINNISH -> "fi"
+                AppLanguage.RUSSIAN -> "ru"
+            }
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        context.getSystemService(LocaleManager::class.java).applicationLocales = LocaleList.forLanguageTags(languageTag)
+    } else {
+        val locale = Locale(languageTag)
+        Locale.setDefault(locale)
+
+        val resources = context.resources
+        val configuration = resources.configuration
+        configuration.setLocale(locale)
+        context.createConfigurationContext(configuration)
     }
 }
 

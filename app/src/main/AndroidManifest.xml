@@ -15,7 +15,6 @@
 
         <activity
             android:name="prus.justweatherapp.app.MainActivity"
-            android:configChanges="locale"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.App.Starting"

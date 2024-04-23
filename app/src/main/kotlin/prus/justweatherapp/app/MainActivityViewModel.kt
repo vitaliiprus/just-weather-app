@@ -20,7 +20,8 @@ class MainActivityViewModel @Inject constructor(
             .map { result ->
                 MainActivityUiState.Success(
                     data = MainActivityUiModel(
-                        appTheme = result.appTheme
+                        appTheme = result.appTheme,
+                        appLanguage = result.appLanguage
                     )
                 )
             }
@@ -29,5 +30,4 @@ class MainActivityViewModel @Inject constructor(
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = MainActivityUiState.Loading
             )
-
 }
