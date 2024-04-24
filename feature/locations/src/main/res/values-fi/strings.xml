@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_location">Lisää paikka</string>
+    <string name="use_search_bar_hint">Etsi ja lisää haluamasi paikat hakupalkin avulla.</string>
+    <string name="nothing_found">Mitään ei löytynyt</string>
+    <string name="nothing_found_hint">Yritä uudelleen eri avainsanoilla.</string>
+    <string name="find_locations">Etsi paikkoja</string>
+    <string name="cancel">Peruuttaa</string>
+    <string name="add">Lisää</string>
+    <string name="error_cannot_find_location">Paikkaa ei löydy</string>
+    <string name="edit_locations">Muokkaa paikkoja</string>
+    <string name="restore_original_name">Palauta alkuperäinen nimi</string>
+    <string name="enter_location_name">Anna paikan nimi</string>
+    <string name="rename_location">Nimeä paikka uudelleen</string>
+    <string name="rename">Nimeä uudelleen</string>
+    <string name="cannot_delete_location">Paikkaa ei voi poistaa</string>
+    <string name="cannot_find_location">Paikkaa ei löydy</string>
+    <string name="template_location_deleted">%s on poistettu</string>
+    <string name="undo">Kumoa</string>
+</resources>

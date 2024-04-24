@@ -1,0 +1,5 @@
+<resources>
+    <string name="my_locations">Paikkojani</string>
+    <string name="weather">Sää</string>
+    <string name="settings">Asetukset</string>
+</resources>

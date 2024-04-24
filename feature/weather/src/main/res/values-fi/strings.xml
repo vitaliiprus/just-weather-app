@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_title">Ei ole huonoa säätä,\non vain väärät vaatteet</string>
+    <string name="empty_subtitle">Katso sää ympäri maailmaa\nja tallenna suosikkipaikkasi.</string>
+    <string name="find_locations">Etsi paikkoja</string>
+
+    <string name="sunrise">Auringonnousu</string>
+    <string name="daylight">Päivänvalo</string>
+    <string name="sunset">Auringonlasku</string>
+    <string name="template_feels_like">Tuntuu kuin %s</string>
+    <string name="temp_min_max">tº min, maks</string>
+    <string name="uv_index">UV-indeksi</string>
+    <string name="pressure">Paine</string>
+    <string name="precip_prob">Sateen riski</string>
+    <string name="humidity">Kosteus</string>
+    <string name="wind">Tuuli</string>
+
+    <string name="scale_mm_hg">mmHg</string>
+    <string name="scale_hpa">hPa</string>
+    <string name="scale_m_s">m/s</string>
+    <string name="scale_km_h">km/h</string>
+    <string name="scale_mph">mph</string>
+    <string name="scale_kt">kt</string>
+
+    <string name="wind_n">N</string>
+    <string name="wind_ne">NE</string>
+    <string name="wind_e">E</string>
+    <string name="wind_se">SE</string>
+    <string name="wind_s">S</string>
+    <string name="wind_sw">SW</string>
+    <string name="wind_w">W</string>
+    <string name="wind_nw">NW</string>
+
+    <string name="template_value_scale">%s %s</string>
+    <string name="template_wind_value">%s %s, %s</string>
+</resources>

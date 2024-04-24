@@ -1,0 +1,5 @@
+<resources>
+    <string name="my_locations">Мои места</string>
+    <string name="weather">Погода</string>
+    <string name="settings">Настройки</string>
+</resources>

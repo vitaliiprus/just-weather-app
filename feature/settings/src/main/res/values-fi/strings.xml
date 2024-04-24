@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_settings">Asetukset</string>
+
+    <string name="label_units">Mittayksiköt</string>
+    <string name="label_degrees">Lämpötila</string>
+    <string name="label_wind">Tuuli</string>
+    <string name="label_pressure">Paine</string>
+
+    <string name="scale_kelvin">K</string>
+    <string name="scale_celsius">ºC</string>
+    <string name="scale_fahrenheit">ºF</string>
+
+    <string name="scale_mm_hg">mmHg</string>
+    <string name="scale_hpa">hPa</string>
+
+    <string name="scale_m_s">m/s</string>
+    <string name="scale_km_h">km/h</string>
+    <string name="scale_mph">mph</string>
+    <string name="scale_kt">kt</string>
+
+    <string name="label_interface">Käyttöliittymä</string>
+    <string name="label_language">Kieli</string>
+    <string name="label_theme">Teema</string>
+
+    <string name="language_english">Englanti (English)</string>
+    <string name="language_finnish">Suomi</string>
+    <string name="language_russian">Venäjä (Русский)</string>
+
+    <string name="theme_light">Valoisa</string>
+    <string name="theme_dark">Tumma</string>
+    <string name="theme_system">Systeemi</string>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_location">Добавить место</string>
+    <string name="use_search_bar_hint">Используйте поисковую строку, чтобы добавить нужное место.</string>
+    <string name="nothing_found">Ничего не найдено</string>
+    <string name="nothing_found_hint">Пожалуйста, попробуйте другой запрос.</string>
+    <string name="find_locations">Найти места</string>
+    <string name="cancel">Отмена</string>
+    <string name="add">Добавить</string>
+    <string name="error_cannot_find_location">Место не найдено</string>
+    <string name="edit_locations">Редактировать места</string>
+    <string name="restore_original_name">Восстановить исходное имя</string>
+    <string name="enter_location_name">Введите название места</string>
+    <string name="rename_location">Переименовать место</string>
+    <string name="rename">Переименовать</string>
+    <string name="cannot_delete_location">Не удалось удалить место</string>
+    <string name="cannot_find_location">Не удалось найти место</string>
+    <string name="template_location_deleted">%s удалено</string>
+    <string name="undo">Вернуть</string>
+</resources>

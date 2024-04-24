@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="empty_title">Не бывает плохой погоды - \nбывает неправильная одежда</string>
+    <string name="empty_subtitle">Наблюдайте за погодой по всему миру\nи сохраняйте любимые места.</string>
+    <string name="find_locations">Найти места</string>
+
+    <string name="sunrise">Восход</string>
+    <string name="daylight">Долгота дня</string>
+    <string name="sunset">Закат</string>
+    <string name="template_feels_like">Ощущается как %s</string>
+    <string name="temp_min_max">tº мин, макс</string>
+    <string name="uv_index">УФ индекс</string>
+    <string name="pressure">Давление</string>
+    <string name="precip_prob">Вероятность осадков</string>
+    <string name="humidity">Влажность</string>
+    <string name="wind">Ветер</string>
+
+    <string name="scale_mm_hg">мм рт.ст.</string>
+    <string name="scale_hpa">гПа</string>
+    <string name="scale_m_s">м/с</string>
+    <string name="scale_km_h">км/ч</string>
+    <string name="scale_mph">мил./ч</string>
+    <string name="scale_kt">уз.</string>
+
+    <string name="wind_n">С</string>
+    <string name="wind_ne">СВ</string>
+    <string name="wind_e">В</string>
+    <string name="wind_se">ЮВ</string>
+    <string name="wind_s">Ю</string>
+    <string name="wind_sw">ЮЗ</string>
+    <string name="wind_w">З</string>
+    <string name="wind_nw">СЗ</string>
+
+    <string name="template_value_scale">%s %s</string>
+    <string name="template_wind_value">%s %s, %s</string>
+</resources>

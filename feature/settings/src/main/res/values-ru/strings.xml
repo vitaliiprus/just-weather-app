@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_settings">Настройки</string>
+
+    <string name="label_units">Единицы измерения</string>
+    <string name="label_degrees">Температура</string>
+    <string name="label_wind">Ветер</string>
+    <string name="label_pressure">Давление</string>
+
+    <string name="scale_kelvin">K</string>
+    <string name="scale_celsius">ºC</string>
+    <string name="scale_fahrenheit">ºF</string>
+
+    <string name="scale_mm_hg">мм рт.ст.</string>
+    <string name="scale_hpa">гПа</string>
+
+    <string name="scale_m_s">м/с</string>
+    <string name="scale_km_h">км/ч</string>
+    <string name="scale_mph">мил./ч</string>
+    <string name="scale_kt">уз.</string>
+
+    <string name="label_interface">Интерфейс</string>
+    <string name="label_language">Язык</string>
+    <string name="label_theme">Тема</string>
+
+    <string name="language_english">Английский (English)</string>
+    <string name="language_finnish">Финский (Suomi)</string>
+    <string name="language_russian">Русский</string>
+
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Тёмная</string>
+    <string name="theme_system">Системная</string>
+</resources>

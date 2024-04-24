@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="clear">Selkeää</string>
+    <string name="mostly_sunny">Enimmäkseen selkeää</string>
+    <string name="mostly_cloudy">Enimmäkseen pilvistä</string>
+    <string name="cloudy">Pilvistä</string>
+    <string name="chance_of_rain">Ajoittain sadetta</string>
+    <string name="chance_of_sleet">Ajoittain räntäsadetta</string>
+    <string name="rain">Sadetta</string>
+    <string name="sleet">Räntäsadetta</string>
+    <string name="snow">Lumisadetta</string>
+    <string name="fog">Sumua</string>
+    <string name="thunderstorm">Ukkoskuuroja</string>
+</resources>
