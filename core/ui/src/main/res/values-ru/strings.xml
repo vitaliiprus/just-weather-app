@@ -4,8 +4,8 @@
     <string name="mostly_sunny">Низкая облачность</string>
     <string name="mostly_cloudy">Высокая облачность</string>
     <string name="cloudy">Облачно</string>
-    <string name="chance_of_rain">Вероятность дождя</string>
-    <string name="chance_of_sleet">Вероятность мокрого снега</string>
+    <string name="chance_of_rain">Возможен дождь</string>
+    <string name="chance_of_sleet">Возможен мокрый снег</string>
     <string name="rain">Дождь</string>
     <string name="sleet">Мокрый снег</string>
     <string name="snow">Снег</string>

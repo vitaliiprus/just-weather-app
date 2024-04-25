@@ -11,7 +11,7 @@
     <string name="temp_min_max">tº мин, макс</string>
     <string name="uv_index">УФ индекс</string>
     <string name="pressure">Давление</string>
-    <string name="precip_prob">Вероятность осадков</string>
+    <string name="precip_prob">Вер. осадков</string>
     <string name="humidity">Влажность</string>
     <string name="wind">Ветер</string>
 
