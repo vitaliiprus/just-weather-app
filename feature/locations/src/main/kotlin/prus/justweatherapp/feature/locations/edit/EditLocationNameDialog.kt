@@ -5,11 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -151,27 +150,27 @@ private fun EditLocationNameDialog(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    Row(
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
                     ) {
-
-                        JwaOutlinedButton(
-                            modifier = Modifier
-                                .weight(1f),
-                            text = stringResource(id = R.string.cancel),
-                            onClick = onDismissRequest
-                        )
-
-                        Spacer(modifier = Modifier.width(16.dp))
-
                         JwaButton(
                             modifier = Modifier
-                                .weight(1f),
+                                .fillMaxWidth(),
                             text = stringResource(id = R.string.rename),
                             enabled = state.isOkButtonEnabled,
                             onClick = onRenameClicked
                         )
+
+                        Spacer(modifier = Modifier.size(4.dp))
+
+                        JwaOutlinedButton(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            text = stringResource(id = R.string.cancel),
+                            onClick = onDismissRequest
+                        )
+
 
                     }
 
