@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -85,6 +86,13 @@ private fun SettingsUI(
     }
 }
 
+private val columnPaddings = PaddingValues(
+    start = 16.dp,
+    end = 16.dp,
+    top = 8.dp,
+    bottom = 8.dp,
+)
+
 @Composable
 private fun SettingsUI(
     settings: SettingsUiModel,
@@ -96,7 +104,7 @@ private fun SettingsUI(
     ) {
         Text(
             modifier = Modifier
-                .padding(10.dp)
+                .padding(16.dp)
                 .fillMaxWidth(),
             text = stringResource(id = R.string.title_settings),
             textAlign = TextAlign.Center,
@@ -115,52 +123,37 @@ private fun SettingsUI(
             fontSize = 14.sp
         )
 
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.onTertiary)
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(columnPaddings),
+            horizontalAlignment = Alignment.Start
         ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f),
-                horizontalAlignment = Alignment.Start
-            ) {
-                SettingsLabel(
-                    text = stringResource(id = R.string.label_degrees),
-                )
+            SettingsItem(
+                text = stringResource(id = R.string.label_degrees),
+                value = settings.tempValue.asString(),
+                menuOptions = settings.menuOptions.tempOptions,
+                onMenuOptionSelected = callbacks.onTempChanged
+            )
 
-                SettingsLabel(
-                    text = stringResource(id = R.string.label_wind),
-                )
+            SettingsDivider()
 
-                SettingsLabel(
-                    text = stringResource(id = R.string.label_pressure),
-                )
+            SettingsItem(
+                text = stringResource(id = R.string.label_wind),
+                value = settings.windValue.asString(),
+                menuOptions = settings.menuOptions.windOptions,
+                onMenuOptionSelected = callbacks.onWindChanged
+            )
 
-            }
-            Column(
-                horizontalAlignment = Alignment.End
-            ) {
-                SettingsValue(
-                    value = settings.tempValue.asString(),
-                    menuOptions = settings.menuOptions.tempOptions,
-                    onMenuOptionSelected = callbacks.onTempChanged
-                )
+            SettingsDivider()
 
-                SettingsValue(
-                    value = settings.windValue.asString(),
-                    menuOptions = settings.menuOptions.windOptions,
-                    onMenuOptionSelected = callbacks.onWindChanged
-                )
-
-                SettingsValue(
-                    value = settings.pressureValue.asString(),
-                    menuOptions = settings.menuOptions.pressureOptions,
-                    onMenuOptionSelected = callbacks.onPressureChanged
-                )
-            }
+            SettingsItem(
+                text = stringResource(id = R.string.label_pressure),
+                value = settings.pressureValue.asString(),
+                menuOptions = settings.menuOptions.pressureOptions,
+                onMenuOptionSelected = callbacks.onPressureChanged
+            )
         }
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -174,71 +167,36 @@ private fun SettingsUI(
             fontSize = 14.sp
         )
 
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.onTertiary)
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(columnPaddings),
+            horizontalAlignment = Alignment.Start
         ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f),
-                horizontalAlignment = Alignment.Start
-            ) {
-                SettingsLabel(
-                    text = stringResource(id = R.string.label_language),
-                )
+            SettingsItem(
+                text = stringResource(id = R.string.label_language),
+                value = settings.languageValue.asString(),
+                menuOptions = settings.menuOptions.languageOptions,
+                onMenuOptionSelected = callbacks.onLanguageChanged
+            )
 
-                SettingsLabel(
-                    text = stringResource(id = R.string.label_theme),
-                )
+            SettingsDivider()
 
-            }
-            Column(
-                horizontalAlignment = Alignment.End
-            ) {
-                SettingsValue(
-                    value = settings.languageValue.asString(),
-                    menuOptions = settings.menuOptions.languageOptions,
-                    onMenuOptionSelected = callbacks.onLanguageChanged
-                )
-
-                SettingsValue(
-                    value = settings.themeValue.asString(),
-                    menuOptions = settings.menuOptions.themeOptions,
-                    onMenuOptionSelected = callbacks.onThemeChanged
-                )
-            }
+            SettingsItem(
+                text = stringResource(id = R.string.label_theme),
+                value = settings.themeValue.asString(),
+                menuOptions = settings.menuOptions.themeOptions,
+                onMenuOptionSelected = callbacks.onThemeChanged
+            )
         }
+
     }
 }
 
-private val textPadding = PaddingValues(
-    start = 16.dp,
-    end = 16.dp,
-    top = 14.dp,
-    bottom = 14.dp,
-)
-
 @Composable
-private fun SettingsLabel(
-    text: String
-) {
-    Text(
-        modifier = Modifier.padding(
-            textPadding
-        ),
-        text = text,
-        style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurface,
-        fontWeight = FontWeight.Medium,
-        fontSize = 16.sp
-    )
-}
-
-@Composable
-private fun SettingsValue(
+private fun SettingsItem(
+    text: String,
     value: String,
     menuOptions: List<MenuOption>,
     onMenuOptionSelected: (Int) -> Unit
@@ -247,83 +205,124 @@ private fun SettingsValue(
 
     Row(
         modifier = Modifier
-            .clickable {
-                menuExpanded = true
-            }
+            .fillMaxWidth()
             .padding(
-                textPadding
+                top = 4.dp,
+                bottom = 4.dp
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
+
         Text(
-            text = value,
+            modifier = Modifier.padding(
+                start = 8.dp
+            ),
+            text = text,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+            color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp
         )
 
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(Modifier.weight(1f))
 
-        Icon(
-            modifier = Modifier.size(16.dp),
-            painter = painterResource(
-                id = R.drawable.ic_arrow_down
-            ),
-            tint = MaterialTheme.colorScheme.onSurface.copy(0.5f),
-            contentDescription = ""
-        )
-
-        DropdownMenu(
-            expanded = menuExpanded,
-            onDismissRequest = { menuExpanded = false }
+        Row(
+            modifier = Modifier
+                .clickable {
+                    menuExpanded = true
+                }
+                .padding(
+                    PaddingValues(
+                        start = 16.dp,
+                        end = 16.dp,
+                        top = 14.dp,
+                        bottom = 14.dp,
+                    )
+                ),
+//                    ,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            menuOptions.forEachIndexed { index, option ->
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp
+            )
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            onMenuOptionSelected(index)
-                            menuExpanded = false
-                        },
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        modifier = Modifier.size(48.dp),
-                        contentAlignment = Alignment.Center
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Icon(
+                modifier = Modifier.size(16.dp),
+                painter = painterResource(
+                    id = R.drawable.ic_arrow_down
+                ),
+                tint = MaterialTheme.colorScheme.onSurface.copy(0.5f),
+                contentDescription = ""
+            )
+
+            DropdownMenu(
+                expanded = menuExpanded,
+                onDismissRequest = { menuExpanded = false }
+            ) {
+                menuOptions.forEachIndexed { index, option ->
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onMenuOptionSelected(index)
+                                menuExpanded = false
+                            },
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        if (option.selected) {
-                            Icon(
-                                modifier = Modifier.size(16.dp),
-                                painter = painterResource(
-                                    id = R.drawable.ic_check
-                                ),
-                                tint = accent,
-                                contentDescription = "selected"
-                            )
+                        Box(
+                            modifier = Modifier.size(48.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            if (option.selected) {
+                                Icon(
+                                    modifier = Modifier.size(16.dp),
+                                    painter = painterResource(
+                                        id = R.drawable.ic_check
+                                    ),
+                                    tint = accent,
+                                    contentDescription = "selected"
+                                )
+                            }
                         }
+
+                        Text(
+                            modifier = Modifier
+                                .padding(
+                                    start = 0.dp,
+                                    end = 20.dp,
+                                    top = 16.dp,
+                                    bottom = 16.dp,
+                                ),
+                            text = option.value.asString(),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 16.sp
+                        )
                     }
 
-                    Text(
-                        modifier = Modifier
-                            .padding(
-                                start = 0.dp,
-                                end = 20.dp,
-                                top = 16.dp,
-                                bottom = 16.dp,
-                            ),
-                        text = option.value.asString(),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 16.sp
-                    )
                 }
-
             }
         }
     }
+}
+
+@Composable
+private fun SettingsDivider() {
+    HorizontalDivider(
+        modifier = Modifier.padding(
+            start = 4.dp,
+            end = 4.dp
+        ),
+        color = MaterialTheme.colorScheme.onSurface.copy(0.05f)
+    )
 }
 
 @PreviewLightDark
@@ -370,7 +369,8 @@ private fun SettingsValuePreview(
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
-                SettingsValue(
+                SettingsItem(
+                    text = "Theme",
                     value = "System",
                     menuOptions = listOf(
                         MenuOption(
