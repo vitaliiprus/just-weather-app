@@ -19,6 +19,7 @@ class GetLocationDailyForecastUseCase @Inject constructor(
     private val getSettingsUseCase: GetSettingsUseCase
 ) {
     private val itemsCountNeeded = 24 * 11
+    private val days = 10
 
     operator fun invoke(
         locationId: String
@@ -50,6 +51,7 @@ class GetLocationDailyForecastUseCase @Inject constructor(
                         }.sortedBy {
                             it.dateTime
                         }
+                        .take(days)
 
                     RequestResult.Success(
                         result.map { weather ->
