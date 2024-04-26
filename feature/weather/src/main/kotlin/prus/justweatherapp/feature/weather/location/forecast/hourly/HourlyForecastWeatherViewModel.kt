@@ -8,10 +8,12 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.datetime.LocalDate
 import prus.justweatherapp.core.common.result.RequestResult
+import prus.justweatherapp.core.common.util.LocaleChangeListener
 import prus.justweatherapp.core.common.util.formatHeaderDate
 import prus.justweatherapp.core.common.util.formatTime
 import prus.justweatherapp.core.common.util.isBetween
@@ -26,7 +28,8 @@ import java.util.SortedMap
 @HiltViewModel(assistedFactory = HourlyForecastWeatherViewModel.ViewModelFactory::class)
 class HourlyForecastWeatherViewModel @AssistedInject constructor(
     @Assisted val locationId: String,
-    getHourlyForecastUseCase: GetLocationHourlyForecastUseCase
+    getHourlyForecastUseCase: GetLocationHourlyForecastUseCase,
+    localeChangeListener: LocaleChangeListener
 ) : ViewModel() {
 
     @AssistedFactory
@@ -36,6 +39,9 @@ class HourlyForecastWeatherViewModel @AssistedInject constructor(
 
     val state: StateFlow<HourlyForecastWeatherUiState> =
         getHourlyForecastUseCase(locationId)
+            .combine(localeChangeListener.localeState) { result, _ ->
+                result
+            }
             .map { result ->
                 when (result) {
                     is RequestResult.Error -> HourlyForecastWeatherUiState.Error(result.error?.message)

@@ -9,11 +9,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.datetime.LocalDateTime
 import prus.justweatherapp.core.common.result.RequestResult
+import prus.justweatherapp.core.common.util.LocaleChangeListener
 import prus.justweatherapp.core.common.util.TimeUpdater
 import prus.justweatherapp.core.common.util.formatDateTime
 import prus.justweatherapp.core.common.util.formatDuration
@@ -37,7 +39,8 @@ import kotlin.math.roundToInt
 @HiltViewModel(assistedFactory = CurrentWeatherViewModel.ViewModelFactory::class)
 class CurrentWeatherViewModel @AssistedInject constructor(
     @Assisted val locationId: String,
-    getCurrentWeatherUseCase: GetLocationCurrentWeatherUseCase
+    getCurrentWeatherUseCase: GetLocationCurrentWeatherUseCase,
+    localeChangeListener: LocaleChangeListener
 ) : ViewModel() {
 
     @AssistedFactory
@@ -54,6 +57,9 @@ class CurrentWeatherViewModel @AssistedInject constructor(
 
     val state: StateFlow<CurrentWeatherUiState> =
         getCurrentWeatherUseCase(locationId)
+            .combine(localeChangeListener.localeState) { result, _ ->
+                result
+            }
             .onEach { result ->
                 timeUpdater?.cancel()
                 when (result) {

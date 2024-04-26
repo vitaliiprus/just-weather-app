@@ -8,9 +8,11 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import prus.justweatherapp.core.common.result.RequestResult
+import prus.justweatherapp.core.common.util.LocaleChangeListener
 import prus.justweatherapp.core.common.util.formatDailyDate
 import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.usecase.GetLocationDailyForecastUseCase
@@ -22,7 +24,8 @@ import prus.justweatherapp.feature.weather.mapper.getWeatherConditionsString
 @HiltViewModel(assistedFactory = DailyForecastWeatherViewModel.ViewModelFactory::class)
 class DailyForecastWeatherViewModel @AssistedInject constructor(
     @Assisted val locationId: String,
-    getForecastWeatherUseCase: GetLocationDailyForecastUseCase
+    getForecastWeatherUseCase: GetLocationDailyForecastUseCase,
+    localeChangeListener: LocaleChangeListener
 ) : ViewModel() {
 
     @AssistedFactory
@@ -32,6 +35,9 @@ class DailyForecastWeatherViewModel @AssistedInject constructor(
 
     val state: StateFlow<DailyForecastWeatherUiState> =
         getForecastWeatherUseCase(locationId)
+            .combine(localeChangeListener.localeState) { result, _ ->
+                result
+            }
             .map { result ->
                 when (result) {
                     is RequestResult.Error -> DailyForecastWeatherUiState.Error(result.error?.message)
