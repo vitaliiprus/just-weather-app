@@ -30,8 +30,8 @@ import prus.justweatherapp.core.ui.shimmer.ShimmerRectangle
 import prus.justweatherapp.feature.weather.location.forecast.daily.temprange.TempRangeModel
 import prus.justweatherapp.feature.weather.location.forecast.daily.temprange.TempRangeUI
 import prus.justweatherapp.feature.weather.location.forecast.weathercard.WeatherCardUI
-import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.Dimens
+import prus.justweatherapp.theme.JwaTheme
 
 @Composable
 fun DailyForecastWeatherUI(
@@ -74,8 +74,9 @@ private fun DailyForecastWeatherUI(
             .fillMaxWidth()
             .padding(
                 PaddingValues(
-                    horizontal = Dimens.contentPaddings.start,
-                    vertical = 0.dp
+                    start = Dimens.contentPaddings.start,
+                    end = Dimens.contentPaddings.end,
+                    bottom = Dimens.contentPaddings.bottom,
                 )
             )
             .then(modifier),
