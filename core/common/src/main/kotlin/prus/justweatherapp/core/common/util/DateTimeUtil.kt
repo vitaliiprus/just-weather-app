@@ -13,6 +13,7 @@ import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toJavaLocalTime
 import kotlinx.datetime.toLocalDateTime
+import java.time.DayOfWeek
 import java.time.format.DateTimeFormatter
 import kotlin.time.Duration
 
@@ -54,6 +55,10 @@ fun LocalDate.formatHeaderDate(): String {
 fun LocalDate.formatDailyDate(): String {
     val formatter = DateTimeFormatter.ofPattern("EE, dd LLL")
     return formatter.format(this.toJavaLocalDate())
+}
+
+fun LocalDate.isWeekend(): Boolean {
+    return this.dayOfWeek == DayOfWeek.SATURDAY || this.dayOfWeek == DayOfWeek.SUNDAY
 }
 
 fun getLocationCurrentTime(timezoneOffset: Int): LocalDateTime {

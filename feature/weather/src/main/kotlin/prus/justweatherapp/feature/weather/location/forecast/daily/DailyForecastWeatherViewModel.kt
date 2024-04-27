@@ -11,11 +11,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.daysUntil
+import kotlinx.datetime.toLocalDateTime
 import prus.justweatherapp.core.common.result.RequestResult
 import prus.justweatherapp.core.common.util.LocaleChangeListener
 import prus.justweatherapp.core.common.util.formatDailyDate
+import prus.justweatherapp.core.common.util.isWeekend
+import prus.justweatherapp.core.ui.UiText
 import prus.justweatherapp.domain.weather.model.Weather
 import prus.justweatherapp.domain.weather.usecase.GetLocationDailyForecastUseCase
+import prus.justweatherapp.feature.weather.R
 import prus.justweatherapp.feature.weather.location.forecast.daily.temprange.TempRangeModel
 import prus.justweatherapp.feature.weather.mapper.getPrecipitationProbString
 import prus.justweatherapp.feature.weather.mapper.getWeatherConditionImageResId
@@ -66,7 +74,8 @@ class DailyForecastWeatherViewModel @AssistedInject constructor(
     ): List<DailyForecastWeatherUiModel> {
         return data.map { weather ->
             DailyForecastWeatherUiModel(
-                date = weather.dateTime.date.formatDailyDate(),
+                date = getDailyDate(weather.dateTime.date),
+                isWeekend = weather.dateTime.date.isWeekend(),
                 conditionImageResId = getWeatherConditionImageResId(weather.weatherConditions),
                 weatherConditions = getWeatherConditionsString(weather.weatherConditions),
                 precipitationProb = getPrecipitationProbString(weather.probOfPrecipitations),
@@ -77,6 +86,15 @@ class DailyForecastWeatherViewModel @AssistedInject constructor(
                     rangeMaxTemp = rangeMax
                 ),
             )
+        }
+    }
+
+    private fun getDailyDate(date: LocalDate): UiText {
+        val dateNow = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        return when (dateNow.daysUntil(date)) {
+            0 -> UiText.StringResource(R.string.today)
+            1 -> UiText.StringResource(R.string.tomorrow)
+            else -> UiText.DynamicString(date.formatDailyDate())
         }
     }
 }

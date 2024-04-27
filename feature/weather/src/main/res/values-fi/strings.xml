@@ -33,4 +33,6 @@
 
     <string name="template_value_scale">%s %s</string>
     <string name="template_wind_value">%s %s, %s</string>
+    <string name="today">Tänään</string>
+    <string name="tomorrow">Huomenna</string>
 </resources>

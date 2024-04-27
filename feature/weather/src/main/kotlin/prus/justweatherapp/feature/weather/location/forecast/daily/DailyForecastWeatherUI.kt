@@ -123,10 +123,14 @@ private fun DailyWeatherItem(
         Column {
 
             Text(
-                text = data.date,
+                text = data.date.asString(),
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = if (data.isWeekend)
+                    MaterialTheme.colorScheme.error
+                else
+                    MaterialTheme.colorScheme.onSurface,
+
                 fontSize = 16.sp,
             )
 
@@ -201,9 +205,10 @@ private fun DailyForecastWeatherUISuccessPreview(
                 state = DailyForecastWeatherUiState.Success(
                     weather = listOf(
                         DailyForecastWeatherUiModel(
-                            date = "Today",
-                            conditionImageResId = R.drawable.mostlycloudy,
+                            date = UiText.StringResource(prus.justweatherapp.feature.weather.R.string.today),
+                            isWeekend = false,
                             weatherConditions = UiText.DynamicString("Mostly cloudy"),
+                            conditionImageResId = R.drawable.mostlycloudy,
                             precipitationProb = "10%",
                             tempRangeModel = TempRangeModel(
                                 dayMinTemp = -2.0,
@@ -214,9 +219,10 @@ private fun DailyForecastWeatherUISuccessPreview(
                             )
                         ),
                         DailyForecastWeatherUiModel(
-                            date = "Tomorrow",
-                            conditionImageResId = R.drawable.mostlysunny,
+                            date = UiText.StringResource(prus.justweatherapp.feature.weather.R.string.tomorrow),
+                            isWeekend = false,
                             weatherConditions = UiText.DynamicString("Mostly sunny"),
+                            conditionImageResId = R.drawable.mostlysunny,
                             precipitationProb = null,
                             tempRangeModel = TempRangeModel(
                                 dayMinTemp = 1.0,
@@ -226,9 +232,10 @@ private fun DailyForecastWeatherUISuccessPreview(
                             )
                         ),
                         DailyForecastWeatherUiModel(
-                            date = "FR, 29 March",
-                            conditionImageResId = R.drawable.chancerain,
+                            date = UiText.DynamicString("SA, 30 March"),
+                            isWeekend = true,
                             weatherConditions = UiText.DynamicString("Chance rain"),
+                            conditionImageResId = R.drawable.chancerain,
                             precipitationProb = "29%",
                             tempRangeModel = TempRangeModel(
                                 dayMinTemp = 7.0,
