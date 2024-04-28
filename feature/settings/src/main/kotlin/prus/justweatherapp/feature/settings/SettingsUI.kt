@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,9 +40,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import prus.justweatherapp.core.ui.UiText
+import prus.justweatherapp.theme.Dimens
 import prus.justweatherapp.theme.JwaTheme
 import prus.justweatherapp.theme.accent
-import prus.justweatherapp.theme.screenContentPaddings
 
 @Composable
 fun SettingsUI() {
@@ -116,12 +117,17 @@ private fun SettingsUI(
 
         Text(
             modifier = Modifier
-                .screenContentPaddings(),
+                .padding(
+                    start = Dimens.screenPaddings.start,
+                    end = Dimens.screenPaddings.end,
+                ),
             text = stringResource(id = R.string.label_units).uppercase(),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
             fontSize = 14.sp
         )
+
+        HorizontalShadow(inverted = false)
 
         Column(
             modifier = Modifier
@@ -156,16 +162,23 @@ private fun SettingsUI(
             )
         }
 
+        HorizontalShadow(inverted = true)
+
         Spacer(modifier = Modifier.height(20.dp))
 
         Text(
             modifier = Modifier
-                .screenContentPaddings(),
+                .padding(
+                    start = Dimens.screenPaddings.start,
+                    end = Dimens.screenPaddings.end,
+                ),
             text = stringResource(id = R.string.label_interface).uppercase(),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
             fontSize = 14.sp
         )
+
+        HorizontalShadow(inverted = false)
 
         Column(
             modifier = Modifier
@@ -190,6 +203,8 @@ private fun SettingsUI(
                 onMenuOptionSelected = callbacks.onThemeChanged
             )
         }
+
+        HorizontalShadow(inverted = true)
 
     }
 }
@@ -312,6 +327,28 @@ private fun SettingsItem(
             }
         }
     }
+}
+
+@Composable
+private fun HorizontalShadow(
+    inverted: Boolean = false
+) {
+    val shadowColor = MaterialTheme.colorScheme.scrim
+    val colors = listOf(
+        shadowColor.copy(0f),
+        shadowColor.copy(0.05f),
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(12.dp)
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = if (inverted) colors.asReversed() else colors
+                )
+            )
+    )
 }
 
 @Composable
