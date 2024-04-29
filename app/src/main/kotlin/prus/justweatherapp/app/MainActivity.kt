@@ -94,14 +94,15 @@ class MainActivity : ComponentActivity() {
 
 private fun setAppLocale(appLanguage: AppLanguage, context: Context) {
     val languageTag =
-            when (appLanguage) {
-                AppLanguage.ENGLISH -> "en"
-                AppLanguage.FINNISH -> "fi"
-                AppLanguage.RUSSIAN -> "ru"
-            }
+        when (appLanguage) {
+            AppLanguage.ENGLISH -> "en"
+            AppLanguage.FINNISH -> "fi"
+            AppLanguage.RUSSIAN -> "ru"
+        }
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        context.getSystemService(LocaleManager::class.java).applicationLocales = LocaleList.forLanguageTags(languageTag)
+        context.getSystemService(LocaleManager::class.java).applicationLocales =
+            LocaleList.forLanguageTags(languageTag)
     } else {
         val locale = Locale(languageTag)
         Locale.setDefault(locale)
@@ -129,10 +130,10 @@ private fun shouldUseDarkTheme(
  * The default light scrim, as defined by androidx and the platform:
  * https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:activity/activity/src/main/java/androidx/activity/EdgeToEdge.kt;l=35-38;drc=27e7d52e8604a080133e8b842db10c89b4482598
  */
-private val lightScrim = android.graphics.Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
+private val lightScrim = Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
 
 /**
  * The default dark scrim, as defined by androidx and the platform:
  * https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:activity/activity/src/main/java/androidx/activity/EdgeToEdge.kt;l=40-44;drc=27e7d52e8604a080133e8b842db10c89b4482598
  */
-private val darkScrim = android.graphics.Color.argb(0x80, 0x1b, 0x1b, 0x1b)
+private val darkScrim = Color.argb(0x80, 0x1b, 0x1b, 0x1b)
