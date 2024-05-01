@@ -4,7 +4,7 @@ android-minSdk = "26"
 android-targetSdk = "34"
 
 firebase-crashlytics-gradle = "2.9.9"
-gradle = "8.2.2"
+gradle = "8.4.0"
 googleServices = "4.4.1"
 
 kotlin = "1.9.22"
