@@ -11,6 +11,7 @@ JustWeatherApp
 - Retrofit
 - Clean Architecture
 
+![Screenshots of JustWeatherApp](docs/screenshots.png "Screenshots of JustWeatherApp")
 
 # Features
 **JustWeatherApp** is a simple weather app that uses public weather APIs to display current weather and weather forecasts for selected locations.
@@ -48,8 +49,6 @@ The app has two themes:
 
 The user can choose between these themes from the settings screen or let the app follow the system theme.
 
-## Screenshots
-> TODO: add screenshots here
 
 
 # Architecture
